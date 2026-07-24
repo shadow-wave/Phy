@@ -39,11 +39,11 @@
 
         .safe-pt { padding-top: calc(var(--safe-area-top) + 12px); }
         .safe-pb { padding-bottom: calc(var(--safe-area-bottom) + 12px); }
-        .header-spacing { padding-top: calc(var(--safe-area-top) + 70px); }
+        .header-spacing { padding-top: calc(var(--safe-area-top) + 110px); }
         .nav-spacing { padding-bottom: calc(var(--safe-area-bottom) + 90px); }
 
         .nav-blur {
-            background: rgba(255, 255, 255, 0.88);
+            background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
         }
@@ -113,16 +113,6 @@
             @page { size: A4 portrait; margin: 0; }
         }
     </style>
-
-    <script type="importmap">
-        {
-            "imports": {
-                "firebase/app": "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js",
-                "firebase/auth": "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js",
-                "firebase/firestore": "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"
-            }
-        }
-    </script>
 </head>
 <body class="flex flex-col text-slate-900 overflow-hidden">
 
@@ -138,7 +128,7 @@
             <div class="absolute inset-0 border-4 border-white/20 rounded-full"></div>
             <div class="absolute inset-0 border-4 border-white rounded-full border-t-transparent animate-spin"></div>
         </div>
-        <p id="loader-status" class="mt-6 text-[10px] font-black text-sky-200 uppercase tracking-[0.3em] animate-pulse">Connecting to Server (phy-energyaudit)</p>
+        <p id="loader-status" class="mt-6 text-[10px] font-black text-sky-200 uppercase tracking-[0.3em] animate-pulse">Connecting Cloud Database (phy-energyaudit)</p>
     </div>
 
     <!-- Mobile Top Header -->
@@ -152,15 +142,24 @@
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <div id="sync-badge" onclick="manualSyncTrigger()" class="cursor-pointer flex items-center gap-1.5 bg-amber-50 text-amber-600 px-2.5 py-1 rounded-full text-[9px] font-black border border-amber-200 transition-all active:scale-95">
-                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                <div id="sync-badge" onclick="manualSyncTrigger()" class="cursor-pointer flex items-center gap-1.5 bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full text-[9px] font-black border border-emerald-100 transition-all active:scale-95">
+                    <i class="fa-solid fa-cloud"></i>
                     <span id="sync-text">SYNCING</span>
                 </div>
                 <div id="network-badge" class="flex items-center gap-1.5 bg-emerald-50 text-emerald-600 px-2 py-1 rounded-full text-[9px] font-black border border-emerald-100 transition-colors">
                     <span id="network-dot" class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span> 
-                    <span id="network-text">LIVE</span>
+                    <span id="network-text">ONLINE</span>
                 </div>
             </div>
+        </div>
+
+        <!-- Offline Persistent Alert Banner -->
+        <div id="offline-alert-banner" class="hidden bg-amber-500 text-slate-900 px-4 py-2 text-[11px] font-extrabold flex items-center justify-between shadow-inner">
+            <span class="flex items-center gap-2">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>Offline Mode: Saved on phone. Will push to server when connected.</span>
+            </span>
+            <button onclick="manualSyncTrigger()" class="bg-slate-900 text-white px-2 py-0.5 rounded text-[9px] uppercase font-black tracking-wider">Sync Now</button>
         </div>
     </header>
 
@@ -266,7 +265,7 @@
             <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2 pt-2 -mx-4 px-4 snap-x">
                 <button onclick="manualSyncTrigger()" class="snap-start shrink-0 w-36 bg-sky-50 border border-sky-100 p-4 rounded-[24px] flex flex-col items-start gap-3 active:scale-95 transition shadow-sm">
                     <div class="w-10 h-10 bg-sky-600 text-white rounded-[14px] flex items-center justify-center shadow-md shadow-sky-200"><i class="fa-solid fa-rotate"></i></div>
-                    <div class="text-left"><p class="text-sm font-extrabold text-sky-900">Sync Server</p><p class="text-[9px] font-bold text-sky-600 uppercase" id="tool-sync-status">Push Queue</p></div>
+                    <div class="text-left"><p class="text-sm font-extrabold text-sky-900">Sync Server</p><p class="text-[9px] font-bold text-sky-600 uppercase" id="tool-sync-status">Connected</p></div>
                 </button>
                 <button onclick="exportCSV()" class="snap-start shrink-0 w-36 bg-emerald-50 border border-emerald-100 p-4 rounded-[24px] flex flex-col items-start gap-3 active:scale-95 transition shadow-sm">
                     <div class="w-10 h-10 bg-emerald-600 text-white rounded-[14px] flex items-center justify-center shadow-md shadow-emerald-200"><i class="fa-solid fa-file-csv"></i></div>
@@ -372,7 +371,7 @@
                     <i class="fa-solid fa-cloud-arrow-up text-4xl"></i>
                 </div>
                 <h2 class="text-3xl font-black mb-2 uppercase tracking-tighter text-center">Audit Saved</h2>
-                <p id="success-subtext" class="text-sky-100 text-center text-sm font-medium opacity-80 leading-relaxed">Household data saved locally & pushed to server.</p>
+                <p id="success-subtext" class="text-sky-100 text-center text-sm font-medium opacity-80 leading-relaxed">Connecting to server and saving data...</p>
                 <div class="mt-12 w-24 h-1.5 bg-white/20 rounded-full overflow-hidden">
                     <div class="h-full bg-white animate-[loading_1.5s_infinite]"></div>
                 </div>
@@ -409,8 +408,8 @@
 
                 <!-- Submit Button -->
                 <div class="pt-2 pb-6">
-                    <button type="submit" class="w-full bg-slate-900 text-white font-black py-5 rounded-[28px] shadow-xl shadow-slate-900/20 hover:bg-black active:scale-95 transition-all text-sm tracking-widest uppercase flex items-center justify-center gap-3">
-                        <i class="fa-solid fa-cloud-arrow-up text-lg"></i> Push to Server
+                    <button type="submit" id="submit-btn" class="w-full bg-slate-900 text-white font-black py-5 rounded-[28px] shadow-xl shadow-slate-900/20 hover:bg-black active:scale-95 transition-all text-sm tracking-widest uppercase flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-cloud-arrow-up text-lg"></i> Push to Cloud Server
                     </button>
                     <button type="button" onclick="resetForm()" class="w-full text-slate-400 font-bold text-[10px] uppercase tracking-[0.3em] py-8 active:text-rose-500 transition-colors">Clear Workspace</button>
                 </div>
@@ -467,7 +466,7 @@
                 <!-- Local Storage Reset Controls -->
                 <div class="space-y-3 mb-6">
                     <button onclick="manualSyncTrigger()" class="w-full py-3.5 bg-sky-600 text-white rounded-2xl text-xs font-black hover:bg-sky-700 transition-all uppercase tracking-widest flex items-center justify-center gap-2 shadow-md shadow-sky-200">
-                        <i class="fa-solid fa-rotate"></i> Sync Local Data to Cloud
+                        <i class="fa-solid fa-rotate"></i> Force Sync with Cloud Server
                     </button>
                     <button onclick="clearLocalCache()" class="w-full py-3 border border-rose-200 text-rose-600 rounded-2xl text-xs font-extrabold hover:bg-rose-50 transition-all uppercase tracking-widest flex items-center justify-center gap-2">
                         <i class="fa-solid fa-trash-can"></i> Clear Local Cache Data
@@ -533,13 +532,13 @@
         </div>
     </nav>
 
-    <!-- Logic Engine -->
+    <!-- Modular Logic Engine -->
     <script type="module">
-        import { initializeApp } from "firebase/app";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
-        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, deleteDoc, updateDoc } from "firebase/firestore";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Extracted Firebase configuration from user's provided project (phy-energyaudit)
+        // Firebase project credentials (phy-energyaudit)
         const firebaseConfig = {
             apiKey: "AIzaSyBJvgM2EXtiZyCM0jGurgYaLBMLqOp96QU",
             authDomain: "phy-energyaudit.firebaseapp.com",
@@ -550,13 +549,11 @@
             measurementId: "G-53DP4TGCNZ"
         };
 
-        const LOCAL_STORAGE_KEY = 'physics_kerala_audit_surveys_v4';
+        const LOCAL_STORAGE_KEY = 'physics_kerala_audit_surveys_v6';
 
         let app = null;
         let auth = null;
         let db = null;
-        const appId = 'phy-energyaudit';
-
         let currentUser = null;
         let surveys = [];
         let isAdmin = false; 
@@ -564,7 +561,18 @@
 
         const triggerHaptic = () => { if (window.navigator.vibrate) window.navigator.vibrate(10); };
 
-        // --- KSEB KERALA BIMONTHLY DOMESTIC (LT-1A) TARIFF CALCULATOR ENGINE ---
+        // Helper: Strip any undefined or null keys to avoid Firebase SDK rejection
+        function sanitizeForFirestore(obj) {
+            const clean = {};
+            Object.keys(obj).forEach(key => {
+                if (obj[key] !== undefined && obj[key] !== null) {
+                    clean[key] = obj[key];
+                }
+            });
+            return clean;
+        }
+
+        // KSEB Tariff Engine (LT-1A Domestic Bimonthly)
         function calculateKsebBimonthlyBill(units) {
             let u = parseInt(units) || 0;
             let energyCharge = 0;
@@ -591,9 +599,7 @@
             }
 
             let duty = energyCharge * 0.10;
-            let totalBill = energyCharge + fixedCharge + duty;
-
-            return Math.round(totalBill);
+            return Math.round(energyCharge + fixedCharge + duty);
         }
 
         window.showAlert = (msg, title="Notification", type="info") => {
@@ -639,15 +645,20 @@
             const badge = document.getElementById('network-badge');
             const dot = document.getElementById('network-dot');
             const text = document.getElementById('network-text');
+            const banner = document.getElementById('offline-alert-banner');
+
             if (navigator.onLine) {
                 badge.className = "flex items-center gap-1.5 bg-emerald-50 text-emerald-600 px-2 py-1 rounded-full text-[9px] font-black border border-emerald-100 transition-colors";
                 dot.className = "w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse";
-                text.innerText = "LIVE";
+                text.innerText = "ONLINE";
+                if(banner) banner.classList.add('hidden');
                 autoPushUnsynced();
             } else {
                 badge.className = "flex items-center gap-1.5 bg-rose-50 text-rose-600 px-2 py-1 rounded-full text-[9px] font-black border border-rose-100 transition-colors";
                 dot.className = "w-1.5 h-1.5 bg-rose-500 rounded-full";
                 text.innerText = "OFFLINE";
+                if(banner) banner.classList.remove('hidden');
+                updateSyncBadge();
             }
         };
         window.addEventListener('online', updateNetworkStatus);
@@ -681,7 +692,7 @@
             document.getElementById('main-scroll').scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        // --- LOCAL STORAGE ENGINE ---
+        // Local Storage Engine
         function loadLocalSurveys() {
             try {
                 const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -705,75 +716,95 @@
             const text = document.getElementById('sync-text');
             const toolSync = document.getElementById('tool-sync-status');
 
-            if (unsyncedCount > 0) {
+            if (!navigator.onLine) {
+                badge.className = "cursor-pointer flex items-center gap-1.5 bg-amber-50 text-amber-600 px-2.5 py-1 rounded-full text-[9px] font-black border border-amber-200 transition-all active:scale-95";
+                text.innerText = "OFFLINE MODE";
+                if(toolSync) toolSync.innerText = `${unsyncedCount} Local`;
+            } else if (unsyncedCount > 0) {
                 badge.className = "cursor-pointer flex items-center gap-1.5 bg-amber-50 text-amber-600 px-2.5 py-1 rounded-full text-[9px] font-black border border-amber-200 transition-all active:scale-95 animate-pulse";
                 text.innerText = `${unsyncedCount} UNPUSHED`;
                 if(toolSync) toolSync.innerText = `${unsyncedCount} Pending`;
             } else {
                 badge.className = "cursor-pointer flex items-center gap-1.5 bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full text-[9px] font-black border border-emerald-100 transition-all active:scale-95";
-                text.innerText = "ALL SYNCED";
-                if(toolSync) toolSync.innerText = "Up to Date";
+                text.innerText = "CONNECTED";
+                if(toolSync) toolSync.innerText = "Connected";
             }
         }
 
         async function startApp() {
             loadLocalSurveys();
-            updateNetworkStatus();
+            renderDashboard(); // Render cached surveys immediately
 
             try {
                 app = initializeApp(firebaseConfig);
-                auth = getAuth(app);
                 db = getFirestore(app);
+                auth = getAuth(app);
                 
-                await signInAnonymously(auth);
-                onAuthStateChanged(auth, user => { 
-                    if(user) { 
-                        currentUser = user; 
-                        syncCloudListener(); 
-                    } 
-                });
-            } catch (e) { 
-                console.log("Operating in local mode:", e);
-            }
+                // Safe non-blocking auth initialization
+                try {
+                    await signInAnonymously(auth);
+                } catch (authErr) {
+                    console.log("Anonymous auth fallback:", authErr);
+                }
 
-            setTimeout(() => {
+                onAuthStateChanged(auth, user => { 
+                    if(user) currentUser = user; 
+                });
+
+                setupFirestoreListener();
+                autoPushUnsynced();
+            } catch (e) { 
+                console.log("Firebase initialized in offline mode:", e);
+            } finally {
                 const loader = document.getElementById('loader');
                 if(loader) {
                     loader.classList.add('opacity-0');
-                    setTimeout(() => loader.classList.add('hidden'), 700);
+                    setTimeout(() => loader.classList.add('hidden'), 500);
                 }
-                renderDashboard();
+                updateNetworkStatus();
                 runPhysicsCalculator();
-            }, 600);
+            }
         }
 
-        function syncCloudListener() {
+        // Real-time Firestore Sync Engine
+        function setupFirestoreListener() {
             if(!db) return;
-            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'surveys'), (snap) => {
-                const cloudSurveys = snap.docs.map(d => {
-                    const data = d.data();
-                    return {
-                        id: d.id,
-                        ...data,
-                        synced: true,
-                        createdAtTime: data.createdAtTime || (data.createdAt?.toMillis ? data.createdAt.toMillis() : Date.now())
-                    };
+            try {
+                onSnapshot(collection(db, 'surveys'), (snap) => {
+                    const cloudSurveys = snap.docs.map(docSnap => {
+                        const data = docSnap.data();
+                        return {
+                            id: docSnap.id,
+                            ...data,
+                            synced: true,
+                            createdAtTime: data.createdAtTime || (data.createdAt?.toMillis ? data.createdAt.toMillis() : Date.now())
+                        };
+                    });
+
+                    // Merge Cloud Documents with unpushed Local Documents
+                    const unpushedLocal = surveys.filter(s => !s.synced);
+                    const mergedMap = new Map();
+
+                    cloudSurveys.forEach(c => mergedMap.set(c.id, c));
+                    unpushedLocal.forEach(u => {
+                        if (!mergedMap.has(u.id)) {
+                            mergedMap.set(u.id, u);
+                        }
+                    });
+
+                    surveys = Array.from(mergedMap.values());
+                    surveys.sort((a,b) => (b.createdAtTime || 0) - (a.createdAtTime || 0));
+
+                    saveLocalSurveys();
+                    if(!editModeId) {
+                        renderDashboard();
+                    }
+                }, (err) => {
+                    console.log('Firestore snapshot listener working offline:', err.message);
                 });
-
-                const unsyncedLocal = surveys.filter(s => !s.synced);
-                const mergedMap = new Map();
-
-                cloudSurveys.forEach(c => mergedMap.set(c.id, c));
-                unsyncedLocal.forEach(u => mergedMap.set(u.id, u));
-
-                surveys = Array.from(mergedMap.values());
-                surveys.sort((a,b) => (b.createdAtTime || 0) - (a.createdAtTime || 0));
-
-                saveLocalSurveys();
-                if(!editModeId) {
-                    renderDashboard();
-                }
-            }, (err) => console.log('Firestore listener offline'));
+            } catch(err) {
+                console.log('Sync listener active');
+            }
         }
 
         async function autoPushUnsynced() {
@@ -783,27 +814,35 @@
 
             for (let survey of unsynced) {
                 try {
-                    const { id, synced, ...payload } = survey;
-                    payload.createdAt = serverTimestamp();
-                    payload.createdAtTime = Date.now();
+                    const { id, synced, ...rawPayload } = survey;
+                    const payload = sanitizeForFirestore({
+                        ...rawPayload,
+                        createdAt: serverTimestamp(),
+                        createdAtTime: survey.createdAtTime || Date.now()
+                    });
                     
-                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'surveys'), payload);
+                    const docRef = await addDoc(collection(db, 'surveys'), payload);
+                    survey.id = docRef.id;
                     survey.synced = true;
                 } catch(e) {
-                    console.log('Push error for record', survey.id);
+                    console.log('Background push retry for record:', survey.id, e);
                 }
             }
             saveLocalSurveys();
             renderDashboard();
         }
 
-        window.manualSyncTrigger = () => {
+        window.manualSyncTrigger = async () => {
             triggerHaptic();
             if(!navigator.onLine) {
                 return window.showAlert("You are currently offline. Connect to internet to sync with the server.", "Offline Mode", "info");
             }
-            autoPushUnsynced();
-            window.showAlert("Sync attempted with cloud database (phy-energyaudit).", "Sync Engine", "success");
+            if (!db) {
+                return window.showAlert("Connecting to cloud database...", "Connecting", "info");
+            }
+            window.showAlert("Syncing local records with server...", "Sync Engine", "info");
+            await autoPushUnsynced();
+            window.showAlert("Sync process completed!", "Server Synced", "success");
         };
 
         window.clearLocalCache = () => {
@@ -836,7 +875,7 @@
             }
         };
 
-        // --- KERALA PHYSICS SAVINGS SIMULATOR ---
+        // Kerala Physics Calculator
         window.runPhysicsCalculator = () => {
             const bulbs = parseInt(document.getElementById('calc-bulbs')?.value) || 0;
             const fans = parseInt(document.getElementById('calc-fans')?.value) || 0;
@@ -1013,34 +1052,38 @@
 
             const listEl = document.getElementById('audit-list');
             if(listEl) {
-                listEl.innerHTML = filtered.map(s => `
-                    <div class="bg-white p-4 rounded-[24px] border border-slate-100 shadow-sm flex items-center gap-4 transition-transform ${isAdmin ? '' : 'active:scale-[0.98] cursor-pointer'}" ${isAdmin ? '' : `onclick="showAuditDetail('${s.id}')"`}>
-                        <div class="w-12 h-12 rounded-[16px] bg-slate-50 flex items-center justify-center text-slate-400 font-black text-[10px] border border-slate-100 uppercase tracking-widest flex-shrink-0 cursor-pointer" onclick="showAuditDetail('${s.id}')">
-                            W${s.wardNo}
+                if(filtered.length === 0) {
+                    listEl.innerHTML = '<div class="bg-white p-8 rounded-[24px] border border-slate-100 text-center text-xs text-slate-400 font-bold">No household energy audits found. Use the "+" button to submit one!</div>';
+                } else {
+                    listEl.innerHTML = filtered.map(s => `
+                        <div class="bg-white p-4 rounded-[24px] border border-slate-100 shadow-sm flex items-center gap-4 transition-transform ${isAdmin ? '' : 'active:scale-[0.98] cursor-pointer'}" ${isAdmin ? '' : `onclick="showAuditDetail('${s.id}')"`}>
+                            <div class="w-12 h-12 rounded-[16px] bg-slate-50 flex items-center justify-center text-slate-400 font-black text-[10px] border border-slate-100 uppercase tracking-widest flex-shrink-0 cursor-pointer" onclick="showAuditDetail('${s.id}')">
+                                W${s.wardNo}
+                            </div>
+                            <div class="flex-grow min-w-0 cursor-pointer" onclick="showAuditDetail('${s.id}')">
+                                <div class="flex items-center gap-2">
+                                    <h5 class="font-extrabold text-[13px] text-slate-800 truncate leading-tight">${s.headName || 'No Name'}</h5>
+                                    ${s.synced ? '<span class="text-[8px] bg-emerald-50 text-emerald-600 border border-emerald-100 px-1.5 py-0.5 rounded-md font-extrabold flex items-center gap-1"><i class="fa-solid fa-cloud"></i> Synced</span>' : '<span class="text-[8px] bg-amber-50 text-amber-600 border border-amber-100 px-1.5 py-0.5 rounded-md font-extrabold flex items-center gap-1"><i class="fa-solid fa-hard-drive"></i> Local</span>'}
+                                </div>
+                                <p class="text-[9px] font-bold text-sky-500 uppercase tracking-[0.2em] mt-1 truncate">ID: ${s.houseNo} • Surveyor: ${s.volunteerName || 'Unknown'}</p>
+                            </div>
+                            ${isAdmin ? `
+                                <div class="flex items-center gap-2">
+                                    <button onclick="editSurveyFn('${s.id}')" class="w-8 h-8 rounded-full bg-sky-50 flex items-center justify-center text-sky-500 hover:bg-sky-100 transition shadow-sm" title="Edit Data">
+                                        <i class="fa-solid fa-pen text-[10px]"></i>
+                                    </button>
+                                    <button onclick="deleteSurveyFn('${s.id}')" class="w-8 h-8 rounded-full bg-rose-50 flex items-center justify-center text-rose-500 hover:bg-rose-100 transition shadow-sm" title="Delete Data">
+                                        <i class="fa-solid fa-trash text-[10px]"></i>
+                                    </button>
+                                </div>
+                            ` : `
+                                <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-300 cursor-pointer" onclick="showAuditDetail('${s.id}')">
+                                    <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                                </div>
+                            `}
                         </div>
-                        <div class="flex-grow min-w-0 cursor-pointer" onclick="showAuditDetail('${s.id}')">
-                            <div class="flex items-center gap-2">
-                                <h5 class="font-extrabold text-[13px] text-slate-800 truncate leading-tight">${s.headName || 'No Name'}</h5>
-                                ${s.synced ? '<span class="text-[8px] bg-emerald-50 text-emerald-600 border border-emerald-100 px-1.5 py-0.5 rounded-md font-extrabold">Synced</span>' : '<span class="text-[8px] bg-amber-50 text-amber-600 border border-amber-100 px-1.5 py-0.5 rounded-md font-extrabold">Local</span>'}
-                            </div>
-                            <p class="text-[9px] font-bold text-sky-500 uppercase tracking-[0.2em] mt-1 truncate">ID: ${s.houseNo}</p>
-                        </div>
-                        ${isAdmin ? `
-                            <div class="flex items-center gap-2">
-                                <button onclick="editSurveyFn('${s.id}')" class="w-8 h-8 rounded-full bg-sky-50 flex items-center justify-center text-sky-500 hover:bg-sky-100 transition shadow-sm" title="Edit Data">
-                                    <i class="fa-solid fa-pen text-[10px]"></i>
-                                </button>
-                                <button onclick="deleteSurveyFn('${s.id}')" class="w-8 h-8 rounded-full bg-rose-50 flex items-center justify-center text-rose-500 hover:bg-rose-100 transition shadow-sm" title="Delete Data">
-                                    <i class="fa-solid fa-trash text-[10px]"></i>
-                                </button>
-                            </div>
-                        ` : `
-                            <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-300 cursor-pointer" onclick="showAuditDetail('${s.id}')">
-                                <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                            </div>
-                        `}
-                    </div>
-                `).join('');
+                    `).join('');
+                }
             }
 
             const duplicatesSection = document.getElementById('admin-duplicates-section');
@@ -1105,10 +1148,10 @@
 
         window.deleteSurveyFn = (id) => {
             triggerHaptic();
-            window.showConfirm("Are you sure you want to permanently delete this audit record?", async () => {
+            window.showConfirm("Are you sure you want to permanently delete this audit record from both device & cloud?", async () => {
                 try {
                     if(db && navigator.onLine) {
-                        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'surveys', id));
+                        await deleteDoc(doc(db, 'surveys', id));
                     }
                     surveys = surveys.filter(s => s.id !== id);
                     saveLocalSurveys();
@@ -1148,8 +1191,8 @@
                 }
             });
 
-            const btn = form.querySelector('button[type="submit"]');
-            if(btn) btn.innerHTML = '<i class="fa-solid fa-floppy-disk text-lg"></i> Update Audit Record';
+            const btn = document.getElementById('submit-btn');
+            if(btn) btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-lg"></i> Update Record on Cloud';
             window.showAlert("Editing record. Make changes and submit to update.", "Edit Mode", "info");
         };
 
@@ -1157,61 +1200,87 @@
             e.preventDefault();
             triggerHaptic();
 
-            const data = Object.fromEntries(new FormData(e.target).entries());
-            data.submittedBy = currentUser ? currentUser.uid : 'anon';
-            data.date = new Date().toISOString().split('T')[0];
+            const rawData = Object.fromEntries(new FormData(e.target).entries());
+            
+            // Cleanup conditional questions
+            if(!rawData.q10 || !rawData.q10.startsWith('Yes')) {
+                delete rawData.q11;
+            }
 
-            if(!data.q10 || !data.q10.startsWith('Yes')) delete data.q11;
+            const now = Date.now();
+            const record = {
+                ...rawData,
+                submittedBy: currentUser ? currentUser.uid : 'anon',
+                date: new Date().toISOString().split('T')[0],
+                createdAtTime: now
+            };
+
+            const cleanRecord = sanitizeForFirestore(record);
 
             const successScreen = document.getElementById('success-screen');
+            const subtext = document.getElementById('success-subtext');
+
             if(successScreen) {
-                successScreen.querySelector('h2').innerText = editModeId ? "Audit Updated" : "Audit Saved";
+                successScreen.querySelector('h2').innerText = editModeId ? "Updating Audit..." : "Saving Audit...";
+                if(subtext) subtext.innerText = "Writing data locally and pushing to phy-energyaudit cloud server...";
                 successScreen.classList.remove('hidden');
             }
 
-            let docId = editModeId || 'local_' + Date.now();
+            let docId = editModeId || 'local_' + now;
+            let pushedToCloud = false;
 
-            if (editModeId) {
-                const idx = surveys.findIndex(s => s.id === editModeId);
-                if (idx !== -1) {
-                    surveys[idx] = { ...surveys[idx], ...data, synced: false };
-                }
-            } else {
-                surveys.unshift({
-                    id: docId,
-                    ...data,
-                    synced: false,
-                    createdAtTime: Date.now()
-                });
-            }
-
-            saveLocalSurveys();
-
+            // Direct Firestore Cloud Push First
             if (navigator.onLine && db) {
                 try {
                     if (editModeId) {
-                        await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'surveys', editModeId), data);
+                        await updateDoc(doc(db, 'surveys', editModeId), cleanRecord);
+                        pushedToCloud = true;
                     } else {
-                        const payload = { ...data, createdAt: serverTimestamp(), createdAtTime: Date.now() };
-                        const docRef = await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'surveys'), payload);
-                        const itemIndex = surveys.findIndex(s => s.id === docId);
-                        if(itemIndex !== -1) {
-                            surveys[itemIndex].id = docRef.id;
-                            surveys[itemIndex].synced = true;
-                        }
+                        const payload = { 
+                            ...cleanRecord, 
+                            createdAt: serverTimestamp(), 
+                            createdAtTime: now 
+                        };
+                        const docRef = await addDoc(collection(db, 'surveys'), payload);
+                        docId = docRef.id;
+                        pushedToCloud = true;
                     }
-                    saveLocalSurveys();
                 } catch(err) {
-                    console.log('Saved to LocalStorage');
+                    console.error('Direct Firestore push failed, queuing locally:', err);
                 }
             }
+
+            // Local State Update
+            const localRecord = {
+                ...cleanRecord,
+                id: docId,
+                synced: pushedToCloud
+            };
+
+            if (editModeId) {
+                const idx = surveys.findIndex(s => s.id === editModeId);
+                if (idx !== -1) surveys[idx] = localRecord;
+            } else {
+                surveys.unshift(localRecord);
+            }
+
+            saveLocalSurveys();
+            renderDashboard(); // Update Data page immediately!
 
             setTimeout(() => {
                 if(successScreen) successScreen.classList.add('hidden');
                 window.resetFormInternal();
-                showAuditDetail(docId, data);
                 editModeId = null; 
-            }, 1200);
+
+                // Immediately switch to Data Tab so the user sees the new entry on the Data Page!
+                switchTab('dashboard');
+
+                if (pushedToCloud) {
+                    window.showAlert("✅ Audit Pushed to Cloud Server & Synced Across All Devices!", "Cloud Pushed", "success");
+                } else {
+                    window.showAlert("📱 Saved Locally! Offline mode active. Will push to server when reconnected.", "Saved Locally", "info");
+                }
+            }, 600);
         };
 
         function buildMobileForm() {
@@ -1710,8 +1779,8 @@ _Generated via MG College Physics Energy Audit App_`.trim();
             document.querySelectorAll('.radio-tile-group input:checked').forEach(i => i.checked = false);
             document.querySelectorAll('[data-parent]').forEach(el => el.classList.add('hidden'));
             
-            const btn = document.querySelector('#auditForm button[type="submit"]');
-            if(btn) btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-lg"></i> Push to Server';
+            const btn = document.getElementById('submit-btn');
+            if(btn) btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-lg"></i> Push to Cloud Server';
             editModeId = null;
         }
 
@@ -1725,6 +1794,13 @@ _Generated via MG College Physics Energy Audit App_`.trim();
         startApp();
         buildMobileForm();
         switchTab('dashboard');
+
+        // Periodic background worker to flush unpushed records
+        setInterval(() => {
+            if (navigator.onLine && db) {
+                autoPushUnsynced();
+            }
+        }, 8000);
 
     </script>
 </body>

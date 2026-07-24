@@ -138,7 +138,7 @@
             <div class="absolute inset-0 border-4 border-white/20 rounded-full"></div>
             <div class="absolute inset-0 border-4 border-white rounded-full border-t-transparent animate-spin"></div>
         </div>
-        <p id="loader-status" class="mt-6 text-[10px] font-black text-sky-200 uppercase tracking-[0.3em] animate-pulse">Initializing KSEB Engine & Physics Analytics</p>
+        <p id="loader-status" class="mt-6 text-[10px] font-black text-sky-200 uppercase tracking-[0.3em] animate-pulse">Connecting to Server (phy-energyaudit)</p>
     </div>
 
     <!-- Mobile Top Header -->
@@ -153,8 +153,8 @@
             </div>
             <div class="flex items-center gap-2">
                 <div id="sync-badge" onclick="manualSyncTrigger()" class="cursor-pointer flex items-center gap-1.5 bg-amber-50 text-amber-600 px-2.5 py-1 rounded-full text-[9px] font-black border border-amber-200 transition-all active:scale-95">
-                    <i class="fa-solid fa-hard-drive"></i>
-                    <span id="sync-text">LOCAL MODE</span>
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span id="sync-text">SYNCING</span>
                 </div>
                 <div id="network-badge" class="flex items-center gap-1.5 bg-emerald-50 text-emerald-600 px-2 py-1 rounded-full text-[9px] font-black border border-emerald-100 transition-colors">
                     <span id="network-dot" class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span> 
@@ -206,23 +206,23 @@
                     <h3 class="text-[10px] font-black text-sky-400 uppercase tracking-[0.2em] flex items-center gap-2">
                         <i class="fa-solid fa-atom text-amber-400 text-sm"></i> Kerala KSEB & Carbon Analytics
                     </h3>
-                    <span class="text-[8px] bg-sky-500/20 text-sky-300 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Kerala Grid Standard</span>
+                    <span class="text-[8px] bg-sky-500/20 text-sky-300 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Grid Standard</span>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div class="bg-white/5 p-4 rounded-[20px] border border-white/10">
                         <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Annual Energy Load</p>
                         <p class="text-2xl font-black text-sky-300 mt-1"><span id="stat-est-kwh">0</span> <span class="text-xs font-normal text-slate-300">kWh/yr</span></p>
-                        <p class="text-[8px] text-sky-400/80 mt-1 font-semibold">Bi-monthly Grid Demand</p>
+                        <p class="text-[8px] text-sky-400/80 mt-1 font-semibold">Bi-monthly Demand</p>
                     </div>
                     <div class="bg-white/5 p-4 rounded-[20px] border border-white/10">
-                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Annual CO₂ Emissions</p>
+                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Annual CO₂ Footprint</p>
                         <p class="text-2xl font-black text-emerald-400 mt-1"><span id="stat-est-co2">0</span> <span class="text-xs font-normal text-slate-300">kg CO₂</span></p>
                         <p class="text-[8px] text-emerald-400/80 mt-1 font-semibold">CEA Factor 0.72 kg/kWh</p>
                     </div>
                 </div>
                 <div class="mt-4 bg-white/5 p-3.5 rounded-[18px] border border-white/10 flex items-center justify-between">
                     <div>
-                        <p class="text-[9px] font-extrabold text-slate-300 uppercase tracking-wider">Total Est. Annual KSEB Power Bill</p>
+                        <p class="text-[9px] font-extrabold text-slate-300 uppercase tracking-wider">Est. Annual KSEB Power Bill</p>
                         <p class="text-xs text-slate-400 font-medium">LT-1A Domestic Telescopic Rate</p>
                     </div>
                     <p class="text-xl font-black text-amber-300">₹<span id="stat-est-kseb-bill">0</span></p>
@@ -233,7 +233,7 @@
             <div class="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm space-y-4">
                 <div class="flex items-center justify-between">
                     <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
-                        <i class="fa-solid fa-bolt-lightning text-sky-500 text-sm"></i> KSEB Physics Energy Savings Calculator
+                        <i class="fa-solid fa-bolt-lightning text-sky-500 text-sm"></i> Energy Savings Calculator
                     </h3>
                     <span class="text-[9px] font-black text-sky-600 bg-sky-50 px-2 py-1 rounded-full uppercase">Interactive</span>
                 </div>
@@ -262,7 +262,7 @@
                 </div>
             </div>
 
-            <!-- Data Tools Widget -->
+            <!-- Data Export Toolbar -->
             <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2 pt-2 -mx-4 px-4 snap-x">
                 <button onclick="manualSyncTrigger()" class="snap-start shrink-0 w-36 bg-sky-50 border border-sky-100 p-4 rounded-[24px] flex flex-col items-start gap-3 active:scale-95 transition shadow-sm">
                     <div class="w-10 h-10 bg-sky-600 text-white rounded-[14px] flex items-center justify-center shadow-md shadow-sky-200"><i class="fa-solid fa-rotate"></i></div>
@@ -271,6 +271,10 @@
                 <button onclick="exportCSV()" class="snap-start shrink-0 w-36 bg-emerald-50 border border-emerald-100 p-4 rounded-[24px] flex flex-col items-start gap-3 active:scale-95 transition shadow-sm">
                     <div class="w-10 h-10 bg-emerald-600 text-white rounded-[14px] flex items-center justify-center shadow-md shadow-emerald-200"><i class="fa-solid fa-file-csv"></i></div>
                     <div class="text-left"><p class="text-sm font-extrabold text-emerald-900">CSV Data</p><p class="text-[9px] font-bold text-emerald-600 uppercase">Excel Ready</p></div>
+                </button>
+                <button onclick="exportDocText()" class="snap-start shrink-0 w-36 bg-amber-50 border border-amber-100 p-4 rounded-[24px] flex flex-col items-start gap-3 active:scale-95 transition shadow-sm">
+                    <div class="w-10 h-10 bg-amber-600 text-white rounded-[14px] flex items-center justify-center shadow-md shadow-amber-200"><i class="fa-solid fa-file-word"></i></div>
+                    <div class="text-left"><p class="text-sm font-extrabold text-amber-900">Doc / Words</p><p class="text-[9px] font-bold text-amber-600 uppercase">Word Summary</p></div>
                 </button>
                 <button onclick="exportJSON()" class="snap-start shrink-0 w-36 bg-purple-50 border border-purple-100 p-4 rounded-[24px] flex flex-col items-start gap-3 active:scale-95 transition shadow-sm">
                     <div class="w-10 h-10 bg-purple-600 text-white rounded-[14px] flex items-center justify-center shadow-md shadow-purple-200"><i class="fa-solid fa-file-code"></i></div>
@@ -365,10 +369,10 @@
             <!-- Success Overlay -->
             <div id="success-screen" class="hidden fixed inset-0 bg-sky-700/98 backdrop-blur-2xl z-[100] flex flex-col items-center justify-center text-white p-10">
                 <div class="w-24 h-24 bg-white/10 rounded-[32px] flex items-center justify-center mb-6 animate-bounce shadow-2xl">
-                    <i class="fa-solid fa-floppy-disk text-4xl"></i>
+                    <i class="fa-solid fa-cloud-arrow-up text-4xl"></i>
                 </div>
                 <h2 class="text-3xl font-black mb-2 uppercase tracking-tighter text-center">Audit Saved</h2>
-                <p id="success-subtext" class="text-sky-100 text-center text-sm font-medium opacity-80 leading-relaxed">Household data saved locally & queued for server sync.</p>
+                <p id="success-subtext" class="text-sky-100 text-center text-sm font-medium opacity-80 leading-relaxed">Household data saved locally & pushed to server.</p>
                 <div class="mt-12 w-24 h-1.5 bg-white/20 rounded-full overflow-hidden">
                     <div class="h-full bg-white animate-[loading_1.5s_infinite]"></div>
                 </div>
@@ -406,7 +410,7 @@
                 <!-- Submit Button -->
                 <div class="pt-2 pb-6">
                     <button type="submit" class="w-full bg-slate-900 text-white font-black py-5 rounded-[28px] shadow-xl shadow-slate-900/20 hover:bg-black active:scale-95 transition-all text-sm tracking-widest uppercase flex items-center justify-center gap-3">
-                        <i class="fa-solid fa-floppy-disk text-lg"></i> Save Household Audit
+                        <i class="fa-solid fa-cloud-arrow-up text-lg"></i> Push to Server
                     </button>
                     <button type="button" onclick="resetForm()" class="w-full text-slate-400 font-bold text-[10px] uppercase tracking-[0.3em] py-8 active:text-rose-500 transition-colors">Clear Workspace</button>
                 </div>
@@ -419,9 +423,14 @@
                 <button onclick="switchTab('dashboard')" class="w-12 h-12 bg-white rounded-[18px] flex items-center justify-center text-slate-400 shadow-sm border border-slate-100 active:scale-90 transition">
                     <i class="fa-solid fa-arrow-left"></i>
                 </button>
-                <button onclick="window.print()" class="bg-sky-600 text-white px-5 py-3.5 rounded-[18px] text-[11px] font-black shadow-lg shadow-sky-200 flex items-center gap-2 tracking-widest uppercase active:scale-95 transition-all">
-                    <i class="fa-solid fa-print text-sm"></i> Print PDF
-                </button>
+                <div class="flex items-center gap-2">
+                    <button onclick="exportDocText()" class="bg-amber-600 text-white px-4 py-3.5 rounded-[18px] text-[11px] font-black shadow-lg shadow-amber-200 flex items-center gap-2 tracking-widest uppercase active:scale-95 transition-all">
+                        <i class="fa-solid fa-file-word text-sm"></i> Doc
+                    </button>
+                    <button onclick="window.print()" class="bg-sky-600 text-white px-5 py-3.5 rounded-[18px] text-[11px] font-black shadow-lg shadow-sky-200 flex items-center gap-2 tracking-widest uppercase active:scale-95 transition-all">
+                        <i class="fa-solid fa-print text-sm"></i> Print PDF
+                    </button>
+                </div>
             </div>
             <div id="report-canvas" class="bg-transparent report-card w-full print:h-auto print:overflow-visible print:block"></div>
         </div>
@@ -433,7 +442,7 @@
                     <i class="fa-solid fa-atom text-4xl"></i>
                 </div>
                 <h2 class="text-2xl font-black text-slate-800 mb-2 tracking-tight">Energy Audit App</h2>
-                <p class="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mb-8">Department of Physics • Kerala KSEB Edition</p>
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mb-8">Department of Physics • Server: phy-energyaudit</p>
                 
                 <div class="space-y-4 text-left bg-slate-50 p-6 rounded-[24px] border border-slate-100 mb-8">
                     <div class="flex items-center gap-4">
@@ -530,23 +539,23 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
         import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, deleteDoc, updateDoc } from "firebase/firestore";
 
-        // Firebase Config Placeholder (Server details can be provided later)
+        // Extracted Firebase configuration from user's provided project (phy-energyaudit)
         const firebaseConfig = {
-            apiKey: "AIzaSyCIrJGojkToHC54SVIC4k5qmEJyzbrvJ1w",
-            authDomain: "nss-7a3b3.firebaseapp.com",
-            projectId: "nss-7a3b3",
-            storageBucket: "nss-7a3b3.firebasestorage.app",
-            messagingSenderId: "286386225024",
-            appId: "1:286386225024:web:5d8dd88a3971fcb270cb65",
-            measurementId: "G-TGXM9ZX377"
+            apiKey: "AIzaSyBJvgM2EXtiZyCM0jGurgYaLBMLqOp96QU",
+            authDomain: "phy-energyaudit.firebaseapp.com",
+            projectId: "phy-energyaudit",
+            storageBucket: "phy-energyaudit.firebasestorage.app",
+            messagingSenderId: "348712115974",
+            appId: "1:348712115974:web:3b02bf5c71ddde7d4d0887",
+            measurementId: "G-53DP4TGCNZ"
         };
 
-        const LOCAL_STORAGE_KEY = 'physics_kerala_audit_surveys_v3';
+        const LOCAL_STORAGE_KEY = 'physics_kerala_audit_surveys_v4';
 
         let app = null;
         let auth = null;
         let db = null;
-        const appId = 'physics-energy-audit';
+        const appId = 'phy-energyaudit';
 
         let currentUser = null;
         let surveys = [];
@@ -577,12 +586,10 @@
                 energyCharge = (200 * 5.50) + ((u - 200) * 7.60);
                 fixedCharge = 150;
             } else {
-                // High consumption / Non-telescopic above 250 units bimonthly
                 energyCharge = u * 7.10;
                 fixedCharge = 200;
             }
 
-            // Kerala Electricity Duty: 10% on energy charge
             let duty = energyCharge * 0.10;
             let totalBill = energyCharge + fixedCharge + duty;
 
@@ -726,7 +733,7 @@
                     } 
                 });
             } catch (e) { 
-                console.log("Offline local storage active");
+                console.log("Operating in local mode:", e);
             }
 
             setTimeout(() => {
@@ -793,10 +800,10 @@
         window.manualSyncTrigger = () => {
             triggerHaptic();
             if(!navigator.onLine) {
-                return window.showAlert("You are currently offline. Connect to internet to sync.", "Offline Mode", "info");
+                return window.showAlert("You are currently offline. Connect to internet to sync with the server.", "Offline Mode", "info");
             }
             autoPushUnsynced();
-            window.showAlert("Sync attempted with cloud database.", "Sync Engine", "success");
+            window.showAlert("Sync attempted with cloud database (phy-energyaudit).", "Sync Engine", "success");
         };
 
         window.clearLocalCache = () => {
@@ -821,7 +828,7 @@
                 if (pin === "6330") {
                     isAdmin = true;
                     document.getElementById('admin-btn-text').innerText = "Disable Admin Mode";
-                    window.showAlert("Admin mode enabled. You can now edit, delete records, view duplicates, and Batch Print.", "Admin Mode", "success");
+                    window.showAlert("Admin mode enabled. You can now edit records, delete items, view duplicates, and Batch Print.", "Admin Mode", "success");
                     renderDashboard();
                 } else if (pin !== null) {
                     window.showAlert("Incorrect PIN.", "Access Denied", "error");
@@ -834,14 +841,10 @@
             const bulbs = parseInt(document.getElementById('calc-bulbs')?.value) || 0;
             const fans = parseInt(document.getElementById('calc-fans')?.value) || 0;
 
-            // Physics estimations:
-            // Old 60W filament/CFL replaced by 9W LED -> 51W saved x 5 hrs/day -> 93 kWh/year per bulb.
-            // 75W induction fan replaced by 28W BLDC -> 47W saved x 8 hrs/day -> 137 kWh/year per fan.
             const kwhSavedBulbs = bulbs * 93;
             const kwhSavedFans = fans * 137;
             const totalKwhSaved = Math.round(kwhSavedBulbs + kwhSavedFans);
             
-            // Kerala KSEB average slab tariff multiplier ₹6.50/kWh
             const rupeesSaved = Math.round(totalKwhSaved * 6.5);
 
             if(document.getElementById('calc-kwh-saved')) document.getElementById('calc-kwh-saved').innerText = totalKwhSaved;
@@ -889,7 +892,6 @@
                 if(s.q11 === 'Below 24°C (Increased compressor duty cycle)') stats.lowACRisk++;
                 if(s.q16 === 'Not installed / Faulty') stats.safetyHazard++;
 
-                // Kerala Bimonthly Units load mapping
                 let bimonthlyUnits = 180;
                 if(s.q2 === 'Below 100 Units') bimonthlyUnits = 80;
                 else if(s.q2 === '100 – 200 Units') bimonthlyUnits = 160;
@@ -913,7 +915,6 @@
             document.getElementById('stat-led').innerText = Math.round((stats.ledCount / total) * 100) + '%';
             document.getElementById('stat-bldc').innerText = Math.round((stats.bldcCount / total) * 100) + '%';
 
-            // Kerala Physics metrics
             const estKwhEl = document.getElementById('stat-est-kwh');
             const estCo2El = document.getElementById('stat-est-co2');
             const estBillEl = document.getElementById('stat-est-kseb-bill');
@@ -1026,10 +1027,10 @@
                         </div>
                         ${isAdmin ? `
                             <div class="flex items-center gap-2">
-                                <button onclick="editSurveyFn('${s.id}')" class="w-8 h-8 rounded-full bg-sky-50 flex items-center justify-center text-sky-500 hover:bg-sky-100 transition shadow-sm">
+                                <button onclick="editSurveyFn('${s.id}')" class="w-8 h-8 rounded-full bg-sky-50 flex items-center justify-center text-sky-500 hover:bg-sky-100 transition shadow-sm" title="Edit Data">
                                     <i class="fa-solid fa-pen text-[10px]"></i>
                                 </button>
-                                <button onclick="deleteSurveyFn('${s.id}')" class="w-8 h-8 rounded-full bg-rose-50 flex items-center justify-center text-rose-500 hover:bg-rose-100 transition shadow-sm">
+                                <button onclick="deleteSurveyFn('${s.id}')" class="w-8 h-8 rounded-full bg-rose-50 flex items-center justify-center text-rose-500 hover:bg-rose-100 transition shadow-sm" title="Delete Data">
                                     <i class="fa-solid fa-trash text-[10px]"></i>
                                 </button>
                             </div>
@@ -1081,8 +1082,9 @@
                                                 <span class="text-[8px] font-bold text-slate-400 uppercase tracking-wider">${d}</span>
                                             </div>
                                             <div class="flex gap-2">
-                                                <button onclick="showAuditDetail('${dup.id}')" class="w-8 h-8 rounded-full bg-slate-50 text-slate-400 hover:bg-slate-200 flex items-center justify-center transition border border-slate-100"><i class="fa-solid fa-eye text-[10px]"></i></button>
-                                                <button onclick="deleteSurveyFn('${dup.id}')" class="w-8 h-8 rounded-full bg-rose-50 text-rose-500 hover:bg-rose-200 flex items-center justify-center transition border border-rose-100"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                                                <button onclick="editSurveyFn('${dup.id}')" class="w-8 h-8 rounded-full bg-sky-50 text-sky-600 hover:bg-sky-200 flex items-center justify-center transition border border-sky-100" title="Edit Copy"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                                                <button onclick="showAuditDetail('${dup.id}')" class="w-8 h-8 rounded-full bg-slate-50 text-slate-400 hover:bg-slate-200 flex items-center justify-center transition border border-slate-100" title="View Report"><i class="fa-solid fa-eye text-[10px]"></i></button>
+                                                <button onclick="deleteSurveyFn('${dup.id}')" class="w-8 h-8 rounded-full bg-rose-50 text-rose-500 hover:bg-rose-200 flex items-center justify-center transition border border-rose-100" title="Delete Copy"><i class="fa-solid fa-trash text-[10px]"></i></button>
                                             </div>
                                         </div>
                                         `;
@@ -1111,6 +1113,7 @@
                     surveys = surveys.filter(s => s.id !== id);
                     saveLocalSurveys();
                     renderDashboard();
+                    window.showAlert("Record deleted successfully.", "Deleted", "info");
                 } catch (error) {
                     surveys = surveys.filter(s => s.id !== id);
                     saveLocalSurveys();
@@ -1572,6 +1575,50 @@ _Generated via MG College Physics Energy Audit App_`.trim();
             navigator.clipboard.writeText(text).then(() => window.showAlert("Report summary copied! Ready to share.", "Summary Copied!", "success"));
         };
 
+        window.exportDocText = () => {
+            triggerHaptic();
+            if(!surveys.length) return window.showAlert("No data available to export.", "Empty Database", "info");
+
+            let docContent = "MAHATMA GANDHI COLLEGE, IRITTY - DEPARTMENT OF PHYSICS\n";
+            docContent += "HOUSEHOLD ENERGY AUDIT SURVEY SUMMARY REPORT\n";
+            docContent += "========================================================\n\n";
+
+            docContent += `Total Households Audited: ${surveys.length}\n`;
+            docContent += `Total Citizens Covered: ${document.getElementById('stat-members')?.innerText || '0'}\n`;
+            docContent += `Total Energy Pledges: ${document.getElementById('stat-pledges')?.innerText || '0'}\n`;
+            docContent += `Est. Annual Energy Load: ${document.getElementById('stat-est-kwh')?.innerText || '0'} kWh/year\n`;
+            docContent += `Est. Annual Carbon Emissions: ${document.getElementById('stat-est-co2')?.innerText || '0'} kg CO2/year\n`;
+            docContent += `Est. Annual KSEB Bill Demand: ₹${document.getElementById('stat-est-kseb-bill')?.innerText || '0'}\n\n`;
+
+            docContent += "INDIVIDUAL HOUSEHOLD AUDIT RECORDS:\n";
+            docContent += "--------------------------------------------------------\n\n";
+
+            surveys.forEach((s, i) => {
+                docContent += `[RECORD ${i + 1}]\n`;
+                docContent += `Survey Date: ${s.date || 'N/A'}\n`;
+                docContent += `Student Surveyor: ${s.volunteerName || 'N/A'}\n`;
+                docContent += `Head of Household: ${s.headName || 'N/A'}\n`;
+                docContent += `Ward #: ${s.wardNo || 'N/A'} | House ID: ${s.houseNo || 'N/A'}\n`;
+                docContent += `Members Count: ${s.membersCount || 'N/A'}\n`;
+                docContent += `Electrical Connection: ${s.q1 || 'N/A'}\n`;
+                docContent += `Bi-monthly kWh Load: ${s.q2 || 'N/A'}\n`;
+                docContent += `Lighting Technology: ${s.q4 || 'N/A'}\n`;
+                docContent += `Ceiling Fan Motor: ${s.q7 || 'N/A'}\n`;
+                docContent += `AC Temperature Setting: ${s.q11 || 'N/A'}\n`;
+                docContent += `Rooftop Solar PV: ${s.q15 || 'N/A'}\n`;
+                docContent += `ELCB Safety Switch: ${s.q16 || 'N/A'}\n`;
+                docContent += `Pledge Taken: ${s.pledge || 'N/A'}\n`;
+                docContent += "--------------------------------------------------------\n\n";
+            });
+
+            const blob = new Blob([docContent], { type: 'text/plain;charset=utf-8;' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `Physics_EnergyAudit_WordReport_${new Date().toISOString().split('T')[0]}.txt`;
+            a.click();
+            window.showAlert("Text/Word summary document downloaded.", "Doc Downloaded", "success");
+        };
+
         window.copyAppLink = () => {
             triggerHaptic();
             navigator.clipboard.writeText(window.location.href).then(() => window.showAlert("App link copied to clipboard.", "Link Copied!", "success"));
@@ -1664,7 +1711,7 @@ _Generated via MG College Physics Energy Audit App_`.trim();
             document.querySelectorAll('[data-parent]').forEach(el => el.classList.add('hidden'));
             
             const btn = document.querySelector('#auditForm button[type="submit"]');
-            if(btn) btn.innerHTML = '<i class="fa-solid fa-floppy-disk text-lg"></i> Save Household Audit';
+            if(btn) btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-lg"></i> Push to Server';
             editModeId = null;
         }
 

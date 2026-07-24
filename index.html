@@ -157,7 +157,7 @@
         <div id="offline-alert-banner" class="hidden bg-amber-500 text-slate-900 px-4 py-2 text-[11px] font-extrabold flex items-center justify-between shadow-inner">
             <span class="flex items-center gap-2">
                 <i class="fa-solid fa-triangle-exclamation"></i>
-                <span>Offline Mode: Saved on phone. Will push to server when connected.</span>
+                <span>ഓഫ്‌ലൈൻ മോഡ്: ഫോണിൽ സേവ് ചെയ്തു. ഇന്റർനെറ്റ് വരുമ്പോൾ സെർവറിലേക്ക് അപ്‌ലോഡ് ചെയ്യും.</span>
             </span>
             <button onclick="manualSyncTrigger()" class="bg-slate-900 text-white px-2 py-0.5 rounded text-[9px] uppercase font-black tracking-wider">Sync Now</button>
         </div>
@@ -549,7 +549,7 @@
             measurementId: "G-53DP4TGCNZ"
         };
 
-        const LOCAL_STORAGE_KEY = 'physics_kerala_audit_surveys_v6';
+        const LOCAL_STORAGE_KEY = 'physics_kerala_audit_surveys_v7';
 
         let app = null;
         let auth = null;
@@ -733,14 +733,13 @@
 
         async function startApp() {
             loadLocalSurveys();
-            renderDashboard(); // Render cached surveys immediately
+            renderDashboard();
 
             try {
                 app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 auth = getAuth(app);
                 
-                // Safe non-blocking auth initialization
                 try {
                     await signInAnonymously(auth);
                 } catch (authErr) {
@@ -1206,6 +1205,10 @@
             if(!rawData.q10 || !rawData.q10.startsWith('Yes')) {
                 delete rawData.q11;
             }
+            if(!rawData.q15 || !rawData.q15.startsWith('Yes')) {
+                delete rawData.q15_type;
+                delete rawData.q15_capacity;
+            }
 
             const now = Date.now();
             const record = {
@@ -1265,14 +1268,13 @@
             }
 
             saveLocalSurveys();
-            renderDashboard(); // Update Data page immediately!
+            renderDashboard();
 
             setTimeout(() => {
                 if(successScreen) successScreen.classList.add('hidden');
                 window.resetFormInternal();
                 editModeId = null; 
 
-                // Immediately switch to Data Tab so the user sees the new entry on the Data Page!
                 switchTab('dashboard');
 
                 if (pushedToCloud) {
@@ -1305,10 +1307,13 @@
                     { id: 'q11', m: 'AC സെറ്റ് ചെയ്യുന്ന സാധാരണ താപനില', e: 'Thermodynamic AC Temperature Setting', o: ['24°C or above (Optimum thermodynamic efficiency)', 'Below 24°C (Increased compressor duty cycle)'], p: 'q10', t: 'Yes' },
                     { id: 'q12', m: 'വെള്ളം ചൂടാക്കാൻ ഉപയോഗിക്കുന്ന മാർഗ്ഗം', e: 'Primary Water Heating Method', o: ['Solar Thermal Water Heater', 'Electric Resistance Geyser / Heating Rod', 'LPG / Firewood / Biomass', 'None'] }
                 ]},
-                { id: 'sec5', l: 'Section 5: Electronics, Standby Losses & Safety', qs: [
+                { id: 'sec5', l: 'Section 5: Power Electronics, Solar & Inverter Physics', qs: [
+                    { id: 'q15', m: 'റൂഫ് ടോപ്പ് സോളാർ പാനൽ ഇൻസ്റ്റാൾ ചെയ്തിട്ടുണ്ടോ?', e: 'Rooftop Solar PV Installation', o: ['Yes - Solar PV Installed', 'No - Solar Not Installed'] },
+                    { id: 'q15_type', m: 'സോളാർ ഗ്രിഡ് കണക്ഷൻ സ്വഭാവം', e: 'Solar System Connection Topology', o: ['On-Grid Net Metering System (Connected to KSEB)', 'Off-Grid System (Standalone Battery Storage)', 'Hybrid Solar System (Grid + Battery Storage)'], p: 'q15', t: 'Yes' },
+                    { id: 'q15_capacity', m: 'സോളാർ പ്ലാന്റിന്റെ ശേഷി (kW Capacity)', e: 'Solar Installed Capacity (kW)', o: ['1 kW (~4 Units/day)', '2 kW – 3 kW (~8 - 12 Units/day)', '3 kW – 5 kW (~12 - 20 Units/day)', 'Above 5 kW (>20 Units/day)'], p: 'q15', t: 'Yes' },
+                    { id: 'q17', m: 'ഇൻവെർട്ടർ / ഇലക്ട്രിക്കൽ ബാക്കപ്പ് സംവിധാനം', e: 'Inverter & Battery Backup Technology', o: ['Solar Hybrid Inverter System', 'Standard Grid Inverter (UPS + Battery)', 'No Inverter System Installed'] },
                     { id: 'q13', m: 'പ്രധാന പാചക ഇന്ധനം', e: 'Primary Cooking Energy Source', o: ['LPG Gas', 'Induction Cooktop / Resistance Stove', 'Biomass / Firewood', 'Hybrid (LPG + Electric)'] },
                     { id: 'q14', m: 'ഉപകരണങ്ങളുടെ സോക്കറ്റ് സ്വിച്ച് ഓഫ് ചെയ്യാറുണ്ടോ?', e: 'Standby / Phantom Power Loss Habit', o: ['Switches are turned OFF at wall socket when not in use', 'Left on Standby Mode continuously (TV, Set-top Box, Chargers, Wi-Fi)'] },
-                    { id: 'q15', m: 'സോളാർ പാനൽ ഇൻസ്റ്റാൾ ചെയ്തിട്ടുണ്ടോ?', e: 'Rooftop Solar PV Installation', o: ['Yes (On-Grid Net Metering)', 'Yes (Off-Grid Battery Backup)', 'No'] },
                     { id: 'q16', m: 'വീട്ടിൽ ELCB/RCCB സേഫ്റ്റി സ്വിച്ച് ഉണ്ടോ?', e: 'Electrical Safety & Leakage Protection (ELCB/RCCB)', o: ['Installed and working correctly', 'Not installed / Faulty', "Don't Know"] }
                 ]}
             ];
@@ -1420,7 +1425,7 @@
             }
 
             if (s.q15 && s.q15.startsWith('Yes')) {
-                good.push({ title: "Solar Energy Generator", mal: "സോളാർ പാനൽ ഉപയോഗിക്കുന്നത് അഭിനന്ദനാർഹമാണ്.", eng: "Rooftop solar PV generates clean renewable energy on-site." });
+                good.push({ title: "Rooftop Solar PV Generator", mal: "സോളാർ എനർജി സിസ്റ്റം ഉപയോഗിക്കുന്നത് അഭിനന്ദനാർഹമാണ്.", eng: `Solar PV System installed (${s.q15_capacity || 'Installed'}) reduces dependence on grid energy.` });
             }
 
             return { improve, good };
@@ -1532,10 +1537,13 @@
                             </div>
                             
                             <div class="border border-slate-300 print:border-slate-800 rounded-b-md print:rounded-none overflow-hidden">
-                                ${head('ELECTRONICS, SOLAR & SAFETY')}
+                                ${head('SOLAR, INVERTER & SAFETY PHYSICS')}
+                                ${row('ROOFTOP SOLAR PV', s.q15)}
+                                ${row('SOLAR TOPOLOGY', s.q15_type || 'N/A')}
+                                ${row('SOLAR CAPACITY', s.q15_capacity || 'N/A')}
+                                ${row('INVERTER / BACKUP TECH', s.q17)}
                                 ${row('COOKING FUEL', s.q13)}
                                 ${row('STANDBY POWER HABIT', s.q14)}
-                                ${row('ROOFTOP SOLAR PV', s.q15)}
                                 ${row('SAFETY SWITCH (ELCB)', s.q16, true)}
                             </div>
                         </div>
@@ -1675,6 +1683,9 @@ _Generated via MG College Physics Energy Audit App_`.trim();
                 docContent += `Ceiling Fan Motor: ${s.q7 || 'N/A'}\n`;
                 docContent += `AC Temperature Setting: ${s.q11 || 'N/A'}\n`;
                 docContent += `Rooftop Solar PV: ${s.q15 || 'N/A'}\n`;
+                docContent += `Solar Topology: ${s.q15_type || 'N/A'}\n`;
+                docContent += `Solar Capacity: ${s.q15_capacity || 'N/A'}\n`;
+                docContent += `Inverter System: ${s.q17 || 'N/A'}\n`;
                 docContent += `ELCB Safety Switch: ${s.q16 || 'N/A'}\n`;
                 docContent += `Pledge Taken: ${s.pledge || 'N/A'}\n`;
                 docContent += "--------------------------------------------------------\n\n";
@@ -1712,9 +1723,12 @@ _Generated via MG College Physics Energy Audit App_`.trim();
             q10: "AC Usage",
             q11: "AC Temperature Setting",
             q12: "Water Heating Method",
+            q15: "Rooftop Solar PV Status",
+            q15_type: "Solar Connection Topology",
+            q15_capacity: "Solar Installed Capacity (kW)",
+            q17: "Inverter / Battery System",
             q13: "Primary Cooking Fuel",
             q14: "Standby Loss Habit",
-            q15: "Rooftop Solar PV",
             q16: "ELCB Safety Switch",
             pledge: "Pledge Status"
         };
@@ -1805,4 +1819,3 @@ _Generated via MG College Physics Energy Audit App_`.trim();
     </script>
 </body>
 </html>
-

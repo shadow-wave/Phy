@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0284c7">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="apple-touch-icon" href="college_logo.png">
+    <title>Physics Energy Audit | MG College</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --brand-sky: #0284c7;
+            --safe-area-top: env(safe-area-inset-top, 0px);
+            --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            -webkit-tap-highlight-color: transparent;
+            background-color: #f8fafc;
+            overscroll-behavior-y: contain;
+            user-select: none;
+            height: 100dvh; 
+            width: 100vw;
+        }
+
+        input { font-size: 16px !important; touch-action: manipulation; }
+
+        .safe-pt { padding-top: calc(var(--safe-area-top) + 12px); }
+        .safe-pb { padding-bottom: calc(var(--safe-area-bottom) + 12px); }
+        .header-spacing { padding-top: calc(var(--safe-area-top) + 70px); }
+        .nav-spacing { padding-bottom: calc(var(--safe-area-bottom) + 90px); }
+
+        .nav-blur {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .nav-item { color: #94a3b8; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .nav-item.nav-active { color: var(--brand-sky); }
+        .nav-item.nav-active i { transform: translateY(-4px) scale(1.1); color: var(--brand-sky); }
+        .nav-item .nav-dot { opacity: 0; transform: translateY(4px); transition: all 0.3s; }
+        .nav-item.nav-active .nav-dot { opacity: 1; transform: translateY(0); }
+
+        .radio-tile-group input:checked + .radio-tile {
+            border-color: var(--brand-sky) !important;
+            background-color: #f0f9ff !important;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+            transform: scale(0.98);
+        }
+        .radio-tile-group input:checked + .radio-tile .check-icon { display: flex; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(15px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .animate-view { animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Optimized Printing Adjustments */
+        @media print {
+            .print-hidden { display: none !important; }
+            html, body { 
+                background: white !important; 
+                padding: 0 !important; 
+                margin: 0 !important; 
+                height: auto !important; 
+                width: auto !important;
+                overflow: visible !important; 
+            }
+            main, #view-report, #report-canvas {
+                height: auto !important;
+                overflow: visible !important;
+                display: block !important;
+                position: relative !important;
+            }
+            .print-exact-color {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .a4-print-container {
+                width: 100% !important;
+                height: auto !important; 
+                min-height: 100vh !important;
+                overflow: hidden !important;
+                page-break-after: always;
+                page-break-inside: avoid;
+                box-sizing: border-box;
+                padding: 10mm 15mm !important;
+                margin: 0 auto !important;
+                border: none !important;
+                box-shadow: none !important;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+            .a4-print-container:last-child {
+                page-break-after: auto;
+            }
+            @page { size: A4 portrait; margin: 0; }
+        }
+    </style>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js",
+                "firebase/auth": "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js",
+                "firebase/firestore": "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"
+            }
+        }
+    </script>
+</head>
+<body class="flex flex-col text-slate-900 overflow-hidden">
+
+    <!-- App Splash Screen -->
+    <div id="loader" class="fixed inset-0 bg-sky-700 z-[200] flex flex-col items-center justify-center p-10 transition-opacity duration-700 text-white">
+        <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center shadow-2xl mb-6">
+            <img src="college_logo.png" onerror="this.src='https://via.placeholder.com/80?text=MGC'" class="w-14 h-14 object-contain">
+        </div>
+        <h1 class="text-3xl font-black tracking-tighter mb-1 text-center">PHYSICS ENERGY AUDIT</h1>
+        <p class="text-xs font-bold text-sky-200 tracking-widest uppercase mb-12 text-center">Department of Physics | MG College</p>
+        
+        <div class="relative w-10 h-10">
+            <div class="absolute inset-0 border-4 border-white/20 rounded-full"></div>
+            <div class="absolute inset-0 border-4 border-white rounded-full border-t-transparent animate-spin"></div>
+        </div>
+        <p id="loader-status" class="mt-6 text-[10px] font-black text-sky-200 uppercase tracking-[0.3em] animate-pulse">Initializing KSEB Engine & Physics Analytics</p>
+    </div>
+
+    <!-- Mobile Top Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 nav-blur border-b border-slate-100 safe-pt print-hidden">
+        <div class="px-5 py-3 flex items-center justify-between max-w-xl mx-auto">
+            <div class="flex items-center gap-3">
+                <img src="college_logo.png" onerror="this.src='https://via.placeholder.com/40?text=MGC'" class="w-9 h-9 rounded-[10px] shadow-sm bg-white p-1 object-contain">
+                <div>
+                    <h1 class="text-xs font-black tracking-widest text-slate-800 leading-none uppercase">Energy Audit</h1>
+                    <p class="text-[9px] font-bold text-sky-600 mt-1 uppercase">Department of Physics</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <div id="sync-badge" onclick="manualSyncTrigger()" class="cursor-pointer flex items-center gap-1.5 bg-amber-50 text-amber-600 px-2.5 py-1 rounded-full text-[9px] font-black border border-amber-200 transition-all active:scale-95">
+                    <i class="fa-solid fa-hard-drive"></i>
+                    <span id="sync-text">LOCAL MODE</span>
+                </div>
+                <div id="network-badge" class="flex items-center gap-1.5 bg-emerald-50 text-emerald-600 px-2 py-1 rounded-full text-[9px] font-black border border-emerald-100 transition-colors">
+                    <span id="network-dot" class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span> 
+                    <span id="network-text">LIVE</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main App Content -->
+    <main id="main-scroll" class="flex-grow overflow-y-auto no-scrollbar header-spacing nav-spacing relative w-full h-full print:h-auto print:overflow-visible print:block print:p-0 print:m-0">
+        
+        <!-- DASHBOARD VIEW -->
+        <div id="view-dashboard" class="hidden px-4 py-6 space-y-6 max-w-xl mx-auto animate-view print-hidden">
+            
+            <!-- Quick Summary Card -->
+            <div class="bg-gradient-to-br from-sky-600 via-sky-700 to-indigo-800 rounded-[32px] p-6 text-white shadow-xl shadow-sky-200 relative overflow-hidden">
+                <i class="fa-solid fa-bolt absolute -right-6 -bottom-6 text-white/10 text-9xl"></i>
+                <div class="relative z-10">
+                    <div class="flex justify-between items-start mb-8">
+                        <div>
+                            <p class="text-[10px] font-bold text-sky-200 uppercase tracking-widest mb-1">Total Household Audits</p>
+                            <h2 id="stat-total" class="text-4xl font-black tracking-tighter">0</h2>
+                        </div>
+                        <button onclick="copyReportSummary()" class="w-12 h-12 bg-white/20 rounded-[18px] flex items-center justify-center active:scale-90 transition backdrop-blur-sm shadow-sm border border-white/20" title="Generate WhatsApp Summary">
+                            <i class="fa-brands fa-whatsapp text-lg"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="bg-white/10 p-4 rounded-[20px] text-center backdrop-blur-sm border border-white/5">
+                            <p id="stat-members" class="text-xl font-black leading-none">0</p>
+                            <p class="text-[8px] font-bold uppercase text-sky-200 mt-2 tracking-wider">Citizens</p>
+                        </div>
+                        <div class="bg-white/10 p-4 rounded-[20px] text-center backdrop-blur-sm border border-emerald-400/30">
+                            <p id="stat-pledges" class="text-xl font-black text-emerald-300 leading-none">0</p>
+                            <p class="text-[8px] font-bold uppercase text-emerald-200/80 mt-2 tracking-wider">Pledges</p>
+                        </div>
+                        <div class="bg-white/10 p-4 rounded-[20px] text-center backdrop-blur-sm border border-amber-400/30">
+                            <p id="stat-solar" class="text-xl font-black text-amber-300 leading-none">0%</p>
+                            <p class="text-[8px] font-bold uppercase text-amber-200/80 mt-2 tracking-wider">Solar PV</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kerala Physics Carbon & KSEB Energy Analytics Card -->
+            <div class="bg-gradient-to-r from-slate-900 to-sky-950 rounded-[32px] p-6 text-white shadow-md">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-[10px] font-black text-sky-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                        <i class="fa-solid fa-atom text-amber-400 text-sm"></i> Kerala KSEB & Carbon Analytics
+                    </h3>
+                    <span class="text-[8px] bg-sky-500/20 text-sky-300 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Kerala Grid Standard</span>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-white/5 p-4 rounded-[20px] border border-white/10">
+                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Annual Energy Load</p>
+                        <p class="text-2xl font-black text-sky-300 mt-1"><span id="stat-est-kwh">0</span> <span class="text-xs font-normal text-slate-300">kWh/yr</span></p>
+                        <p class="text-[8px] text-sky-400/80 mt-1 font-semibold">Bi-monthly Grid Demand</p>
+                    </div>
+                    <div class="bg-white/5 p-4 rounded-[20px] border border-white/10">
+                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Annual CO₂ Emissions</p>
+                        <p class="text-2xl font-black text-emerald-400 mt-1"><span id="stat-est-co2">0</span> <span class="text-xs font-normal text-slate-300">kg CO₂</span></p>
+                        <p class="text-[8px] text-emerald-400/80 mt-1 font-semibold">CEA Factor 0.72 kg/kWh</p>
+                    </div>
+                </div>
+                <div class="mt-4 bg-white/5 p-3.5 rounded-[18px] border border-white/10 flex items-center justify-between">
+                    <div>
+                        <p class="text-[9px] font-extrabold text-slate-300 uppercase tracking-wider">Total Est. Annual KSEB Power Bill</p>
+                        <p class="text-xs text-slate-400 font-medium">LT-1A Domestic Telescopic Rate</p>
+                    </div>
+                    <p class="text-xl font-black text-amber-300">₹<span id="stat-est-kseb-bill">0</span></p>
+                </div>
+            </div>
+
+            <!-- Kerala Physics Appliance Savings Estimator -->
+            <div class="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                        <i class="fa-solid fa-bolt-lightning text-sky-500 text-sm"></i> KSEB Physics Energy Savings Calculator
+                    </h3>
+                    <span class="text-[9px] font-black text-sky-600 bg-sky-50 px-2 py-1 rounded-full uppercase">Interactive</span>
+                </div>
+                <p class="text-xs font-medium text-slate-500 leading-relaxed">കേരളത്തിലെ സാധാരണ വീടുകളിൽ എൽ.ഇ.ഡി (LED), ബി.എൽ.ഡി.സി (BLDC) ടെക്നോളജികൾ ഉപയോഗിച്ചാൽ ലഭിക്കുന്ന വാർഷിക വൈദ്യുതി/പണ ലാഭം:</p>
+                
+                <div class="grid grid-cols-2 gap-3 pt-2">
+                    <div>
+                        <label class="text-[10px] font-extrabold text-slate-600 uppercase block mb-1">Filament/CFL Bulbs</label>
+                        <input type="number" id="calc-bulbs" value="5" min="0" oninput="runPhysicsCalculator()" class="w-full p-3 bg-slate-50 border border-slate-100 rounded-[16px] text-xs font-bold outline-none focus:ring-2 focus:ring-sky-500/20">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-extrabold text-slate-600 uppercase block mb-1">Old Induction Fans</label>
+                        <input type="number" id="calc-fans" value="3" min="0" oninput="runPhysicsCalculator()" class="w-full p-3 bg-slate-50 border border-slate-100 rounded-[16px] text-xs font-bold outline-none focus:ring-2 focus:ring-sky-500/20">
+                    </div>
+                </div>
+
+                <div class="bg-sky-50 rounded-[20px] p-4 border border-sky-100 flex items-center justify-between">
+                    <div>
+                        <p class="text-[9px] font-extrabold text-sky-600 uppercase tracking-wider">Annual Units Saved</p>
+                        <p class="text-lg font-black text-sky-900"><span id="calc-kwh-saved">0</span> kWh / year</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[9px] font-extrabold text-emerald-600 uppercase tracking-wider">KSEB Bill Savings</p>
+                        <p class="text-lg font-black text-emerald-700">₹<span id="calc-rs-saved">0</span> / year</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Tools Widget -->
+            <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2 pt-2 -mx-4 px-4 snap-x">
+                <button onclick="manualSyncTrigger()" class="snap-start shrink-0 w-36 bg-sky-50 border border-sky-100 p-4 rounded-[24px] flex flex-col items-start gap-3 active:scale-95 transition shadow-sm">
+                    <div class="w-10 h-10 bg-sky-600 text-white rounded-[14px] flex items-center justify-center shadow-md shadow-sky-200"><i class="fa-solid fa-rotate"></i></div>
+                    <div class="text-left"><p class="text-sm font-extrabold text-sky-900">Sync Server</p><p class="text-[9px] font-bold text-sky-600 uppercase" id="tool-sync-status">Push Queue</p></div>
+                </button>
+                <button onclick="exportCSV()" class="snap-start shrink-0 w-36 bg-emerald-50 border border-emerald-100 p-4 rounded-[24px] flex flex-col items-start gap-3 active:scale-95 transition shadow-sm">
+                    <div class="w-10 h-10 bg-emerald-600 text-white rounded-[14px] flex items-center justify-center shadow-md shadow-emerald-200"><i class="fa-solid fa-file-csv"></i></div>
+                    <div class="text-left"><p class="text-sm font-extrabold text-emerald-900">CSV Data</p><p class="text-[9px] font-bold text-emerald-600 uppercase">Excel Ready</p></div>
+                </button>
+                <button onclick="exportJSON()" class="snap-start shrink-0 w-36 bg-purple-50 border border-purple-100 p-4 rounded-[24px] flex flex-col items-start gap-3 active:scale-95 transition shadow-sm">
+                    <div class="w-10 h-10 bg-purple-600 text-white rounded-[14px] flex items-center justify-center shadow-md shadow-purple-200"><i class="fa-solid fa-file-code"></i></div>
+                    <div class="text-left"><p class="text-sm font-extrabold text-purple-900">JSON Data</p><p class="text-[9px] font-bold text-purple-600 uppercase">Raw Export</p></div>
+                </button>
+                <button id="admin-export-pdf-btn" onclick="exportPDF()" class="hidden snap-start shrink-0 w-36 bg-rose-50 border border-rose-100 p-4 rounded-[24px] flex-col items-start gap-3 active:scale-95 transition shadow-sm">
+                    <div class="w-10 h-10 bg-rose-600 text-white rounded-[14px] flex items-center justify-center shadow-md shadow-rose-200"><i class="fa-solid fa-print"></i></div>
+                    <div class="text-left"><p class="text-sm font-extrabold text-rose-900">Batch PDF</p><p class="text-[9px] font-bold text-rose-600 uppercase">Print All Audits</p></div>
+                </button>
+                <button onclick="copyAppLink()" class="snap-start shrink-0 w-36 bg-slate-50 border border-slate-200 p-4 rounded-[24px] flex flex-col items-start gap-3 active:scale-95 transition shadow-sm">
+                    <div class="w-10 h-10 bg-slate-800 text-white rounded-[14px] flex items-center justify-center shadow-md"><i class="fa-solid fa-share-nodes"></i></div>
+                    <div class="text-left"><p class="text-sm font-extrabold text-slate-900">Share App</p><p class="text-[9px] font-bold text-slate-500 uppercase">Copy Link</p></div>
+                </button>
+            </div>
+
+            <!-- Energy Technology Metrics -->
+            <div class="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm">
+                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-lightbulb text-amber-500 text-sm"></i> Technology Transition Index
+                </h3>
+                <div class="grid grid-cols-2 gap-4 mb-2">
+                    <div class="bg-amber-50 rounded-[20px] p-4 border border-amber-100 text-center">
+                        <p id="stat-led" class="text-2xl font-black text-amber-600">0%</p>
+                        <p class="text-[9px] font-bold text-amber-500 uppercase mt-1 tracking-widest">100% LED Lighting</p>
+                    </div>
+                    <div class="bg-cyan-50 rounded-[20px] p-4 border border-cyan-100 text-center">
+                        <p id="stat-bldc" class="text-2xl font-black text-cyan-600">0%</p>
+                        <p class="text-[9px] font-bold text-cyan-500 uppercase mt-1 tracking-widest">BLDC Fan Adoption</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Safety & Loss Insights -->
+            <div class="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm">
+                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-pie text-sky-500 text-sm"></i> Efficiency & Safety Loss Factors
+                </h3>
+                <div id="risk-bars" class="space-y-6 mb-8">
+                    <!-- JS Populated (Risks) -->
+                </div>
+
+                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6 mt-8 flex items-center gap-2 border-t border-slate-100 pt-8">
+                    <i class="fa-solid fa-plug text-indigo-500 text-sm"></i> Electrical Connection Distribution
+                </h3>
+                <div id="source-bars" class="space-y-6">
+                    <!-- JS Populated (Sources) -->
+                </div>
+            </div>
+
+            <!-- Student Surveyor Leaderboard -->
+            <div class="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                        <i class="fa-solid fa-medal text-amber-500 text-sm"></i> Top Student Surveyors
+                    </h3>
+                    <div class="bg-amber-50 text-amber-600 border border-amber-100 px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm">
+                        <span id="total-volunteers-count">0</span> Active
+                    </div>
+                </div>
+                <div id="volunteer-leaderboard" class="space-y-3">
+                    <!-- JS Populated Leaderboard -->
+                </div>
+            </div>
+
+            <!-- Admin Duplicates Section -->
+            <div id="admin-duplicates-section" class="hidden bg-white rounded-[32px] p-6 border-2 border-rose-100 shadow-sm mb-6">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-[10px] font-black text-rose-500 uppercase tracking-[0.2em] flex items-center gap-2">
+                        <i class="fa-solid fa-clone text-sm"></i> Suspected Duplicates
+                    </h3>
+                </div>
+                <p class="text-[10px] text-slate-500 font-medium mb-4 leading-relaxed">Multiple entries submitted by the same surveyor for the same household ID/head name.</p>
+                <div id="admin-duplicates-list" class="space-y-3 max-h-[400px] overflow-y-auto no-scrollbar pb-2">
+                    <!-- JS Populated Duplicates -->
+                </div>
+            </div>
+
+            <!-- Audit List Search -->
+            <div class="space-y-4 pb-4">
+                <div class="relative group">
+                    <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-sky-500 transition-colors"></i>
+                    <input type="text" id="search-input" oninput="renderDashboard()" placeholder="Search Name, House No, or Surveyor..." class="w-full pl-12 pr-6 py-4 bg-white border border-slate-100 rounded-[24px] text-sm focus:ring-4 focus:ring-sky-500/10 outline-none shadow-sm transition-all font-medium">
+                </div>
+                <div id="audit-list" class="space-y-3">
+                    <!-- JS Populated Cards -->
+                </div>
+            </div>
+        </div>
+
+        <!-- FORM VIEW -->
+        <div id="view-form" class="hidden px-4 py-6 space-y-6 max-w-xl mx-auto animate-view print-hidden">
+            <!-- Success Overlay -->
+            <div id="success-screen" class="hidden fixed inset-0 bg-sky-700/98 backdrop-blur-2xl z-[100] flex flex-col items-center justify-center text-white p-10">
+                <div class="w-24 h-24 bg-white/10 rounded-[32px] flex items-center justify-center mb-6 animate-bounce shadow-2xl">
+                    <i class="fa-solid fa-floppy-disk text-4xl"></i>
+                </div>
+                <h2 class="text-3xl font-black mb-2 uppercase tracking-tighter text-center">Audit Saved</h2>
+                <p id="success-subtext" class="text-sky-100 text-center text-sm font-medium opacity-80 leading-relaxed">Household data saved locally & queued for server sync.</p>
+                <div class="mt-12 w-24 h-1.5 bg-white/20 rounded-full overflow-hidden">
+                    <div class="h-full bg-white animate-[loading_1.5s_infinite]"></div>
+                </div>
+            </div>
+
+            <form id="auditForm" class="space-y-8">
+                <!-- Identity Card -->
+                <div class="bg-white p-6 rounded-[32px] shadow-sm border border-slate-100 space-y-5 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-sky-50 rounded-bl-[100px] -z-0"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-[14px] bg-sky-100 flex items-center justify-center text-sky-600 shadow-inner">
+                                <i class="fa-solid fa-clipboard-user text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-black text-slate-800">Survey Identity</h4>
+                                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Location & Student Surveyor</p>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <input type="text" name="volunteerName" required placeholder="Student Surveyor Full Name" class="w-full p-4 bg-slate-50 border border-slate-100 rounded-[20px] focus:bg-white focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 outline-none transition font-medium">
+                            <div class="grid grid-cols-2 gap-3">
+                                <input type="number" name="wardNo" required inputmode="numeric" placeholder="Ward #" class="w-full p-4 bg-slate-50 border border-slate-100 rounded-[20px] focus:bg-white focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 outline-none transition font-medium">
+                                <input type="text" name="houseNo" required placeholder="House ID / Name" class="w-full p-4 bg-slate-50 border border-slate-100 rounded-[20px] focus:bg-white focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 outline-none transition font-medium">
+                            </div>
+                            <input type="text" name="headName" required placeholder="Head of Household Name" class="w-full p-4 bg-slate-50 border border-slate-100 rounded-[20px] focus:bg-white focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 outline-none transition font-bold text-slate-800">
+                            <input type="number" name="membersCount" required inputmode="numeric" placeholder="Total Members Living Here" class="w-full p-4 bg-slate-50 border border-slate-100 rounded-[20px] focus:bg-white focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 outline-none transition font-medium">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dynamic Question Sections -->
+                <div id="dynamic-questions" class="space-y-8"></div>
+
+                <!-- Submit Button -->
+                <div class="pt-2 pb-6">
+                    <button type="submit" class="w-full bg-slate-900 text-white font-black py-5 rounded-[28px] shadow-xl shadow-slate-900/20 hover:bg-black active:scale-95 transition-all text-sm tracking-widest uppercase flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-floppy-disk text-lg"></i> Save Household Audit
+                    </button>
+                    <button type="button" onclick="resetForm()" class="w-full text-slate-400 font-bold text-[10px] uppercase tracking-[0.3em] py-8 active:text-rose-500 transition-colors">Clear Workspace</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- REPORT VIEW (PDF Generator) -->
+        <div id="view-report" class="hidden max-w-3xl print:max-w-none print:w-full mx-auto p-4 animate-view print:p-0 pb-10 print:pb-0 print:bg-white print:h-auto print:overflow-visible print:block">
+            <div class="flex items-center justify-between mb-6 print-hidden">
+                <button onclick="switchTab('dashboard')" class="w-12 h-12 bg-white rounded-[18px] flex items-center justify-center text-slate-400 shadow-sm border border-slate-100 active:scale-90 transition">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <button onclick="window.print()" class="bg-sky-600 text-white px-5 py-3.5 rounded-[18px] text-[11px] font-black shadow-lg shadow-sky-200 flex items-center gap-2 tracking-widest uppercase active:scale-95 transition-all">
+                    <i class="fa-solid fa-print text-sm"></i> Print PDF
+                </button>
+            </div>
+            <div id="report-canvas" class="bg-transparent report-card w-full print:h-auto print:overflow-visible print:block"></div>
+        </div>
+
+        <!-- INFO VIEW -->
+        <div id="view-info" class="hidden px-4 py-6 max-w-xl mx-auto animate-view print-hidden">
+            <div class="bg-white rounded-[32px] p-8 text-center shadow-sm border border-slate-100 mt-4">
+                <div class="w-24 h-24 bg-sky-50 text-sky-600 rounded-[24px] flex items-center justify-center mx-auto mb-6 shadow-inner border border-sky-100">
+                    <i class="fa-solid fa-atom text-4xl"></i>
+                </div>
+                <h2 class="text-2xl font-black text-slate-800 mb-2 tracking-tight">Energy Audit App</h2>
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mb-8">Department of Physics • Kerala KSEB Edition</p>
+                
+                <div class="space-y-4 text-left bg-slate-50 p-6 rounded-[24px] border border-slate-100 mb-8">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-slate-400 shadow-sm shrink-0"><i class="fa-solid fa-code"></i></div>
+                        <div><p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">System Developer</p><p class="text-sm font-extrabold text-slate-800">Aravind o k</p></div>
+                    </div>
+                    <a href="tel:6238291791" class="flex items-center gap-4 group cursor-pointer">
+                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-sky-500 shadow-sm shrink-0 group-hover:bg-sky-50 transition-colors"><i class="fa-solid fa-phone"></i></div>
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Support Contact</p>
+                            <p class="text-sm font-extrabold text-sky-600 group-hover:underline">6238291791</p>
+                        </div>
+                    </a>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-slate-400 shadow-sm shrink-0"><i class="fa-solid fa-building-columns"></i></div>
+                        <div><p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Organized By</p><p class="text-sm font-extrabold text-slate-800">Department of Physics</p><p class="text-[10px] font-bold text-slate-500">Mahatma Gandhi College Iritty</p></div>
+                    </div>
+                </div>
+                
+                <p class="text-[10px] font-bold text-sky-600 uppercase tracking-[0.1em] leading-relaxed mb-6">Promoting Energy Conservation, Luminous Efficacy, and Carbon Neutrality.</p>
+
+                <!-- Local Storage Reset Controls -->
+                <div class="space-y-3 mb-6">
+                    <button onclick="manualSyncTrigger()" class="w-full py-3.5 bg-sky-600 text-white rounded-2xl text-xs font-black hover:bg-sky-700 transition-all uppercase tracking-widest flex items-center justify-center gap-2 shadow-md shadow-sky-200">
+                        <i class="fa-solid fa-rotate"></i> Sync Local Data to Cloud
+                    </button>
+                    <button onclick="clearLocalCache()" class="w-full py-3 border border-rose-200 text-rose-600 rounded-2xl text-xs font-extrabold hover:bg-rose-50 transition-all uppercase tracking-widest flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-trash-can"></i> Clear Local Cache Data
+                    </button>
+                </div>
+
+                <!-- Admin Access Toggle -->
+                <button onclick="toggleAdminMode()" class="w-full py-3 border-2 border-slate-200 rounded-2xl text-xs font-bold text-slate-400 hover:bg-slate-50 hover:text-slate-600 transition-all uppercase tracking-widest flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-shield-halved"></i> <span id="admin-btn-text">Enable Admin Mode</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Custom Alert Modal -->
+        <div id="custom-alert" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[250] flex items-center justify-center p-6 print-hidden">
+            <div class="bg-white p-8 rounded-[32px] shadow-2xl max-w-sm w-full animate-view text-center border border-slate-100">
+                <div id="custom-alert-icon" class="w-16 h-16 bg-sky-50 text-sky-500 rounded-[20px] flex items-center justify-center mx-auto mb-6">
+                    <i class="fa-solid fa-bell text-2xl"></i>
+                </div>
+                <h3 id="custom-alert-title" class="text-xl font-black text-slate-900 mb-2 tracking-tight">Notification</h3>
+                <p id="custom-alert-msg" class="text-sm text-slate-500 mb-8 leading-relaxed font-medium"></p>
+                <button onclick="closeCustomAlert()" class="w-full px-4 py-4 bg-slate-900 text-white font-bold rounded-[20px] hover:bg-black transition active:scale-95 tracking-widest uppercase text-[10px]">Got it</button>
+            </div>
+        </div>
+
+        <!-- Custom Confirm Modal -->
+        <div id="custom-confirm" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[250] flex items-center justify-center p-6 print-hidden">
+            <div class="bg-white p-8 rounded-[32px] shadow-2xl max-w-sm w-full animate-view text-center border border-slate-100">
+                <div class="w-16 h-16 bg-rose-50 text-rose-500 rounded-[20px] flex items-center justify-center mx-auto mb-6">
+                    <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+                </div>
+                <h3 id="custom-confirm-title" class="text-xl font-black text-slate-900 mb-2 tracking-tight">Are you sure?</h3>
+                <p id="custom-confirm-msg" class="text-sm text-slate-500 mb-8 leading-relaxed font-medium"></p>
+                <div class="flex gap-3">
+                    <button onclick="closeCustomConfirm()" class="flex-1 px-4 py-4 bg-slate-100 text-slate-700 font-bold rounded-[20px] hover:bg-slate-200 transition active:scale-95 text-[10px] uppercase tracking-widest">Cancel</button>
+                    <button id="custom-confirm-btn" class="flex-1 px-4 py-4 bg-rose-600 text-white font-bold rounded-[20px] hover:bg-rose-700 transition active:scale-95 text-[10px] uppercase tracking-widest">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- App Bottom Bar -->
+    <nav class="fixed bottom-0 left-0 right-0 z-[70] nav-blur border-t border-slate-200/60 safe-pb print-hidden shadow-[0_-4px_24px_rgba(0,0,0,0.02)]">
+        <div class="max-w-md mx-auto flex items-center justify-evenly py-2">
+            
+            <button id="nav-btn-dashboard" onclick="switchTab('dashboard')" class="nav-item flex flex-col items-center py-2 px-8 relative group w-24">
+                <i class="fa-solid fa-chart-simple text-2xl mb-1.5 transition-all duration-300"></i>
+                <span class="text-[9px] font-extrabold uppercase tracking-widest">Data</span>
+                <div class="nav-dot absolute bottom-0 w-1.5 h-1.5 bg-sky-600 rounded-full"></div>
+            </button>
+            
+            <!-- Floating Center Add Button -->
+            <button id="nav-btn-form" onclick="switchTab('form')" class="relative -top-6 w-16 h-16 bg-sky-600 text-white rounded-[24px] shadow-lg shadow-sky-300 flex items-center justify-center text-2xl active:scale-90 transition-all border-[4px] border-white z-10">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+
+            <button id="nav-btn-info" onclick="switchTab('info')" class="nav-item flex flex-col items-center py-2 px-8 relative group w-24">
+                <i class="fa-solid fa-circle-info text-2xl mb-1.5 transition-all duration-300"></i>
+                <span class="text-[9px] font-extrabold uppercase tracking-widest">Info</span>
+                <div class="nav-dot absolute bottom-0 w-1.5 h-1.5 bg-sky-600 rounded-full"></div>
+            </button>
+
+        </div>
+    </nav>
+
+    <!-- Logic Engine -->
+    <script type="module">
+        import { initializeApp } from "firebase/app";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
+        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, deleteDoc, updateDoc } from "firebase/firestore";
+
+        // Firebase Config Placeholder (Server details can be provided later)
+        const firebaseConfig = {
+            apiKey: "AIzaSyCIrJGojkToHC54SVIC4k5qmEJyzbrvJ1w",
+            authDomain: "nss-7a3b3.firebaseapp.com",
+            projectId: "nss-7a3b3",
+            storageBucket: "nss-7a3b3.firebasestorage.app",
+            messagingSenderId: "286386225024",
+            appId: "1:286386225024:web:5d8dd88a3971fcb270cb65",
+            measurementId: "G-TGXM9ZX377"
+        };
+
+        const LOCAL_STORAGE_KEY = 'physics_kerala_audit_surveys_v3';
+
+        let app = null;
+        let auth = null;
+        let db = null;
+        const appId = 'physics-energy-audit';
+
+        let currentUser = null;
+        let surveys = [];
+        let isAdmin = false; 
+        let editModeId = null;
+
+        const triggerHaptic = () => { if (window.navigator.vibrate) window.navigator.vibrate(10); };
+
+        // --- KSEB KERALA BIMONTHLY DOMESTIC (LT-1A) TARIFF CALCULATOR ENGINE ---
+        function calculateKsebBimonthlyBill(units) {
+            let u = parseInt(units) || 0;
+            let energyCharge = 0;
+            let fixedCharge = 0;
+
+            if (u <= 80) {
+                energyCharge = u * 3.25;
+                fixedCharge = 70;
+            } else if (u <= 100) {
+                energyCharge = (80 * 3.25) + ((u - 80) * 4.05);
+                fixedCharge = 90;
+            } else if (u <= 150) {
+                energyCharge = (100 * 3.85) + ((u - 100) * 4.80);
+                fixedCharge = 110;
+            } else if (u <= 200) {
+                energyCharge = (150 * 4.80) + ((u - 150) * 6.40);
+                fixedCharge = 130;
+            } else if (u <= 250) {
+                energyCharge = (200 * 5.50) + ((u - 200) * 7.60);
+                fixedCharge = 150;
+            } else {
+                // High consumption / Non-telescopic above 250 units bimonthly
+                energyCharge = u * 7.10;
+                fixedCharge = 200;
+            }
+
+            // Kerala Electricity Duty: 10% on energy charge
+            let duty = energyCharge * 0.10;
+            let totalBill = energyCharge + fixedCharge + duty;
+
+            return Math.round(totalBill);
+        }
+
+        window.showAlert = (msg, title="Notification", type="info") => {
+            document.getElementById('custom-alert-title').innerText = title;
+            document.getElementById('custom-alert-msg').innerText = msg;
+            const iconEl = document.getElementById('custom-alert-icon');
+            if(type === 'error') {
+                iconEl.className = "w-16 h-16 bg-rose-50 text-rose-500 rounded-[20px] flex items-center justify-center mx-auto mb-6";
+                iconEl.innerHTML = '<i class="fa-solid fa-circle-exclamation text-2xl"></i>';
+            } else if (type === 'success') {
+                iconEl.className = "w-16 h-16 bg-emerald-50 text-emerald-500 rounded-[20px] flex items-center justify-center mx-auto mb-6";
+                iconEl.innerHTML = '<i class="fa-solid fa-check text-2xl"></i>';
+            } else {
+                iconEl.className = "w-16 h-16 bg-sky-50 text-sky-500 rounded-[20px] flex items-center justify-center mx-auto mb-6";
+                iconEl.innerHTML = '<i class="fa-solid fa-bell text-2xl"></i>';
+            }
+            document.getElementById('custom-alert').classList.remove('hidden');
+        };
+        window.closeCustomAlert = () => document.getElementById('custom-alert').classList.add('hidden');
+
+        window.showConfirm = (msg, onConfirm, title="Are you sure?") => {
+            document.getElementById('custom-confirm-title').innerText = title;
+            document.getElementById('custom-confirm-msg').innerText = msg;
+            document.getElementById('custom-confirm-btn').onclick = () => {
+                closeCustomConfirm();
+                onConfirm();
+            };
+            document.getElementById('custom-confirm').classList.remove('hidden');
+        };
+        window.closeCustomConfirm = () => document.getElementById('custom-confirm').classList.add('hidden');
+
+        window.filterByVolunteer = (name) => {
+            triggerHaptic();
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) {
+                searchInput.value = name;
+                renderDashboard();
+                searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        };
+
+        const updateNetworkStatus = () => {
+            const badge = document.getElementById('network-badge');
+            const dot = document.getElementById('network-dot');
+            const text = document.getElementById('network-text');
+            if (navigator.onLine) {
+                badge.className = "flex items-center gap-1.5 bg-emerald-50 text-emerald-600 px-2 py-1 rounded-full text-[9px] font-black border border-emerald-100 transition-colors";
+                dot.className = "w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse";
+                text.innerText = "LIVE";
+                autoPushUnsynced();
+            } else {
+                badge.className = "flex items-center gap-1.5 bg-rose-50 text-rose-600 px-2 py-1 rounded-full text-[9px] font-black border border-rose-100 transition-colors";
+                dot.className = "w-1.5 h-1.5 bg-rose-500 rounded-full";
+                text.innerText = "OFFLINE";
+            }
+        };
+        window.addEventListener('online', updateNetworkStatus);
+        window.addEventListener('offline', updateNetworkStatus);
+
+        window.switchTab = (tab) => {
+            triggerHaptic();
+            document.querySelectorAll('[id^="view-"]').forEach(v => v.classList.add('hidden'));
+            const target = tab === 'view' ? 'view-report' : `view-${tab}`;
+            const el = document.getElementById(target);
+            if(el) el.classList.remove('hidden');
+
+            const btns = { 
+                dashboard: document.getElementById('nav-btn-dashboard'), 
+                form: document.getElementById('nav-btn-form'),
+                info: document.getElementById('nav-btn-info')
+            };
+            Object.values(btns).forEach(b => { if(b) b.classList.remove('nav-active'); });
+            
+            if(tab === 'dashboard') btns.dashboard?.classList.add('nav-active');
+            if(tab === 'info') btns.info?.classList.add('nav-active');
+            
+            if(tab === 'form') {
+                btns.form?.classList.remove('bg-sky-600');
+                btns.form?.classList.add('bg-slate-900', 'shadow-slate-900/30');
+            } else {
+                btns.form?.classList.add('bg-sky-600');
+                btns.form?.classList.remove('bg-slate-900', 'shadow-slate-900/30');
+            }
+
+            document.getElementById('main-scroll').scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        // --- LOCAL STORAGE ENGINE ---
+        function loadLocalSurveys() {
+            try {
+                const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+                surveys = raw ? JSON.parse(raw) : [];
+            } catch (e) {
+                surveys = [];
+            }
+        }
+
+        function saveLocalSurveys() {
+            try {
+                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(surveys));
+            } catch (e) {
+                console.error('LocalStorage write error:', e);
+            }
+        }
+
+        function updateSyncBadge() {
+            const unsyncedCount = surveys.filter(s => !s.synced).length;
+            const badge = document.getElementById('sync-badge');
+            const text = document.getElementById('sync-text');
+            const toolSync = document.getElementById('tool-sync-status');
+
+            if (unsyncedCount > 0) {
+                badge.className = "cursor-pointer flex items-center gap-1.5 bg-amber-50 text-amber-600 px-2.5 py-1 rounded-full text-[9px] font-black border border-amber-200 transition-all active:scale-95 animate-pulse";
+                text.innerText = `${unsyncedCount} UNPUSHED`;
+                if(toolSync) toolSync.innerText = `${unsyncedCount} Pending`;
+            } else {
+                badge.className = "cursor-pointer flex items-center gap-1.5 bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full text-[9px] font-black border border-emerald-100 transition-all active:scale-95";
+                text.innerText = "ALL SYNCED";
+                if(toolSync) toolSync.innerText = "Up to Date";
+            }
+        }
+
+        async function startApp() {
+            loadLocalSurveys();
+            updateNetworkStatus();
+
+            try {
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                
+                await signInAnonymously(auth);
+                onAuthStateChanged(auth, user => { 
+                    if(user) { 
+                        currentUser = user; 
+                        syncCloudListener(); 
+                    } 
+                });
+            } catch (e) { 
+                console.log("Offline local storage active");
+            }
+
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                if(loader) {
+                    loader.classList.add('opacity-0');
+                    setTimeout(() => loader.classList.add('hidden'), 700);
+                }
+                renderDashboard();
+                runPhysicsCalculator();
+            }, 600);
+        }
+
+        function syncCloudListener() {
+            if(!db) return;
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'surveys'), (snap) => {
+                const cloudSurveys = snap.docs.map(d => {
+                    const data = d.data();
+                    return {
+                        id: d.id,
+                        ...data,
+                        synced: true,
+                        createdAtTime: data.createdAtTime || (data.createdAt?.toMillis ? data.createdAt.toMillis() : Date.now())
+                    };
+                });
+
+                const unsyncedLocal = surveys.filter(s => !s.synced);
+                const mergedMap = new Map();
+
+                cloudSurveys.forEach(c => mergedMap.set(c.id, c));
+                unsyncedLocal.forEach(u => mergedMap.set(u.id, u));
+
+                surveys = Array.from(mergedMap.values());
+                surveys.sort((a,b) => (b.createdAtTime || 0) - (a.createdAtTime || 0));
+
+                saveLocalSurveys();
+                if(!editModeId) {
+                    renderDashboard();
+                }
+            }, (err) => console.log('Firestore listener offline'));
+        }
+
+        async function autoPushUnsynced() {
+            if(!navigator.onLine || !db) return;
+            const unsynced = surveys.filter(s => !s.synced);
+            if(unsynced.length === 0) return;
+
+            for (let survey of unsynced) {
+                try {
+                    const { id, synced, ...payload } = survey;
+                    payload.createdAt = serverTimestamp();
+                    payload.createdAtTime = Date.now();
+                    
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'surveys'), payload);
+                    survey.synced = true;
+                } catch(e) {
+                    console.log('Push error for record', survey.id);
+                }
+            }
+            saveLocalSurveys();
+            renderDashboard();
+        }
+
+        window.manualSyncTrigger = () => {
+            triggerHaptic();
+            if(!navigator.onLine) {
+                return window.showAlert("You are currently offline. Connect to internet to sync.", "Offline Mode", "info");
+            }
+            autoPushUnsynced();
+            window.showAlert("Sync attempted with cloud database.", "Sync Engine", "success");
+        };
+
+        window.clearLocalCache = () => {
+            triggerHaptic();
+            window.showConfirm("Are you sure you want to clear all local cache data?", () => {
+                localStorage.removeItem(LOCAL_STORAGE_KEY);
+                surveys = [];
+                renderDashboard();
+                window.showAlert("Local cache cleared.", "Reset Done", "info");
+            }, "Clear Cache");
+        };
+
+        window.toggleAdminMode = () => {
+            triggerHaptic();
+            if (isAdmin) {
+                isAdmin = false;
+                document.getElementById('admin-btn-text').innerText = "Enable Admin Mode";
+                window.showAlert("Admin mode disabled.", "Admin Mode", "info");
+                renderDashboard();
+            } else {
+                const pin = prompt("Enter Admin PIN:");
+                if (pin === "6330") {
+                    isAdmin = true;
+                    document.getElementById('admin-btn-text').innerText = "Disable Admin Mode";
+                    window.showAlert("Admin mode enabled. You can now edit, delete records, view duplicates, and Batch Print.", "Admin Mode", "success");
+                    renderDashboard();
+                } else if (pin !== null) {
+                    window.showAlert("Incorrect PIN.", "Access Denied", "error");
+                }
+            }
+        };
+
+        // --- KERALA PHYSICS SAVINGS SIMULATOR ---
+        window.runPhysicsCalculator = () => {
+            const bulbs = parseInt(document.getElementById('calc-bulbs')?.value) || 0;
+            const fans = parseInt(document.getElementById('calc-fans')?.value) || 0;
+
+            // Physics estimations:
+            // Old 60W filament/CFL replaced by 9W LED -> 51W saved x 5 hrs/day -> 93 kWh/year per bulb.
+            // 75W induction fan replaced by 28W BLDC -> 47W saved x 8 hrs/day -> 137 kWh/year per fan.
+            const kwhSavedBulbs = bulbs * 93;
+            const kwhSavedFans = fans * 137;
+            const totalKwhSaved = Math.round(kwhSavedBulbs + kwhSavedFans);
+            
+            // Kerala KSEB average slab tariff multiplier ₹6.50/kWh
+            const rupeesSaved = Math.round(totalKwhSaved * 6.5);
+
+            if(document.getElementById('calc-kwh-saved')) document.getElementById('calc-kwh-saved').innerText = totalKwhSaved;
+            if(document.getElementById('calc-rs-saved')) document.getElementById('calc-rs-saved').innerText = rupeesSaved;
+        };
+
+        function renderDashboard() {
+            updateSyncBadge();
+
+            const searchInput = document.getElementById('search-input');
+            const search = searchInput ? searchInput.value.toLowerCase() : '';
+            const filtered = surveys.filter(s => 
+                (s.headName || '').toLowerCase().includes(search) || 
+                (s.houseNo || '').toLowerCase().includes(search) ||
+                (s.volunteerName || '').toLowerCase().includes(search)
+            );
+
+            const pdfBtn = document.getElementById('admin-export-pdf-btn');
+            if (pdfBtn) {
+                if (isAdmin) {
+                    pdfBtn.classList.remove('hidden');
+                    pdfBtn.classList.add('flex');
+                } else {
+                    pdfBtn.classList.add('hidden');
+                    pdfBtn.classList.remove('flex');
+                }
+            }
+
+            const stats = { 
+                total: surveys.length, members: 0, pledges: 0, solarCount: 0,
+                ledCount: 0, bldcCount: 0, standbyRisk: 0, overflowRisk: 0, lowACRisk: 0, safetyHazard: 0,
+                totalEstKwh: 0, totalEstKsebBill: 0
+            };
+            const sourceMap = { 'Single Phase': 0, 'Three Phase': 0, 'Solar Hybrid System': 0, 'No Connection': 0 };
+
+            surveys.forEach(s => {
+                let memCount = parseInt(s.membersCount) || 0;
+                stats.members += memCount;
+                if(s.pledge?.includes('Yes')) stats.pledges++;
+                if(s.q15 && s.q15.startsWith('Yes')) stats.solarCount++;
+                if(s.q4 === '100% High-Efficacy LED Lighting (Tubelights / Bulbs)') stats.ledCount++;
+                if(s.q7 === 'Energy-efficient BLDC Motor Fans (~28W)') stats.bldcCount++;
+                if(s.q14 === 'Left on Standby Mode continuously (TV, Set-top Box, Chargers, Wi-Fi)') stats.standbyRisk++;
+                if(s.q8 === 'Manual Operation — Overflows frequently before being switched off') stats.overflowRisk++;
+                if(s.q11 === 'Below 24°C (Increased compressor duty cycle)') stats.lowACRisk++;
+                if(s.q16 === 'Not installed / Faulty') stats.safetyHazard++;
+
+                // Kerala Bimonthly Units load mapping
+                let bimonthlyUnits = 180;
+                if(s.q2 === 'Below 100 Units') bimonthlyUnits = 80;
+                else if(s.q2 === '100 – 200 Units') bimonthlyUnits = 160;
+                else if(s.q2 === '200 – 400 Units') bimonthlyUnits = 300;
+                else if(s.q2 === 'Above 400 Units') bimonthlyUnits = 500;
+
+                let annualKwh = bimonthlyUnits * 6;
+                stats.totalEstKwh += annualKwh;
+                stats.totalEstKsebBill += (calculateKsebBimonthlyBill(bimonthlyUnits) * 6);
+
+                if(sourceMap[s.q1] !== undefined) sourceMap[s.q1]++;
+            });
+
+            const total = stats.total || 1;
+
+            document.getElementById('stat-total').innerText = stats.total;
+            document.getElementById('stat-members').innerText = stats.members;
+            document.getElementById('stat-pledges').innerText = stats.pledges;
+            document.getElementById('stat-solar').innerText = Math.round((stats.solarCount / total) * 100) + '%';
+
+            document.getElementById('stat-led').innerText = Math.round((stats.ledCount / total) * 100) + '%';
+            document.getElementById('stat-bldc').innerText = Math.round((stats.bldcCount / total) * 100) + '%';
+
+            // Kerala Physics metrics
+            const estKwhEl = document.getElementById('stat-est-kwh');
+            const estCo2El = document.getElementById('stat-est-co2');
+            const estBillEl = document.getElementById('stat-est-kseb-bill');
+            if(estKwhEl) estKwhEl.innerText = stats.totalEstKwh.toLocaleString();
+            if(estCo2El) estCo2El.innerText = Math.round(stats.totalEstKwh * 0.72).toLocaleString();
+            if(estBillEl) estBillEl.innerText = stats.totalEstKsebBill.toLocaleString();
+
+            const riskContainer = document.getElementById('risk-bars');
+            if(riskContainer) {
+                const risks = [
+                    { l: 'Standby Power Losses', v: stats.standbyRisk, c: 'bg-rose-500', i: 'fa-plug-circle-xmark' },
+                    { l: 'Water Motor Overflows', v: stats.overflowRisk, c: 'bg-amber-500', i: 'fa-glass-water-droplet' },
+                    { l: 'AC Temp < 24°C (High Load)', v: stats.lowACRisk, c: 'bg-orange-500', i: 'fa-temperature-arrow-down' },
+                    { l: 'ELCB Safety Hazard', v: stats.safetyHazard, c: 'bg-purple-500', i: 'fa-triangle-exclamation' },
+                ];
+                riskContainer.innerHTML = risks.map(r => `
+                    <div class="group">
+                        <div class="flex justify-between text-[11px] font-extrabold text-slate-700 mb-2">
+                            <span class="flex items-center gap-2"><i class="fa-solid ${r.i} text-slate-300 w-4 text-center"></i> ${r.l}</span>
+                            <span>${Math.round((r.v/total)*100)}%</span>
+                        </div>
+                        <div class="w-full bg-slate-50 h-3 rounded-full overflow-hidden shadow-inner border border-slate-100">
+                            <div class="${r.c} h-full transition-all duration-1000 ease-out" style="width: ${(r.v/total)*100}%"></div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            const sourceContainer = document.getElementById('source-bars');
+            if(sourceContainer) {
+                sourceContainer.innerHTML = Object.entries(sourceMap).map(([label, count]) => `
+                    <div>
+                        <div class="flex justify-between text-[11px] font-extrabold text-slate-700 mb-2">
+                            <span>${label}</span>
+                            <span class="text-slate-400 font-bold">${count} Homes</span>
+                        </div>
+                        <div class="w-full bg-slate-50 h-2 rounded-full overflow-hidden shadow-inner border border-slate-100">
+                            <div class="bg-sky-500 h-full transition-all duration-1000 ease-out" style="width: ${(count/total)*100}%"></div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            const volunteerCounts = {};
+            const volunteerOriginalNames = {};
+            surveys.forEach(s => {
+                const rawName = (s.volunteerName || 'Unknown').trim();
+                const normalized = rawName.replace(/\s+/g, ' ').toLowerCase();
+                volunteerCounts[normalized] = (volunteerCounts[normalized] || 0) + 1;
+                if (!volunteerOriginalNames[normalized]) {
+                    volunteerOriginalNames[normalized] = normalized.split(' ')
+                        .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+                        .join(' ');
+                }
+            });
+
+            const totalActiveVolunteers = Object.keys(volunteerCounts).length;
+            const totalVolunteersEl = document.getElementById('total-volunteers-count');
+            if (totalVolunteersEl) totalVolunteersEl.innerText = totalActiveVolunteers;
+
+            const volunteerLeaderboard = Object.entries(volunteerCounts)
+                .map(([normName, count]) => ({ name: volunteerOriginalNames[normName], count }))
+                .sort((a, b) => b.count - a.count)
+                .slice(0, 5);
+
+            const leaderboardEl = document.getElementById('volunteer-leaderboard');
+            if (leaderboardEl) {
+                if (volunteerLeaderboard.length === 0) {
+                    leaderboardEl.innerHTML = '<p class="text-xs text-slate-400 font-bold text-center py-4">No audits yet</p>';
+                } else {
+                    leaderboardEl.innerHTML = volunteerLeaderboard.map((v, i) => {
+                        let badgeClass = "bg-slate-50 text-slate-400 border-slate-100";
+                        let icon = `<span class="font-black text-[10px]">${i + 1}</span>`;
+                        if (i === 0) { badgeClass = "bg-amber-50 text-amber-500 border-amber-100"; icon = `<i class="fa-solid fa-crown text-[10px]"></i>`; }
+                        else if (i === 1) { badgeClass = "bg-slate-100 text-slate-500 border-slate-200"; icon = `<i class="fa-solid fa-medal text-[10px]"></i>`; }
+                        else if (i === 2) { badgeClass = "bg-orange-50 text-orange-600 border-orange-100"; icon = `<i class="fa-solid fa-medal text-[10px]"></i>`; }
+
+                        const safeName = v.name.replace(/'/g, "\\'");
+
+                        return `
+                        <div onclick="filterByVolunteer('${safeName}')" class="flex items-center justify-between p-3 rounded-[20px] border border-slate-50 bg-slate-50/50 transition-all hover:bg-slate-100 cursor-pointer active:scale-[0.98]">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full ${badgeClass} border flex items-center justify-center shadow-sm shrink-0">
+                                    ${icon}
+                                </div>
+                                <p class="text-[13px] font-extrabold text-slate-700 truncate max-w-[150px] sm:max-w-[200px]">${v.name}</p>
+                            </div>
+                            <div class="bg-sky-50 px-3 py-1.5 rounded-full border border-sky-100">
+                                <p class="text-[10px] font-black text-sky-600">${v.count} Audits</p>
+                            </div>
+                        </div>
+                        `;
+                    }).join('');
+                }
+            }
+
+            const listEl = document.getElementById('audit-list');
+            if(listEl) {
+                listEl.innerHTML = filtered.map(s => `
+                    <div class="bg-white p-4 rounded-[24px] border border-slate-100 shadow-sm flex items-center gap-4 transition-transform ${isAdmin ? '' : 'active:scale-[0.98] cursor-pointer'}" ${isAdmin ? '' : `onclick="showAuditDetail('${s.id}')"`}>
+                        <div class="w-12 h-12 rounded-[16px] bg-slate-50 flex items-center justify-center text-slate-400 font-black text-[10px] border border-slate-100 uppercase tracking-widest flex-shrink-0 cursor-pointer" onclick="showAuditDetail('${s.id}')">
+                            W${s.wardNo}
+                        </div>
+                        <div class="flex-grow min-w-0 cursor-pointer" onclick="showAuditDetail('${s.id}')">
+                            <div class="flex items-center gap-2">
+                                <h5 class="font-extrabold text-[13px] text-slate-800 truncate leading-tight">${s.headName || 'No Name'}</h5>
+                                ${s.synced ? '<span class="text-[8px] bg-emerald-50 text-emerald-600 border border-emerald-100 px-1.5 py-0.5 rounded-md font-extrabold">Synced</span>' : '<span class="text-[8px] bg-amber-50 text-amber-600 border border-amber-100 px-1.5 py-0.5 rounded-md font-extrabold">Local</span>'}
+                            </div>
+                            <p class="text-[9px] font-bold text-sky-500 uppercase tracking-[0.2em] mt-1 truncate">ID: ${s.houseNo}</p>
+                        </div>
+                        ${isAdmin ? `
+                            <div class="flex items-center gap-2">
+                                <button onclick="editSurveyFn('${s.id}')" class="w-8 h-8 rounded-full bg-sky-50 flex items-center justify-center text-sky-500 hover:bg-sky-100 transition shadow-sm">
+                                    <i class="fa-solid fa-pen text-[10px]"></i>
+                                </button>
+                                <button onclick="deleteSurveyFn('${s.id}')" class="w-8 h-8 rounded-full bg-rose-50 flex items-center justify-center text-rose-500 hover:bg-rose-100 transition shadow-sm">
+                                    <i class="fa-solid fa-trash text-[10px]"></i>
+                                </button>
+                            </div>
+                        ` : `
+                            <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-300 cursor-pointer" onclick="showAuditDetail('${s.id}')">
+                                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </div>
+                        `}
+                    </div>
+                `).join('');
+            }
+
+            const duplicatesSection = document.getElementById('admin-duplicates-section');
+            const duplicatesList = document.getElementById('admin-duplicates-list');
+            
+            if (isAdmin && duplicatesSection && duplicatesList) {
+                const grouped = {};
+                surveys.forEach(s => {
+                    const vName = (s.volunteerName || '').trim().toLowerCase();
+                    const hName = (s.headName || '').trim().toLowerCase();
+                    const hNo = (s.houseNo || '').trim().toLowerCase();
+                    const key = `${vName}|${hName}|${hNo}`;
+                    if(!grouped[key]) grouped[key] = [];
+                    grouped[key].push(s);
+                });
+
+                const duplicateGroups = Object.values(grouped).filter(group => group.length > 1);
+                
+                if (duplicateGroups.length > 0) {
+                    duplicatesSection.classList.remove('hidden');
+                    let dupHTML = '';
+                    duplicateGroups.forEach(group => {
+                        const sRef = group[0];
+                        dupHTML += `
+                            <div class="bg-rose-50/50 p-4 rounded-[20px] border border-rose-100">
+                                <div class="flex items-center justify-between mb-2 border-b border-rose-100/50 pb-2">
+                                    <span class="text-[10px] font-black text-rose-600 uppercase tracking-widest bg-rose-100 px-2.5 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation"></i> ${group.length} Copies</span>
+                                    <span class="text-[9px] font-extrabold text-slate-500 uppercase">Surv: ${sRef.volunteerName}</span>
+                                </div>
+                                <h5 class="font-black text-[12px] text-slate-800 mb-0.5">${sRef.headName}</h5>
+                                <p class="text-[9px] font-bold text-sky-500 uppercase tracking-widest mb-3">House ID: ${sRef.houseNo}</p>
+                                <div class="space-y-2">
+                                    ${group.map((dup, idx) => {
+                                        const d = dup.date || 'Pending...';
+                                        return `
+                                        <div class="flex items-center justify-between bg-white p-2.5 rounded-[14px] border border-slate-100 shadow-sm">
+                                            <div>
+                                                <span class="text-[10px] font-extrabold text-slate-700 block">Record ${idx + 1}</span>
+                                                <span class="text-[8px] font-bold text-slate-400 uppercase tracking-wider">${d}</span>
+                                            </div>
+                                            <div class="flex gap-2">
+                                                <button onclick="showAuditDetail('${dup.id}')" class="w-8 h-8 rounded-full bg-slate-50 text-slate-400 hover:bg-slate-200 flex items-center justify-center transition border border-slate-100"><i class="fa-solid fa-eye text-[10px]"></i></button>
+                                                <button onclick="deleteSurveyFn('${dup.id}')" class="w-8 h-8 rounded-full bg-rose-50 text-rose-500 hover:bg-rose-200 flex items-center justify-center transition border border-rose-100"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                                            </div>
+                                        </div>
+                                        `;
+                                    }).join('')}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    duplicatesList.innerHTML = dupHTML;
+                } else {
+                    duplicatesSection.classList.add('hidden');
+                    duplicatesList.innerHTML = '';
+                }
+            } else if (duplicatesSection) {
+                duplicatesSection.classList.add('hidden');
+            }
+        }
+
+        window.deleteSurveyFn = (id) => {
+            triggerHaptic();
+            window.showConfirm("Are you sure you want to permanently delete this audit record?", async () => {
+                try {
+                    if(db && navigator.onLine) {
+                        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'surveys', id));
+                    }
+                    surveys = surveys.filter(s => s.id !== id);
+                    saveLocalSurveys();
+                    renderDashboard();
+                } catch (error) {
+                    surveys = surveys.filter(s => s.id !== id);
+                    saveLocalSurveys();
+                    renderDashboard();
+                }
+            }, "Delete Record");
+        };
+
+        window.editSurveyFn = (id) => {
+            triggerHaptic();
+            const survey = surveys.find(s => s.id === id);
+            if(!survey) return;
+
+            editModeId = id;
+            switchTab('form');
+            
+            const form = document.getElementById('auditForm');
+            Object.keys(survey).forEach(key => {
+                const elements = form.elements[key];
+                if (!elements) return;
+
+                if (elements.type === 'radio' || (elements.length && elements[0].type === 'radio')) {
+                    const radios = elements.length ? elements : [elements];
+                    for(let r of radios) {
+                        if(r.value === survey[key]) {
+                            r.checked = true;
+                            r.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+                    }
+                } else {
+                    elements.value = survey[key];
+                }
+            });
+
+            const btn = form.querySelector('button[type="submit"]');
+            if(btn) btn.innerHTML = '<i class="fa-solid fa-floppy-disk text-lg"></i> Update Audit Record';
+            window.showAlert("Editing record. Make changes and submit to update.", "Edit Mode", "info");
+        };
+
+        document.getElementById('auditForm').onsubmit = async (e) => {
+            e.preventDefault();
+            triggerHaptic();
+
+            const data = Object.fromEntries(new FormData(e.target).entries());
+            data.submittedBy = currentUser ? currentUser.uid : 'anon';
+            data.date = new Date().toISOString().split('T')[0];
+
+            if(!data.q10 || !data.q10.startsWith('Yes')) delete data.q11;
+
+            const successScreen = document.getElementById('success-screen');
+            if(successScreen) {
+                successScreen.querySelector('h2').innerText = editModeId ? "Audit Updated" : "Audit Saved";
+                successScreen.classList.remove('hidden');
+            }
+
+            let docId = editModeId || 'local_' + Date.now();
+
+            if (editModeId) {
+                const idx = surveys.findIndex(s => s.id === editModeId);
+                if (idx !== -1) {
+                    surveys[idx] = { ...surveys[idx], ...data, synced: false };
+                }
+            } else {
+                surveys.unshift({
+                    id: docId,
+                    ...data,
+                    synced: false,
+                    createdAtTime: Date.now()
+                });
+            }
+
+            saveLocalSurveys();
+
+            if (navigator.onLine && db) {
+                try {
+                    if (editModeId) {
+                        await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'surveys', editModeId), data);
+                    } else {
+                        const payload = { ...data, createdAt: serverTimestamp(), createdAtTime: Date.now() };
+                        const docRef = await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'surveys'), payload);
+                        const itemIndex = surveys.findIndex(s => s.id === docId);
+                        if(itemIndex !== -1) {
+                            surveys[itemIndex].id = docRef.id;
+                            surveys[itemIndex].synced = true;
+                        }
+                    }
+                    saveLocalSurveys();
+                } catch(err) {
+                    console.log('Saved to LocalStorage');
+                }
+            }
+
+            setTimeout(() => {
+                if(successScreen) successScreen.classList.add('hidden');
+                window.resetFormInternal();
+                showAuditDetail(docId, data);
+                editModeId = null; 
+            }, 1200);
+        };
+
+        function buildMobileForm() {
+            const q = [
+                { id: 'sec1', l: 'Section 1: Electrical Connection & Load', qs: [
+                    { id: 'q1', m: 'വൈദ്യുതി കണക്ഷൻ ടൈപ്പ്', e: 'Type of Electrical Connection', o: ['Single Phase', 'Three Phase', 'Solar Hybrid System', 'No Connection'] },
+                    { id: 'q2', m: 'രണ്ടു മാസത്തെ ശരാശരി ഉപയോഗം (Units in kWh)', e: 'Bi-monthly Energy Consumption', o: ['Below 100 Units', '100 – 200 Units', '200 – 400 Units', 'Above 400 Units'] },
+                    { id: 'q3', m: 'വീടിന്റെ നിർമ്മാണ രീതി', e: 'Building Thermal Architecture', o: ['Concrete Roof', 'Tiled / Sheet with Insulation', 'Tiled / Sheet without Insulation', 'Eco-friendly / Mud / Green'] }
+                ]},
+                { id: 'sec2', l: 'Section 2: Optics & Lighting Efficiency', qs: [
+                    { id: 'q4', m: 'പ്രധാനമായി ഉപയോഗിക്കുന്ന ലൈറ്റുകൾ', e: 'Primary Lighting Technology Used', o: ['100% High-Efficacy LED Lighting (Tubelights / Bulbs)', 'Mix of LED & CFL / Fluorescent Tubelights', 'Predominantly Incandescent (Filament) Bulbs / Old Tubelights'] },
+                    { id: 'q5', m: 'പകൽ സമയത്ത് സ്വാഭാവിക വെളിച്ചത്തിന്റെ ഉപയോഗം', e: 'Natural Daylighting Utilization', o: ['Sufficient (No lights needed in daytime)', 'Used in some interior rooms during daytime', 'Artificial lights constantly ON during daytime'] },
+                    { id: 'q6', m: 'മുറ്റത്തെ/പുറത്തെ ലൈറ്റുകൾ പകൽ സമയത്ത് അണയ്ക്കാറുണ്ടോ?', e: 'Daytime Outdoor Light Management', o: ['Always switched off promptly in morning / Auto-sensor', 'Sometimes left ON accidentally during daytime'] }
+                ]},
+                { id: 'sec3', l: 'Section 3: Electromechanical Devices & Motors', qs: [
+                    { id: 'q7', m: 'ഉപയോഗിക്കുന്ന ഫാനുകളുടെ സാങ്കേതികവിദ്യ', e: 'Type of Ceiling Fan Motors Used', o: ['Energy-efficient BLDC Motor Fans (~28W)', 'Conventional Induction Motor Fans (~75W)', 'Mix of both BLDC and Conventional Fans'] },
+                    { id: 'q8', m: 'വാട്ടർ പമ്പ് മോട്ടോർ ഉപയോഗം', e: 'Water Pump Motor Management', o: ['Equipped with Automatic Water Level Sensor / Cut-off', 'Manual Operation — Switched off promptly when full', 'Manual Operation — Overflows frequently before being switched off'] }
+                ]},
+                { id: 'sec4', l: 'Section 4: Thermodynamics & Thermal Loads', qs: [
+                    { id: 'q9', m: 'ഫ്രിഡ്ജിന്റെ സ്റ്റാർ റേറ്റിംഗും കാര്യക്ഷമതയും', e: 'Refrigerator Star Rating & Compressor Type', o: ['4-Star / 5-Star Energy Efficient Inverter Compressor', '1-Star to 3-Star Conventional Compressor', 'Old Non-Star Rated Model (>8 years old)', 'No Refrigerator'] },
+                    { id: 'q10', m: 'എയർ കണ്ടീഷണർ (AC) ഉപയോഗിക്കുന്നുണ്ടോ?', e: 'Air Conditioner Usage', o: ['Yes (Inverter AC)', 'Yes (Non-Inverter AC)', 'No'] },
+                    { id: 'q11', m: 'AC സെറ്റ് ചെയ്യുന്ന സാധാരണ താപനില', e: 'Thermodynamic AC Temperature Setting', o: ['24°C or above (Optimum thermodynamic efficiency)', 'Below 24°C (Increased compressor duty cycle)'], p: 'q10', t: 'Yes' },
+                    { id: 'q12', m: 'വെള്ളം ചൂടാക്കാൻ ഉപയോഗിക്കുന്ന മാർഗ്ഗം', e: 'Primary Water Heating Method', o: ['Solar Thermal Water Heater', 'Electric Resistance Geyser / Heating Rod', 'LPG / Firewood / Biomass', 'None'] }
+                ]},
+                { id: 'sec5', l: 'Section 5: Electronics, Standby Losses & Safety', qs: [
+                    { id: 'q13', m: 'പ്രധാന പാചക ഇന്ധനം', e: 'Primary Cooking Energy Source', o: ['LPG Gas', 'Induction Cooktop / Resistance Stove', 'Biomass / Firewood', 'Hybrid (LPG + Electric)'] },
+                    { id: 'q14', m: 'ഉപകരണങ്ങളുടെ സോക്കറ്റ് സ്വിച്ച് ഓഫ് ചെയ്യാറുണ്ടോ?', e: 'Standby / Phantom Power Loss Habit', o: ['Switches are turned OFF at wall socket when not in use', 'Left on Standby Mode continuously (TV, Set-top Box, Chargers, Wi-Fi)'] },
+                    { id: 'q15', m: 'സോളാർ പാനൽ ഇൻസ്റ്റാൾ ചെയ്തിട്ടുണ്ടോ?', e: 'Rooftop Solar PV Installation', o: ['Yes (On-Grid Net Metering)', 'Yes (Off-Grid Battery Backup)', 'No'] },
+                    { id: 'q16', m: 'വീട്ടിൽ ELCB/RCCB സേഫ്റ്റി സ്വിച്ച് ഉണ്ടോ?', e: 'Electrical Safety & Leakage Protection (ELCB/RCCB)', o: ['Installed and working correctly', 'Not installed / Faulty', "Don't Know"] }
+                ]}
+            ];
+
+            const container = document.getElementById('dynamic-questions');
+            if(container) {
+                container.innerHTML = q.map(s => `
+                    <div class="space-y-4">
+                        <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.25em] ml-2 flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span> ${s.l}
+                        </h4>
+                        <div class="space-y-3">
+                            ${s.qs.map(item => `
+                                <div class="bg-white p-5 rounded-[28px] border border-slate-100 shadow-sm transition-all duration-300 radio-tile-group ${item.p ? 'hidden' : ''}" id="grp-${item.id}" data-parent="${item.p||''}" data-trigger="${item.t||''}">
+                                    <div class="mb-4 text-center sm:text-left">
+                                        <p class="text-[13px] font-extrabold text-slate-800 leading-snug">${item.m}</p>
+                                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">${item.e}</p>
+                                    </div>
+                                    <div class="grid grid-cols-1 gap-2">
+                                        ${item.o.map(opt => `
+                                            <label class="relative cursor-pointer group w-full block" onclick="window.navigator.vibrate?.(5)">
+                                                <input type="radio" name="${item.id}" value="${opt}" class="hidden peer" ${item.p ? '' : 'required'}>
+                                                <div class="radio-tile flex items-center justify-between px-5 py-3.5 rounded-[18px] border-2 border-slate-50 bg-slate-50/70 transition-all active:scale-[0.98]">
+                                                    <span class="text-[13px] font-bold text-slate-600 transition-colors">${opt}</span>
+                                                    <div class="check-icon hidden w-5 h-5 bg-sky-600 rounded-full items-center justify-center shadow-sm">
+                                                        <i class="fa-solid fa-check text-[10px] text-white"></i>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('');
+
+                container.innerHTML += `
+                    <div class="p-6 bg-sky-50 rounded-[32px] border-2 border-sky-100 text-center mt-6">
+                        <div class="w-12 h-12 bg-white rounded-[16px] text-sky-500 flex items-center justify-center mx-auto mb-4 shadow-sm border border-sky-100">
+                            <i class="fa-solid fa-leaf text-xl"></i>
+                        </div>
+                        <p class="text-sky-900 font-extrabold text-[13px] mb-6 leading-relaxed">ഊർജ്ജ സംരക്ഷണത്തിനായി ഇന്ന് 'ഊർജ്ജ ശപഥം' എടുക്കാൻ തയ്യാറാണോ?</p>
+                        <div class="flex flex-col gap-2 radio-tile-group">
+                            <label class="cursor-pointer block w-full" onclick="window.navigator.vibrate?.(10)">
+                                <input type="radio" name="pledge" value="Yes, We Pledge to conserve energy!" class="hidden" required>
+                                <div class="radio-tile py-4 rounded-[20px] bg-white border-2 border-transparent text-sky-700 font-black text-[13px] transition shadow-sm flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-check-circle"></i> Yes, We Pledge
+                                </div>
+                            </label>
+                            <label class="cursor-pointer block w-full mt-2" onclick="window.navigator.vibrate?.(5)">
+                                <input type="radio" name="pledge" value="Maybe later" class="hidden" required>
+                                <div class="radio-tile py-4 rounded-[20px] bg-white border-2 border-slate-100 text-slate-500 font-bold text-[11px] uppercase tracking-wider transition shadow-sm text-center">
+                                    Maybe Later
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('auditForm').addEventListener('change', (e) => {
+                    const n = e.target.name;
+                    const v = e.target.value;
+                    document.querySelectorAll(`[data-parent="${n}"]`).forEach(el => {
+                        if(v && v.startsWith(el.dataset.trigger)) { 
+                            el.classList.remove('hidden'); 
+                            el.classList.add('animate-view');
+                            el.querySelectorAll('input').forEach(i => i.required = true); 
+                        }
+                        else if (el.dataset.parent === n) { 
+                            el.classList.add('hidden'); 
+                            el.classList.remove('animate-view');
+                            el.querySelectorAll('input').forEach(i => { i.required = false; i.checked = false; }); 
+                        }
+                    });
+                });
+            }
+        }
+
+        function generateRecommendations(s) {
+            const improve = []; const good = [];
+
+            if (s.q4 !== '100% High-Efficacy LED Lighting (Tubelights / Bulbs)') {
+                improve.push({ title: "Upgrade to 100% LED", mal: "പഴയ ബൾബുകൾ മാറ്റി 100% എൽ.ഇ.ഡി (LED) ആക്കുക.", eng: "Replace CFLs/Incandescent bulbs with LEDs to save up to 80% lighting energy." });
+            } else {
+                good.push({ title: "High Efficacy Lighting", mal: "100% എൽ.ഇ.ഡി ഉപയോഗിക്കുന്നത് തികച്ചും മാതൃകാപരമാണ്.", eng: "100% LED setup optimizes luminous efficacy and reduces thermal emissions." });
+            }
+
+            if (s.q7 === 'Conventional Induction Motor Fans (~75W)') {
+                improve.push({ title: "Transition to BLDC Fans", mal: "സാധാരണ ഫാനുകൾ മാറ്റി BLDC ഫാനുകൾ ഉപയോഗിക്കുക.", eng: "BLDC motor fans consume ~28W compared to 75W induction fans." });
+            } else if (s.q7 === 'Energy-efficient BLDC Motor Fans (~28W)') {
+                good.push({ title: "Efficient Motor Technology", mal: "BLDC ഫാനുകൾ ഉപയോഗിക്കുന്നത് സ്വാഗതാർഹമാണ്.", eng: "BLDC motor adoption cuts fan power consumption by over 60%." });
+            }
+
+            if (s.q14 === 'Left on Standby Mode continuously (TV, Set-top Box, Chargers, Wi-Fi)') {
+                improve.push({ title: "Eliminate Standby Power Loss", mal: "ഉപകരണങ്ങൾ ഉപയോഗ ശേഷം വാൾ സോക്കറ്റ് സ്വിച്ച് ഓഫ് ചെയ്യുക.", eng: "Phantom power consumption on standby mode adds up significantly over time." });
+            }
+
+            if (s.q11 === 'Below 24°C (Increased compressor duty cycle)') {
+                improve.push({ title: "Set AC Temp to 24°C+", mal: "എ.സി താപനില 24°C ലേക്ക് ക്രമീകരിക്കുക.", eng: "Setting AC to 24°C reduces compressor work cycle and saves up to 24% electricity." });
+            }
+
+            if (s.q8 === 'Manual Operation — Overflows frequently before being switched off') {
+                improve.push({ title: "Install Water Level Switch", mal: "മോട്ടോർ ടാങ്ക് അലാറം/ഓട്ടോമാറ്റിക് കട്ട്-ഓഫ് സ്ഥാപിക്കുക.", eng: "Prevent water motor overflows to conserve both electric energy and water." });
+            }
+
+            if (s.q16 === 'Not installed / Faulty') {
+                improve.push({ title: "Install ELCB / RCCB Protection", mal: "ഉടൻ തന്നെ ELCB/RCCB സേഫ്റ്റി സ്വിച്ച് ഇൻസ്റ്റാൾ ചെയ്യുക.", eng: "Crucial for shock protection and preventing ground electrical leakage." });
+            }
+
+            if (s.q15 && s.q15.startsWith('Yes')) {
+                good.push({ title: "Solar Energy Generator", mal: "സോളാർ പാനൽ ഉപയോഗിക്കുന്നത് അഭിനന്ദനാർഹമാണ്.", eng: "Rooftop solar PV generates clean renewable energy on-site." });
+            }
+
+            return { improve, good };
+        }
+
+        function getReportHTML(s, isBatchMode = false) {
+            let bimonthlyUnits = 180;
+            if(s.q2 === 'Below 100 Units') bimonthlyUnits = 80;
+            else if(s.q2 === '100 – 200 Units') bimonthlyUnits = 160;
+            else if(s.q2 === '200 – 400 Units') bimonthlyUnits = 300;
+            else if(s.q2 === 'Above 400 Units') bimonthlyUnits = 500;
+
+            const estKsebBill = calculateKsebBimonthlyBill(bimonthlyUnits);
+            const annualCo2 = Math.round(bimonthlyUnits * 6 * 0.72);
+
+            const row = (l, v, isLast = false) => `
+                <div class="flex border-slate-300 print:border-slate-800 ${isLast ? '' : 'border-b'}">
+                    <div class="w-[50%] p-2 print:p-[5px] text-[11px] print:text-[8px] font-bold uppercase text-slate-600 print:text-slate-800 border-r border-slate-300 print:border-slate-800 bg-slate-50 print:bg-transparent flex items-center print-exact-color">${l}</div>
+                    <div class="w-[50%] p-2 print:p-[5px] text-[12px] print:text-[9px] font-black text-slate-900 break-words flex items-center">${v||'—'}</div>
+                </div>`;
+                
+            const head = (l) => `
+                <h3 class="text-xs print:text-[9px] font-black text-white bg-sky-700 print:bg-slate-800 px-3 py-2 print:py-1 uppercase tracking-widest print-exact-color m-0">${l}</h3>`;
+            
+            return `
+                <div class="p-6 print:p-0 bg-white w-full box-border flex flex-col a4-print-container">
+                    
+                    <!-- Header -->
+                    <div class="flex justify-between items-center mb-6 print:mb-3 border-b-2 border-slate-900 pb-6 print:pb-3 flex-shrink-0">
+                        <div class="flex-grow text-center px-2">
+                            <h2 class="text-xl print:text-[14px] font-black tracking-widest text-slate-900 uppercase leading-tight m-0 p-0">HOUSEHOLD ENERGY AUDIT SURVEY</h2>
+                            <p class="text-sm print:text-[10px] font-extrabold text-sky-700 mt-2 print:mt-1 m-0 p-0">DEPARTMENT OF PHYSICS</p>
+                            <p class="text-xs print:text-[9px] font-extrabold text-slate-800 mt-0.5 m-0 p-0">Mahatma Gandhi College, Iritty</p>
+                            <p class="text-[10px] print:text-[8px] font-bold text-slate-600 mt-0.5 m-0 p-0">Reaccredited by NAAC with A Grade (CGPA 3.22)</p>
+                            <p class="text-[9px] print:text-[7px] font-bold text-sky-600 mt-1.5 print:mt-1 tracking-wider m-0 p-0">#EnergyConservation &nbsp; #GreenPhysics &nbsp; #CarbonNeutrality</p>
+                        </div>
+                        <img src="college_logo.png" class="h-16 w-16 print:h-[50px] print:w-[50px] object-contain" onerror="this.style.display='none'">
+                    </div>
+                    
+                    <!-- Metadata Grid -->
+                    <div class="flex flex-col sm:flex-row print:flex-row gap-4 print:gap-4 mb-6 print:mb-3 flex-shrink-0">
+                        <div class="flex-1 border border-slate-300 print:border-slate-800 rounded-md print:rounded-none overflow-hidden">
+                            <div class="flex border-b border-slate-300 print:border-slate-800">
+                                <div class="w-2/5 p-2 print:p-1.5 text-[10px] print:text-[8px] font-bold uppercase text-slate-600 print:text-slate-800 border-r border-slate-300 print:border-slate-800 bg-slate-50 print:bg-transparent flex items-center print-exact-color">SURVEY DATE</div>
+                                <div class="w-3/5 p-2 print:p-1.5 text-sm print:text-[10px] font-black text-slate-900">${s.date || '—'}</div>
+                            </div>
+                            <div class="flex">
+                                <div class="w-2/5 p-2 print:p-1.5 text-[10px] print:text-[8px] font-bold uppercase text-slate-600 print:text-slate-800 border-r border-slate-300 print:border-slate-800 bg-slate-50 print:bg-transparent flex items-center print-exact-color">HEAD OF HOUSEHOLD</div>
+                                <div class="w-3/5 p-2 print:p-1.5 text-sm print:text-[10px] font-black text-slate-900">${s.headName}</div>
+                            </div>
+                        </div>
+                        <div class="flex-1 border border-slate-300 print:border-slate-800 rounded-md print:rounded-none overflow-hidden">
+                            <div class="flex border-b border-slate-300 print:border-slate-800">
+                                <div class="w-2/5 p-2 print:p-1.5 text-[10px] print:text-[8px] font-bold uppercase text-slate-600 print:text-slate-800 border-r border-slate-300 print:border-slate-800 bg-slate-50 print:bg-transparent flex items-center print-exact-color">HOUSE ID</div>
+                                <div class="w-3/5 p-2 print:p-1.5 text-sm print:text-[10px] font-black text-slate-900">${s.houseNo}</div>
+                            </div>
+                            <div class="flex">
+                                <div class="w-2/5 p-2 print:p-1.5 text-[10px] print:text-[8px] font-bold uppercase text-slate-600 print:text-slate-800 border-r border-slate-300 print:border-slate-800 bg-slate-50 print:bg-transparent flex items-center print-exact-color">WARD NO</div>
+                                <div class="w-3/5 p-2 print:p-1.5 text-sm print:text-[10px] font-black text-slate-900">${s.wardNo}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KSEB Kerala Physics Metrics Banner -->
+                    <div class="bg-slate-50 print:bg-transparent border border-slate-300 print:border-slate-800 rounded-md print:rounded-none p-3 print:p-2 mb-4 print:mb-3 flex justify-between items-center flex-shrink-0">
+                        <div>
+                            <p class="text-[10px] print:text-[8px] font-extrabold uppercase text-slate-600 print:text-slate-800">ESTIMATED BIMONTHLY KSEB BILL</p>
+                            <p class="text-base print:text-[12px] font-black text-sky-700 print:text-slate-900">₹${estKsebBill} <span class="text-[10px] print:text-[7px] font-semibold text-slate-500">(LT-1A Domestic)</span></p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] print:text-[8px] font-extrabold uppercase text-slate-600 print:text-slate-800">ANNUAL CARBON FOOTPRINT</p>
+                            <p class="text-base print:text-[12px] font-black text-emerald-700 print:text-slate-900">${annualCo2} kg CO₂/year</p>
+                        </div>
+                    </div>
+
+                    <!-- Main Data Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 print:grid-cols-2 gap-x-6 print:gap-x-6 gap-y-4 print:gap-y-3 mb-6 print:mb-2 flex-grow">
+                        <!-- Column 1 -->
+                        <div class="flex flex-col gap-4 print:gap-3">
+                            <div class="border border-slate-300 print:border-slate-800 rounded-b-md print:rounded-none overflow-hidden">
+                                ${head('ELECTRICAL CONNECTION & LOAD')}
+                                ${row('CONNECTION TYPE', s.q1)}
+                                ${row('BI-MONTHLY LOAD', s.q2)}
+                                ${row('THERMAL ARCHITECTURE', s.q3, true)}
+                            </div>
+                            
+                            <div class="border border-slate-300 print:border-slate-800 rounded-b-md print:rounded-none overflow-hidden">
+                                ${head('OPTICS & LIGHTING EFFICIENCY')}
+                                ${row('LIGHTING TECH', s.q4)}
+                                ${row('DAYLIGHTING USE', s.q5)}
+                                ${row('DAYTIME OUTDOOR LIGHTS', s.q6, true)}
+                            </div>
+
+                            <div class="border border-slate-300 print:border-slate-800 rounded-b-md print:rounded-none overflow-hidden">
+                                ${head('MOTORS & PUMPS')}
+                                ${row('CEILING FAN MOTOR', s.q7)}
+                                ${row('PUMP SENSOR SWITCH', s.q8, true)}
+                            </div>
+                        </div>
+                        
+                        <!-- Column 2 -->
+                        <div class="flex flex-col gap-4 print:gap-3">
+                            <div class="border border-slate-300 print:border-slate-800 rounded-b-md print:rounded-none overflow-hidden">
+                                ${head('THERMODYNAMICS & AC')}
+                                ${row('REFRIGERATOR TECH', s.q9)}
+                                ${row('AIR CONDITIONER', s.q10)}
+                                ${row('AC TEMP SETTING', s.q11 || 'N/A')}
+                                ${row('WATER HEATING', s.q12, true)}
+                            </div>
+                            
+                            <div class="border border-slate-300 print:border-slate-800 rounded-b-md print:rounded-none overflow-hidden">
+                                ${head('ELECTRONICS, SOLAR & SAFETY')}
+                                ${row('COOKING FUEL', s.q13)}
+                                ${row('STANDBY POWER HABIT', s.q14)}
+                                ${row('ROOFTOP SOLAR PV', s.q15)}
+                                ${row('SAFETY SWITCH (ELCB)', s.q16, true)}
+                            </div>
+                        </div>
+                    </div>
+
+                    ${isBatchMode ? '' : (() => {
+                        const r = generateRecommendations(s);
+                        return `
+                        <div class="mb-6 print:hidden">
+                            <h4 class="text-xs font-black text-slate-800 uppercase tracking-widest mb-3 border-l-4 border-slate-800 pl-2">Physics Department Audit Recommendations</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="bg-amber-50/50 p-4 rounded-xl border border-amber-100">
+                                    <p class="text-[10px] font-black text-amber-500 uppercase tracking-widest mb-3 flex items-center gap-1.5"><i class="fa-solid fa-lightbulb"></i> Efficiency Opportunities</p>
+                                    <div class="space-y-2.5">
+                                        ${r.improve.length > 0 ? r.improve.map(item => `
+                                            <div>
+                                                <p class="text-[11px] font-bold text-slate-800 leading-tight">${item.title}</p>
+                                                <p class="text-[9px] font-bold text-amber-600 mt-0.5 leading-snug">${item.mal}</p>
+                                            </div>
+                                        `).join('<div class="h-px bg-amber-200/50 my-1.5"></div>') : '<p class="text-[10px] text-slate-500 italic">Excellent energy management detected!</p>'}
+                                    </div>
+                                </div>
+                                <div class="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100">
+                                    <p class="text-[10px] font-black text-emerald-500 uppercase tracking-widest mb-3 flex items-center gap-1.5"><i class="fa-solid fa-thumbs-up"></i> Efficient Practices</p>
+                                    <div class="space-y-2.5">
+                                        ${r.good.length > 0 ? r.good.map(item => `
+                                            <div>
+                                                <p class="text-[11px] font-bold text-slate-800 leading-tight">${item.title}</p>
+                                                <p class="text-[9px] font-bold text-emerald-600 mt-0.5 leading-snug">${item.mal}</p>
+                                            </div>
+                                        `).join('<div class="h-px bg-emerald-200/50 my-1.5"></div>') : '<p class="text-[10px] text-slate-500 italic">No specific green practices logged.</p>'}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        `;
+                    })()}
+
+                    <!-- Footer -->
+                    <div class="mt-auto print:mt-auto pt-6 print:pt-4 flex-shrink-0">
+                        <div class="bg-sky-50 print:bg-transparent print-exact-color border-2 border-sky-200 print:border-slate-800 p-4 print:p-2 rounded-2xl print:rounded-none text-center mb-6 print:mb-4">
+                            <h4 class="text-base print:text-[11px] font-black uppercase tracking-tight text-sky-700 print:text-slate-900 mb-1 leading-none print:leading-tight">${s.pledge}</h4>
+                            <p class="text-[9px] print:text-[8px] font-bold uppercase tracking-widest text-sky-600/70 print:text-slate-500 print:mt-1">OFFICIAL DECLARATION OF ENERGY CONSERVATION</p>
+                        </div>
+
+                        <div class="flex justify-between items-end pb-4 px-4 print:px-2 border-t-2 border-slate-900 pt-4">
+                            <div class="text-left w-1/3">
+                                <p class="text-sm print:text-[10px] font-black text-slate-900 uppercase tracking-wider mb-1">${s.volunteerName}</p>
+                                <p class="text-[10px] print:text-[7px] font-bold text-slate-500 uppercase tracking-widest border-t border-slate-400 print:border-slate-800 pt-1">STUDENT SURVEYOR</p>
+                            </div>
+                            <div class="text-right w-1/3">
+                                <p class="text-base print:text-[11px] font-black text-slate-400 print:text-slate-800 uppercase tracking-widest">PHYSICS DEPT</p>
+                                <p class="text-[8px] print:text-[6px] font-bold text-slate-400 print:text-slate-500 uppercase tracking-widest mt-0.5">MG College Iritty</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.showAuditDetail = (id, override = null) => {
+            const s = override || surveys.find(x => x.id === id);
+            if(!s) return;
+            
+            const canvas = document.getElementById('report-canvas');
+            if(canvas) {
+                canvas.innerHTML = getReportHTML(s, false);
+                switchTab('view');
+            }
+        };
+
+        window.copyReportSummary = () => {
+            triggerHaptic();
+            if(surveys.length === 0) return window.showAlert("No audits to summarize yet.", "No Data", "info");
+
+            const members = document.getElementById('stat-members').innerText;
+            const pledges = document.getElementById('stat-pledges').innerText;
+            const solar = document.getElementById('stat-solar').innerText;
+            const led = document.getElementById('stat-led').innerText;
+            const bldc = document.getElementById('stat-bldc').innerText;
+            const kwh = document.getElementById('stat-est-kwh')?.innerText || '0';
+            const co2 = document.getElementById('stat-est-co2')?.innerText || '0';
+            const bill = document.getElementById('stat-est-kseb-bill')?.innerText || '0';
+
+            const text = `
+⚡ *MG COLLEGE PHYSICS DEPARTMENT: KERALA ENERGY AUDIT SUMMARY* ⚡
+--------------------------------------------------
+📊 *Core Metrics:*
+🏡 Households Audited: *${surveys.length}*
+👥 Citizens Covered: *${members}*
+🤝 Energy Conservation Pledges: *${pledges}*
+
+⚡ *Kerala KSEB Analytics:*
+🔌 Est. Annual Grid Load: *${kwh} kWh/yr*
+💰 Est. Annual KSEB Bill Total: *₹${bill}*
+🌱 Est. Carbon Emissions: *${co2} kg CO₂/yr*
+
+💡 *Technology Transition Rates:*
+☀️ Rooftop Solar PV Adoption: *${solar}*
+💡 100% LED Lighting Transition: *${led}*
+🌀 Efficient BLDC Fan Adoption: *${bldc}*
+--------------------------------------------------
+*#EnergyConservation #DepartmentOfPhysics #MGCollege #KSEB*
+_Generated via MG College Physics Energy Audit App_`.trim();
+            
+            navigator.clipboard.writeText(text).then(() => window.showAlert("Report summary copied! Ready to share.", "Summary Copied!", "success"));
+        };
+
+        window.copyAppLink = () => {
+            triggerHaptic();
+            navigator.clipboard.writeText(window.location.href).then(() => window.showAlert("App link copied to clipboard.", "Link Copied!", "success"));
+        };
+
+        const exportHeaderMap = {
+            date: "Date of Survey",
+            volunteerName: "Student Surveyor",
+            wardNo: "Ward No",
+            houseNo: "House ID",
+            headName: "Head of Household",
+            membersCount: "Total Members",
+            q1: "Electrical Connection Type",
+            q2: "Bi-monthly Energy Consumption (kWh)",
+            q3: "Building Thermal Architecture",
+            q4: "Primary Lighting Tech",
+            q5: "Daylighting Use",
+            q6: "Daytime Outdoor Lights Management",
+            q7: "Ceiling Fan Motor Tech",
+            q8: "Water Pump Motor Sensor",
+            q9: "Refrigerator Rating & Tech",
+            q10: "AC Usage",
+            q11: "AC Temperature Setting",
+            q12: "Water Heating Method",
+            q13: "Primary Cooking Fuel",
+            q14: "Standby Loss Habit",
+            q15: "Rooftop Solar PV",
+            q16: "ELCB Safety Switch",
+            pledge: "Pledge Status"
+        };
+
+        window.exportCSV = () => {
+            triggerHaptic();
+            if(!surveys.length) return window.showAlert("No data available to export.", "Empty Database", "info");
+            
+            const keys = Object.keys(exportHeaderMap);
+            const headers = keys.map(k => `"${exportHeaderMap[k]}"`).join(',');
+            
+            const rows = surveys.map(s => {
+                return keys.map(k => {
+                    const cellVal = s[k] === undefined ? "N/A" : s[k];
+                    return `"${cellVal.toString().replace(/"/g, '""')}"`;
+                }).join(',');
+            }).join('\n');
+            
+            const blob = new Blob([`${headers}\n${rows}`], {type: 'text/csv;charset=utf-8;'});
+            const a = document.createElement('a'); 
+            a.href = URL.createObjectURL(blob); 
+            a.download = `Physics_Kerala_EnergyAudit_${new Date().toISOString().split('T')[0]}.csv`; 
+            a.click();
+            window.showAlert("CSV file exported successfully.", "CSV Exported", "success");
+        };
+
+        window.exportJSON = () => {
+            triggerHaptic();
+            if(!surveys.length) return window.showAlert("No data available to export.", "Empty Database", "info");
+            
+            const cleanData = surveys.map(({createdAt, ...rest}) => rest);
+            const blob = new Blob([JSON.stringify(cleanData, null, 2)], {type: 'application/json'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `Physics_Kerala_EnergyAudit_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            window.showAlert("Raw JSON export complete.", "JSON Exported", "success");
+        };
+
+        window.exportPDF = () => {
+            triggerHaptic();
+            if(!surveys.length) return window.showAlert("No data available to export.", "Empty Database", "info");
+
+            window.showAlert("Preparing batch report for " + surveys.length + " households. Print dialog opening...", "Generating PDF", "info");
+
+            setTimeout(() => {
+                const canvas = document.getElementById('report-canvas');
+                if (canvas) {
+                    canvas.innerHTML = surveys.map(s => getReportHTML(s, true)).join('');
+                    switchTab('view');
+                    
+                    setTimeout(() => {
+                        window.print();
+                        window.closeCustomAlert();
+                    }, 1500);
+                }
+            }, 500);
+        };
+
+        window.resetFormInternal = () => {
+            document.getElementById('auditForm').reset();
+            document.querySelectorAll('.radio-tile-group input:checked').forEach(i => i.checked = false);
+            document.querySelectorAll('[data-parent]').forEach(el => el.classList.add('hidden'));
+            
+            const btn = document.querySelector('#auditForm button[type="submit"]');
+            if(btn) btn.innerHTML = '<i class="fa-solid fa-floppy-disk text-lg"></i> Save Household Audit';
+            editModeId = null;
+        }
+
+        window.resetForm = () => { 
+            triggerHaptic();
+            window.showConfirm("Are you sure you want to clear this audit session? Entered data will be lost.", () => {
+                window.resetFormInternal();
+            }, "Clear Workspace");
+        };
+
+        startApp();
+        buildMobileForm();
+        switchTab('dashboard');
+
+    </script>
+</body>
+</html>
+

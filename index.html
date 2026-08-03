@@ -71,7 +71,6 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Optimized Printing Adjustments */
         @media print {
             .print-hidden { display: none !important; }
             html, body { 
@@ -131,7 +130,7 @@
         <p id="loader-status" class="mt-6 text-[10px] font-black text-sky-200 uppercase tracking-[0.3em] animate-pulse">Connecting Cloud Database (phy-energyaudit)</p>
     </div>
 
-    <!-- Mobile Top Header -->
+    <!-- Header Navigation Bar -->
     <header class="fixed top-0 left-0 right-0 z-50 nav-blur border-b border-slate-100 safe-pt print-hidden">
         <div class="px-5 py-3 flex items-center justify-between max-w-xl mx-auto">
             <div class="flex items-center gap-3">
@@ -142,6 +141,11 @@
                 </div>
             </div>
             <div class="flex items-center gap-2">
+                <!-- Video Guide Trigger Button -->
+                <button onclick="openVideoModal()" class="flex items-center gap-1.5 bg-sky-50 text-sky-600 px-2.5 py-1 rounded-full text-[9px] font-black border border-sky-200 transition-all active:scale-95 hover:bg-sky-100 shadow-sm">
+                    <i class="fa-solid fa-circle-play text-sky-500"></i>
+                    <span>VIDEO GUIDE</span>
+                </button>
                 <div id="sync-badge" onclick="manualSyncTrigger()" class="cursor-pointer flex items-center gap-1.5 bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full text-[9px] font-black border border-emerald-100 transition-all active:scale-95">
                     <i class="fa-solid fa-cloud"></i>
                     <span id="sync-text">SYNCING</span>
@@ -163,7 +167,7 @@
         </div>
     </header>
 
-    <!-- Main App Content -->
+    <!-- Main App Scroll Area -->
     <main id="main-scroll" class="flex-grow overflow-y-auto no-scrollbar header-spacing nav-spacing relative w-full h-full print:h-auto print:overflow-visible print:block print:p-0 print:m-0">
         
         <!-- DASHBOARD VIEW -->
@@ -228,7 +232,7 @@
                 </div>
             </div>
 
-            <!-- Kerala Physics Appliance Savings Estimator -->
+            <!-- Energy Savings Calculator Widget -->
             <div class="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm space-y-4">
                 <div class="flex items-center justify-between">
                     <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
@@ -289,7 +293,7 @@
                 </button>
             </div>
 
-            <!-- Energy Technology Metrics -->
+            <!-- Technology Transition Metrics -->
             <div class="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm">
                 <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
                     <i class="fa-solid fa-lightbulb text-amber-500 text-sm"></i> Technology Transition Index
@@ -416,7 +420,7 @@
             </form>
         </div>
 
-        <!-- REPORT VIEW (PDF Generator) -->
+        <!-- REPORT VIEW (Answers + Personalized Energy Improvement Instructions) -->
         <div id="view-report" class="hidden max-w-3xl print:max-w-none print:w-full mx-auto p-4 animate-view print:p-0 pb-10 print:pb-0 print:bg-white print:h-auto print:overflow-visible print:block">
             <div class="flex items-center justify-between mb-6 print-hidden">
                 <button onclick="switchTab('dashboard')" class="w-12 h-12 bg-white rounded-[18px] flex items-center justify-center text-slate-400 shadow-sm border border-slate-100 active:scale-90 transition">
@@ -463,6 +467,15 @@
                 
                 <p class="text-[10px] font-bold text-sky-600 uppercase tracking-[0.1em] leading-relaxed mb-6">Promoting Energy Conservation, Luminous Efficacy, and Carbon Neutrality.</p>
 
+                <!-- Tutorial Video Button in Info Page -->
+                <div class="bg-gradient-to-r from-sky-500 to-indigo-600 p-5 rounded-[24px] text-white text-left mb-6 shadow-md flex items-center justify-between">
+                    <div>
+                        <h4 class="text-sm font-black uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-circle-play text-amber-300"></i> How To Use App?</h4>
+                        <p class="text-[10px] font-medium text-sky-100 mt-0.5">Watch screen-recorded video guide & instructions for students & staff.</p>
+                    </div>
+                    <button onclick="openVideoModal()" class="bg-white text-sky-700 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider shadow-sm active:scale-95 transition shrink-0">Open Guide</button>
+                </div>
+
                 <!-- Local Storage Reset Controls -->
                 <div class="space-y-3 mb-6">
                     <button onclick="manualSyncTrigger()" class="w-full py-3.5 bg-sky-600 text-white rounded-2xl text-xs font-black hover:bg-sky-700 transition-all uppercase tracking-widest flex items-center justify-center gap-2 shadow-md shadow-sky-200">
@@ -506,6 +519,107 @@
                 </div>
             </div>
         </div>
+
+        <!-- Video Guide Modal -->
+        <div id="video-modal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[300] flex items-center justify-center p-4 sm:p-6 print-hidden">
+            <div class="bg-white rounded-[32px] shadow-2xl max-w-lg w-full max-h-[90dvh] flex flex-col overflow-hidden animate-view border border-slate-100">
+                
+                <!-- Modal Top Header -->
+                <div class="p-5 bg-slate-900 text-white flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center font-black">
+                            <i class="fa-solid fa-circle-play text-lg"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xs font-black uppercase tracking-wider text-slate-100">User Guide & Video Tutorial</h3>
+                            <p class="text-[9px] font-bold text-sky-400 uppercase tracking-widest mt-0.5">Department of Physics Energy Audit</p>
+                        </div>
+                    </div>
+                    <button onclick="closeVideoModal()" class="w-9 h-9 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-slate-300 transition">
+                        <i class="fa-solid fa-xmark text-sm"></i>
+                    </button>
+                </div>
+
+                <!-- Modal Scrollable Content -->
+                <div class="p-6 overflow-y-auto space-y-6 no-scrollbar">
+                    
+                    <!-- Video Player Container (Pre-configured to guide_video.mp4 hosted on GitHub) -->
+                    <div class="bg-slate-900 rounded-[24px] p-2 border border-slate-800 shadow-inner">
+                        <video id="guide-video-player" controls class="w-full h-52 object-contain rounded-[18px] bg-black" poster="college_logo.png">
+                            <source id="video-source" src="guide_video.mp4" type="video/mp4">
+                            Your browser does not support HTML5 video.
+                        </video>
+                        
+                        <!-- Local File Upload Fallback Option -->
+                        <div class="p-3 bg-slate-800/80 rounded-[18px] mt-2 flex flex-col items-center gap-2 border border-slate-700">
+                            <p class="text-[10px] font-extrabold text-slate-300 text-center">Load Your Screen Recording File (.mp4, .webm, .mov):</p>
+                            <label class="w-full bg-sky-600 hover:bg-sky-500 text-white font-black text-[11px] uppercase tracking-wider py-3 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer transition shadow-md active:scale-95">
+                                <i class="fa-solid fa-file-video text-sm"></i>
+                                <span>📁 Select Video File</span>
+                                <input type="file" id="video-file-input" accept="video/*" class="hidden" onchange="handleVideoFileSelect(event)">
+                            </label>
+                            <p id="video-filename" class="text-[9px] font-bold text-sky-400 truncate max-w-full italic"></p>
+                        </div>
+                    </div>
+
+                    <!-- Step-by-Step Instructions -->
+                    <div class="space-y-4">
+                        <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                            <i class="fa-solid fa-list-check text-sky-500"></i> How to Conduct Survey (Instructions)
+                        </h4>
+
+                        <div class="space-y-2.5">
+                            <div class="flex gap-3 bg-slate-50 p-3.5 rounded-[18px] border border-slate-100">
+                                <span class="w-6 h-6 rounded-full bg-sky-600 text-white text-[10px] font-black flex items-center justify-center shrink-0">1</span>
+                                <div>
+                                    <p class="text-[11px] font-extrabold text-slate-800">Identify Household & Surveyor</p>
+                                    <p class="text-[10px] text-slate-500 font-medium mt-0.5">Click the "+" button at bottom. Enter your Full Name, Ward #, House ID, and Head of Household.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-3 bg-slate-50 p-3.5 rounded-[18px] border border-slate-100">
+                                <span class="w-6 h-6 rounded-full bg-sky-600 text-white text-[10px] font-black flex items-center justify-center shrink-0">2</span>
+                                <div>
+                                    <p class="text-[11px] font-extrabold text-slate-800">Answer Physics Energy Questions</p>
+                                    <p class="text-[10px] text-slate-500 font-medium mt-0.5">Fill Sections 1–5: Lighting tech (LED), Fan motors (BLDC), AC settings, Refrigerator, and Rooftop Solar PV.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-3 bg-slate-50 p-3.5 rounded-[18px] border border-slate-100">
+                                <span class="w-6 h-6 rounded-full bg-sky-600 text-white text-[10px] font-black flex items-center justify-center shrink-0">3</span>
+                                <div>
+                                    <p class="text-[11px] font-extrabold text-slate-800">Submit & View Tailored Instructions</p>
+                                    <p class="text-[10px] text-slate-500 font-medium mt-0.5">Click "Push to Cloud Server". The app will instantly display the submitted answers along with personalized Malayalam/English instructions to optimize energy use.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-3 bg-slate-50 p-3.5 rounded-[18px] border border-slate-100">
+                                <span class="w-6 h-6 rounded-full bg-sky-600 text-white text-[10px] font-black flex items-center justify-center shrink-0">4</span>
+                                <div>
+                                    <p class="text-[11px] font-extrabold text-slate-800">PDF Print & Data Export</p>
+                                    <p class="text-[10px] text-slate-500 font-medium mt-0.5">View individual A4 reports, download Word (.txt), Excel CSV, or Batch Print all household audits.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-3 bg-slate-50 p-3.5 rounded-[18px] border border-slate-100">
+                                <span class="w-6 h-6 rounded-full bg-sky-600 text-white text-[10px] font-black flex items-center justify-center shrink-0">5</span>
+                                <div>
+                                    <p class="text-[11px] font-extrabold text-slate-800">Admin Mode (Supervisor Access)</p>
+                                    <p class="text-[10px] text-slate-500 font-medium mt-0.5">Enable Admin Mode in Info tab using PIN <span class="font-black text-sky-700 bg-sky-100 px-1 py-0.5 rounded">6330</span> to edit data, delete duplicates, or run batch prints.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Bottom Button -->
+                <div class="p-4 bg-slate-50 border-t border-slate-100 text-center">
+                    <button onclick="closeVideoModal()" class="w-full py-3.5 bg-slate-900 text-white rounded-[18px] text-xs font-black uppercase tracking-wider hover:bg-black active:scale-95 transition">
+                        Got It, Start Survey
+                    </button>
+                </div>
+            </div>
+        </div>
     </main>
 
     <!-- App Bottom Bar -->
@@ -532,7 +646,6 @@
         </div>
     </nav>
 
-    <!-- Modular Logic Engine -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -692,7 +805,6 @@
             document.getElementById('main-scroll').scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        // Local Storage Engine
         function loadLocalSurveys() {
             try {
                 const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -765,7 +877,6 @@
             }
         }
 
-        // Real-time Firestore Sync Engine
         function setupFirestoreListener() {
             if(!db) return;
             try {
@@ -874,7 +985,6 @@
             }
         };
 
-        // Kerala Physics Calculator
         window.runPhysicsCalculator = () => {
             const bulbs = parseInt(document.getElementById('calc-bulbs')?.value) || 0;
             const fans = parseInt(document.getElementById('calc-fans')?.value) || 0;
@@ -1232,7 +1342,7 @@
             let docId = editModeId || 'local_' + now;
             let pushedToCloud = false;
 
-            // Direct Firestore Cloud Push First
+            // Direct Firestore Cloud Push
             if (navigator.onLine && db) {
                 try {
                     if (editModeId) {
@@ -1275,12 +1385,13 @@
                 window.resetFormInternal();
                 editModeId = null; 
 
-                switchTab('dashboard');
+                // Direct user to view their answers and personalized energy improvement instructions immediately!
+                showAuditDetail(docId, localRecord);
 
                 if (pushedToCloud) {
-                    window.showAlert("✅ Audit Pushed to Cloud Server & Synced Across All Devices!", "Cloud Pushed", "success");
+                    window.showAlert("✅ Audit Saved to Cloud Server! Below are your answers and personalized Energy Improvement Instructions.", "Audit Complete", "success");
                 } else {
-                    window.showAlert("📱 Saved Locally! Offline mode active. Will push to server when reconnected.", "Saved Locally", "info");
+                    window.showAlert("📱 Saved Locally! Below are your answers and Energy Improvement Instructions. Will sync when reconnected.", "Saved Locally", "info");
                 }
             }, 600);
         };
@@ -1803,6 +1914,34 @@ _Generated via MG College Physics Energy Audit App_`.trim();
             window.showConfirm("Are you sure you want to clear this audit session? Entered data will be lost.", () => {
                 window.resetFormInternal();
             }, "Clear Workspace");
+        };
+
+        window.openVideoModal = () => {
+            triggerHaptic();
+            const modal = document.getElementById('video-modal');
+            if(modal) modal.classList.remove('hidden');
+        };
+
+        window.closeVideoModal = () => {
+            triggerHaptic();
+            const modal = document.getElementById('video-modal');
+            const player = document.getElementById('guide-video-player');
+            if(player) player.pause();
+            if(modal) modal.classList.add('hidden');
+        };
+
+        window.handleVideoFileSelect = (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const player = document.getElementById('guide-video-player');
+                const nameDisplay = document.getElementById('video-filename');
+                const fileURL = URL.createObjectURL(file);
+                
+                player.src = fileURL;
+                player.play();
+                if(nameDisplay) nameDisplay.innerText = "Loaded: " + file.name;
+                window.showAlert("Video loaded and playing!", "Video Guide", "success");
+            }
         };
 
         startApp();

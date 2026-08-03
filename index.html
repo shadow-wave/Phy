@@ -10,7 +10,10 @@
     <link rel="apple-touch-icon" href="college_logo.png">
     <title>Physics Energy Audit | MG College</title>
     
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -112,6 +115,7 @@
 </head>
 <body class="flex flex-col text-slate-900 overflow-hidden">
 
+    <!-- App Splash Screen -->
     <div id="loader" class="fixed inset-0 bg-sky-700 z-[200] flex flex-col items-center justify-center p-10 transition-opacity duration-700 text-white">
         <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center shadow-2xl mb-6">
             <img src="college_logo.png" onerror="this.src='https://via.placeholder.com/80?text=MGC'" class="w-14 h-14 object-contain">
@@ -126,13 +130,14 @@
         <p id="loader-status" class="mt-6 text-[10px] font-black text-sky-200 uppercase tracking-[0.3em] animate-pulse">Connecting Cloud Database</p>
     </div>
 
+    <!-- Header Navigation Bar -->
     <header class="fixed top-0 left-0 right-0 z-50 nav-blur border-b border-slate-100 safe-pt print-hidden">
         <div class="px-5 py-3 flex items-center justify-between max-w-xl mx-auto">
             <div class="flex items-center gap-3">
                 <img src="college_logo.png" onerror="this.src='https://via.placeholder.com/40?text=MGC'" class="w-9 h-9 rounded-[10px] shadow-sm bg-white p-1 object-contain">
                 <div>
                     <h1 class="text-xs font-black tracking-widest text-slate-800 leading-none uppercase">Energy Audit</h1>
-                    <p class="text-[8px] font-bold text-sky-600 mt-1 uppercase">Dept. of Physics, MG College Iritty</p>
+                    <p class="text-[8px] font-bold text-sky-600 mt-1 uppercase">Dept. of Physics, MG College</p>
                 </div>
             </div>
             <div class="flex items-center gap-2">
@@ -144,10 +149,6 @@
                 <div id="sync-badge" onclick="manualSyncTrigger()" class="cursor-pointer flex items-center gap-1.5 bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full text-[9px] font-black border border-emerald-100 transition-all active:scale-95">
                     <i class="fa-solid fa-cloud"></i>
                     <span id="sync-text">SYNCING</span>
-                </div>
-                <div id="network-badge" class="hidden sm:flex items-center gap-1.5 bg-emerald-50 text-emerald-600 px-2 py-1 rounded-full text-[9px] font-black border border-emerald-100 transition-colors">
-                    <span id="network-dot" class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span> 
-                    <span id="network-text">ONLINE</span>
                 </div>
             </div>
         </div>
@@ -162,6 +163,7 @@
         </div>
     </header>
 
+    <!-- Main App Scroll Area -->
     <main id="main-scroll" class="flex-grow overflow-y-auto no-scrollbar header-spacing nav-spacing relative w-full h-full print:h-auto print:overflow-visible print:block print:p-0 print:m-0">
         
         <!-- DASHBOARD VIEW -->
@@ -226,36 +228,41 @@
                 </div>
             </div>
 
-            <!-- Energy Savings Calculator Widget -->
-            <div class="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm space-y-4">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
-                        <i class="fa-solid fa-bolt-lightning text-sky-500 text-sm"></i> Energy Savings Calculator
-                    </h3>
-                    <span class="text-[9px] font-black text-sky-600 bg-sky-50 px-2 py-1 rounded-full uppercase">Interactive</span>
+            <!-- Energy Technology Metrics -->
+            <div class="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm">
+                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-lightbulb text-amber-500 text-sm"></i> Modern Technology Transition Index
+                </h3>
+                <div class="grid grid-cols-3 gap-3 mb-2">
+                    <div class="bg-amber-50 rounded-[20px] p-3 text-center border border-amber-100">
+                        <p id="stat-led" class="text-xl font-black text-amber-600">0%</p>
+                        <p class="text-[8px] font-bold text-amber-500 uppercase mt-1 tracking-widest">100% LED</p>
+                    </div>
+                    <div class="bg-cyan-50 rounded-[20px] p-3 text-center border border-cyan-100">
+                        <p id="stat-bldc" class="text-xl font-black text-cyan-600">0%</p>
+                        <p class="text-[8px] font-bold text-cyan-500 uppercase mt-1 tracking-widest">BLDC Fans</p>
+                    </div>
+                    <div class="bg-indigo-50 rounded-[20px] p-3 text-center border border-indigo-100">
+                        <p id="stat-ev" class="text-xl font-black text-indigo-600">0</p>
+                        <p class="text-[8px] font-bold text-indigo-500 uppercase mt-1 tracking-widest">EVs Found</p>
+                    </div>
                 </div>
-                <p class="text-xs font-medium text-slate-500 leading-relaxed">കേരളത്തിലെ സാധാരണ വീടുകളിൽ എൽ.ഇ.ഡി (LED), ബി.എൽ.ഡി.സി (BLDC) ടെക്നോളജികൾ ഉപയോഗിച്ചാൽ ലഭിക്കുന്ന വാർഷിക വൈദ്യുതി/പണ ലാഭം:</p>
-                
-                <div class="grid grid-cols-2 gap-3 pt-2">
-                    <div>
-                        <label class="text-[10px] font-extrabold text-slate-600 uppercase block mb-1">Filament/CFL Bulbs</label>
-                        <input type="number" id="calc-bulbs" value="5" min="0" oninput="runPhysicsCalculator()" class="w-full p-3 bg-slate-50 border border-slate-100 rounded-[16px] text-xs font-bold outline-none focus:ring-2 focus:ring-sky-500/20">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-extrabold text-slate-600 uppercase block mb-1">Old Induction Fans</label>
-                        <input type="number" id="calc-fans" value="3" min="0" oninput="runPhysicsCalculator()" class="w-full p-3 bg-slate-50 border border-slate-100 rounded-[16px] text-xs font-bold outline-none focus:ring-2 focus:ring-sky-500/20">
-                    </div>
+            </div>
+
+            <!-- Safety & Loss Insights -->
+            <div class="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm">
+                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-pie text-sky-500 text-sm"></i> Efficiency & Safety Loss Factors
+                </h3>
+                <div id="risk-bars" class="space-y-6 mb-8">
+                    <!-- JS Populated (Risks) -->
                 </div>
 
-                <div class="bg-sky-50 rounded-[20px] p-4 border border-sky-100 flex items-center justify-between">
-                    <div>
-                        <p class="text-[9px] font-extrabold text-sky-600 uppercase tracking-wider">Annual Units Saved</p>
-                        <p class="text-lg font-black text-sky-900"><span id="calc-kwh-saved">0</span> kWh / year</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-[9px] font-extrabold text-emerald-600 uppercase tracking-wider">KSEB Bill Savings</p>
-                        <p class="text-lg font-black text-emerald-700">₹<span id="calc-rs-saved">0</span> / year</p>
-                    </div>
+                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6 mt-8 flex items-center gap-2 border-t border-slate-100 pt-8">
+                    <i class="fa-solid fa-plug text-indigo-500 text-sm"></i> KSEB Grid Connection Type
+                </h3>
+                <div id="source-bars" class="space-y-6">
+                    <!-- JS Populated (Sources) -->
                 </div>
             </div>
 
@@ -281,44 +288,6 @@
                     <div class="w-10 h-10 bg-rose-600 text-white rounded-[14px] flex items-center justify-center shadow-md shadow-rose-200"><i class="fa-solid fa-print"></i></div>
                     <div class="text-left"><p class="text-sm font-extrabold text-rose-900">Batch PDF</p><p class="text-[9px] font-bold text-rose-600 uppercase">Print All Audits</p></div>
                 </button>
-                <button onclick="copyAppLink()" class="snap-start shrink-0 w-36 bg-slate-50 border border-slate-200 p-4 rounded-[24px] flex flex-col items-start gap-3 active:scale-95 transition shadow-sm">
-                    <div class="w-10 h-10 bg-slate-800 text-white rounded-[14px] flex items-center justify-center shadow-md"><i class="fa-solid fa-share-nodes"></i></div>
-                    <div class="text-left"><p class="text-sm font-extrabold text-slate-900">Share App</p><p class="text-[9px] font-bold text-slate-500 uppercase">Copy Link</p></div>
-                </button>
-            </div>
-
-            <!-- Technology Transition Metrics -->
-            <div class="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm">
-                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
-                    <i class="fa-solid fa-lightbulb text-amber-500 text-sm"></i> Technology Transition Index
-                </h3>
-                <div class="grid grid-cols-2 gap-4 mb-2">
-                    <div class="bg-amber-50 rounded-[20px] p-4 border border-amber-100 text-center">
-                        <p id="stat-led" class="text-2xl font-black text-amber-600">0%</p>
-                        <p class="text-[9px] font-bold text-amber-500 uppercase mt-1 tracking-widest">100% LED Lighting</p>
-                    </div>
-                    <div class="bg-cyan-50 rounded-[20px] p-4 border border-cyan-100 text-center">
-                        <p id="stat-bldc" class="text-2xl font-black text-cyan-600">0%</p>
-                        <p class="text-[9px] font-bold text-cyan-500 uppercase mt-1 tracking-widest">BLDC Fan Adoption</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Safety & Loss Insights -->
-            <div class="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm">
-                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
-                    <i class="fa-solid fa-chart-pie text-sky-500 text-sm"></i> Efficiency & Safety Loss Factors
-                </h3>
-                <div id="risk-bars" class="space-y-6 mb-8">
-                    <!-- JS Populated (Risks) -->
-                </div>
-
-                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6 mt-8 flex items-center gap-2 border-t border-slate-100 pt-8">
-                    <i class="fa-solid fa-plug text-indigo-500 text-sm"></i> KSEB Grid Connection Type
-                </h3>
-                <div id="source-bars" class="space-y-6">
-                    <!-- JS Populated (Sources) -->
-                </div>
             </div>
 
             <!-- Student Surveyor Leaderboard -->
@@ -361,6 +330,7 @@
             </div>
         </div>
 
+        <!-- FORM VIEW -->
         <div id="view-form" class="hidden px-4 py-6 space-y-6 max-w-xl mx-auto animate-view print-hidden">
             <!-- Success Overlay -->
             <div id="success-screen" class="hidden fixed inset-0 bg-sky-700/98 backdrop-blur-2xl z-[100] flex flex-col items-center justify-center text-white p-10">
@@ -431,6 +401,7 @@
             <div id="report-canvas" class="bg-transparent report-card w-full print:h-auto print:overflow-visible print:block"></div>
         </div>
 
+        <!-- INFO VIEW -->
         <div id="view-info" class="hidden px-4 py-6 max-w-xl mx-auto animate-view print-hidden">
             <div class="bg-white rounded-[32px] p-8 text-center shadow-sm border border-slate-100 mt-4">
                 <div class="w-24 h-24 bg-sky-50 text-sky-600 rounded-[24px] flex items-center justify-center mx-auto mb-6 shadow-inner border border-sky-100">
@@ -485,33 +456,6 @@
             </div>
         </div>
 
-        <!-- Custom Alert Modal -->
-        <div id="custom-alert" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[250] flex items-center justify-center p-6 print-hidden">
-            <div class="bg-white p-8 rounded-[32px] shadow-2xl max-w-sm w-full animate-view text-center border border-slate-100">
-                <div id="custom-alert-icon" class="w-16 h-16 bg-sky-50 text-sky-500 rounded-[20px] flex items-center justify-center mx-auto mb-6">
-                    <i class="fa-solid fa-bell text-2xl"></i>
-                </div>
-                <h3 id="custom-alert-title" class="text-xl font-black text-slate-900 mb-2 tracking-tight">Notification</h3>
-                <p id="custom-alert-msg" class="text-sm text-slate-500 mb-8 leading-relaxed font-medium"></p>
-                <button onclick="closeCustomAlert()" class="w-full px-4 py-4 bg-slate-900 text-white font-bold rounded-[20px] hover:bg-black transition active:scale-95 tracking-widest uppercase text-[10px]">Got it</button>
-            </div>
-        </div>
-
-        <!-- Custom Confirm Modal -->
-        <div id="custom-confirm" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[250] flex items-center justify-center p-6 print-hidden">
-            <div class="bg-white p-8 rounded-[32px] shadow-2xl max-w-sm w-full animate-view text-center border border-slate-100">
-                <div class="w-16 h-16 bg-rose-50 text-rose-500 rounded-[20px] flex items-center justify-center mx-auto mb-6">
-                    <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
-                </div>
-                <h3 id="custom-confirm-title" class="text-xl font-black text-slate-900 mb-2 tracking-tight">Are you sure?</h3>
-                <p id="custom-confirm-msg" class="text-sm text-slate-500 mb-8 leading-relaxed font-medium"></p>
-                <div class="flex gap-3">
-                    <button onclick="closeCustomConfirm()" class="flex-1 px-4 py-4 bg-slate-100 text-slate-700 font-bold rounded-[20px] hover:bg-slate-200 transition active:scale-95 text-[10px] uppercase tracking-widest">Cancel</button>
-                    <button id="custom-confirm-btn" class="flex-1 px-4 py-4 bg-rose-600 text-white font-bold rounded-[20px] hover:bg-rose-700 transition active:scale-95 text-[10px] uppercase tracking-widest">Confirm</button>
-                </div>
-            </div>
-        </div>
-
         <!-- Video Guide Modal -->
         <div id="video-modal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[300] flex items-center justify-center p-4 sm:p-6 print-hidden">
             <div class="bg-white rounded-[32px] shadow-2xl max-w-lg w-full max-h-[90dvh] flex flex-col overflow-hidden animate-view border border-slate-100">
@@ -538,18 +482,17 @@
                     <!-- GitHub Hosted Video Player Container -->
                     <div class="bg-slate-900 rounded-[24px] p-2 border border-slate-800 shadow-inner">
                         <video id="guide-video-player" controls playsinline preload="auto" class="w-full h-52 object-contain rounded-[18px] bg-black" poster="college_logo.png">
-                            <source src="guide_video.mp4" type="video/mp4">
                             <source src="RPReplay_Final1785732502.mp4" type="video/mp4">
+                            <source src="guide_video.mp4" type="video/mp4">
                             Your browser does not support HTML5 video.
                         </video>
-                        
                         <p class="text-[9px] font-bold text-sky-400 text-center py-1 tracking-wider">▶️ Streaming Guide Video from GitHub Repository</p>
                     </div>
 
                     <!-- Step-by-Step Instructions -->
                     <div class="space-y-4">
                         <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
-                            <i class="fa-solid fa-list-check text-sky-500"></i> How to Conduct Survey (Instructions)
+                            <i class="fa-solid fa-list-check text-sky-500"></i> How to Conduct Survey
                         </h4>
 
                         <div class="space-y-2.5">
@@ -560,36 +503,18 @@
                                     <p class="text-[10px] text-slate-500 font-medium mt-0.5">Click the "+" button at bottom. Enter your Full Name, Ward #, House ID, and Head of Household.</p>
                                 </div>
                             </div>
-
                             <div class="flex gap-3 bg-slate-50 p-3.5 rounded-[18px] border border-slate-100">
                                 <span class="w-6 h-6 rounded-full bg-sky-600 text-white text-[10px] font-black flex items-center justify-center shrink-0">2</span>
                                 <div>
                                     <p class="text-[11px] font-extrabold text-slate-800">Answer Physics Energy Questions</p>
-                                    <p class="text-[10px] text-slate-500 font-medium mt-0.5">Fill Sections 1–5: Grid Type, Lighting tech (LED), Fan motors (BLDC), AC settings, Refrigerator, and Rooftop Solar PV.</p>
+                                    <p class="text-[10px] text-slate-500 font-medium mt-0.5">Fill Sections 1–5: Grid Type, Lighting tech, Fan motors, AC settings, Refrigerator, and Rooftop Solar PV.</p>
                                 </div>
                             </div>
-
                             <div class="flex gap-3 bg-slate-50 p-3.5 rounded-[18px] border border-slate-100">
                                 <span class="w-6 h-6 rounded-full bg-sky-600 text-white text-[10px] font-black flex items-center justify-center shrink-0">3</span>
                                 <div>
-                                    <p class="text-[11px] font-extrabold text-slate-800">Submit & View Tailored Instructions</p>
-                                    <p class="text-[10px] text-slate-500 font-medium mt-0.5">Click "Push to Cloud Server". The app will instantly display the submitted answers along with personalized Malayalam/English instructions to optimize energy use.</p>
-                                </div>
-                            </div>
-
-                            <div class="flex gap-3 bg-slate-50 p-3.5 rounded-[18px] border border-slate-100">
-                                <span class="w-6 h-6 rounded-full bg-sky-600 text-white text-[10px] font-black flex items-center justify-center shrink-0">4</span>
-                                <div>
-                                    <p class="text-[11px] font-extrabold text-slate-800">PDF Print & Data Export</p>
-                                    <p class="text-[10px] text-slate-500 font-medium mt-0.5">View individual A4 reports, download Word (.txt), Excel CSV, or Batch Print all household audits.</p>
-                                </div>
-                            </div>
-
-                            <div class="flex gap-3 bg-slate-50 p-3.5 rounded-[18px] border border-slate-100">
-                                <span class="w-6 h-6 rounded-full bg-sky-600 text-white text-[10px] font-black flex items-center justify-center shrink-0">5</span>
-                                <div>
-                                    <p class="text-[11px] font-extrabold text-slate-800">Admin Mode (Supervisor Access)</p>
-                                    <p class="text-[10px] text-slate-500 font-medium mt-0.5">Authorized Admins can enable Admin Mode in the Info tab to edit data, delete duplicates, or run batch prints.</p>
+                                    <p class="text-[11px] font-extrabold text-slate-800">Submit & View Instructions</p>
+                                    <p class="text-[10px] text-slate-500 font-medium mt-0.5">Click "Push to Cloud Server". The app will display submitted answers and personalized energy instructions.</p>
                                 </div>
                             </div>
                         </div>
@@ -630,6 +555,7 @@
         </div>
     </nav>
 
+    <!-- Modular Logic Engine -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -646,7 +572,7 @@
             measurementId: "G-53DP4TGCNZ"
         };
 
-        const LOCAL_STORAGE_KEY = 'physics_kerala_audit_surveys_v8';
+        const LOCAL_STORAGE_KEY = 'physics_kerala_audit_surveys_v9'; // Incremented key for clean start
 
         let app = null;
         let auth = null;
@@ -658,7 +584,6 @@
 
         const triggerHaptic = () => { if (window.navigator.vibrate) window.navigator.vibrate(10); };
 
-        // Helper: Strip any undefined or null keys to avoid Firebase SDK rejection
         function sanitizeForFirestore(obj) {
             const clean = {};
             Object.keys(obj).forEach(key => {
@@ -745,13 +670,13 @@
             const banner = document.getElementById('offline-alert-banner');
 
             if (navigator.onLine) {
-                if(badge) badge.className = "hidden sm:flex items-center gap-1.5 bg-emerald-50 text-emerald-600 px-2 py-1 rounded-full text-[9px] font-black border border-emerald-100 transition-colors";
+                if(badge) badge.className = "flex items-center gap-1.5 bg-emerald-50 text-emerald-600 px-2 py-1 rounded-full text-[9px] font-black border border-emerald-100 transition-colors";
                 if(dot) dot.className = "w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse";
                 if(text) text.innerText = "ONLINE";
                 if(banner) banner.classList.add('hidden');
                 autoPushUnsynced();
             } else {
-                if(badge) badge.className = "hidden sm:flex items-center gap-1.5 bg-rose-50 text-rose-600 px-2 py-1 rounded-full text-[9px] font-black border border-rose-100 transition-colors";
+                if(badge) badge.className = "flex items-center gap-1.5 bg-rose-50 text-rose-600 px-2 py-1 rounded-full text-[9px] font-black border border-rose-100 transition-colors";
                 if(dot) dot.className = "w-1.5 h-1.5 bg-rose-500 rounded-full";
                 if(text) text.innerText = "OFFLINE";
                 if(banner) banner.classList.remove('hidden');
@@ -823,7 +748,7 @@
                 if(toolSync) toolSync.innerText = `${unsyncedCount} Pending`;
             } else {
                 if(badge) badge.className = "cursor-pointer flex items-center gap-1.5 bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full text-[9px] font-black border border-emerald-100 transition-all active:scale-95";
-                if(text) text.innerText = "CONNECTED";
+                if(text) text.innerText = "SYNCED";
                 if(toolSync) toolSync.innerText = "Connected";
             }
         }
@@ -859,6 +784,11 @@
                 }
                 updateNetworkStatus();
                 runPhysicsCalculator();
+                
+                // Show video modal on very first load
+                if(!localStorage.getItem('physics_app_guide_viewed')) {
+                    setTimeout(() => { openVideoModal(); localStorage.setItem('physics_app_guide_viewed', 'true'); }, 1500);
+                }
             }
         }
 
@@ -1008,7 +938,7 @@
 
             const stats = { 
                 total: surveys.length, members: 0, pledges: 0, solarCount: 0,
-                ledCount: 0, bldcCount: 0, standbyRisk: 0, overflowRisk: 0, lowACRisk: 0, safetyHazard: 0,
+                ledCount: 0, bldcCount: 0, evCount: 0, standbyRisk: 0, overflowRisk: 0, lowACRisk: 0, thermalRisk: 0, safetyHazard: 0,
                 totalEstKwh: 0, totalEstKsebBill: 0
             };
             const sourceMap = { 'Single Phase': 0, 'Three Phase': 0, 'No Electrical Connection': 0 };
@@ -1017,46 +947,44 @@
                 let memCount = parseInt(s.membersCount) || 0;
                 stats.members += memCount;
                 if(s.pledge?.includes('Yes')) stats.pledges++;
-                if(s.q15 === 'Yes - Solar PV Installed') stats.solarCount++;
+                if(s.q15 && s.q15.startsWith('Yes')) stats.solarCount++;
                 if(s.q4 === '100% LED Lighting (High Efficacy)') stats.ledCount++;
                 if(s.q7 === 'Energy-efficient BLDC Motor Fans (~28W)') stats.bldcCount++;
+                if(s.q18 && s.q18.includes('അതെ')) stats.evCount++; // Counts EVs
                 if(s.q14 === 'Left on Standby Mode (TV, Set-top Box, Chargers plugged in)') stats.standbyRisk++;
-                if(s.q8 === 'Manual Switch — Tank overflows frequently') stats.overflowRisk++;
+                if(s.q8 === 'മാനുവൽ സ്വിച്ച് — പലപ്പോഴും ടാങ്ക് കവിഞ്ഞൊഴുകാറുണ്ട്') stats.overflowRisk++;
                 if(s.q11 === 'Below 24°C (High compressor duty cycle)') stats.lowACRisk++;
-                if(s.q16 === 'Not installed / Faulty') stats.safetyHazard++;
+                if(s.q8b === 'ദിവസവും ഉപയോഗിക്കുന്നു (High Thermal Load)') stats.thermalRisk++;
+                if(s.q16 === 'Not installed / Faulty' || s.q16 === "Don't Know") stats.safetyHazard++;
 
-                let bimonthlyUnits = 180;
-                if(s.q2 === 'Below 100 Units') bimonthlyUnits = 80;
-                else if(s.q2 === '100 – 200 Units') bimonthlyUnits = 160;
-                else if(s.q2 === '200 – 400 Units') bimonthlyUnits = 300;
-                else if(s.q2 === 'Above 400 Units') bimonthlyUnits = 500;
+                // If No Electrical Connection, do not add KSEB Bill/CO2
+                if (s.q1 !== 'ഇലക്ട്രിസിറ്റി ഇല്ല (No Electrical Connection)') {
+                    let bimonthlyUnits = 180;
+                    if(s.q2 === 'Below 100 Units') bimonthlyUnits = 80;
+                    else if(s.q2 === '100 – 200 Units') bimonthlyUnits = 160;
+                    else if(s.q2 === '200 – 400 Units') bimonthlyUnits = 300;
+                    else if(s.q2 === 'Above 400 Units') bimonthlyUnits = 500;
 
-                let annualKwh = bimonthlyUnits * 6;
-                stats.totalEstKwh += annualKwh;
-                stats.totalEstKsebBill += (calculateKsebBimonthlyBill(bimonthlyUnits) * 6);
+                    let annualKwh = bimonthlyUnits * 6;
+                    stats.totalEstKwh += annualKwh;
+                    stats.totalEstKsebBill += (calculateKsebBimonthlyBill(bimonthlyUnits) * 6);
+                }
 
-                if(sourceMap[s.q1] !== undefined) sourceMap[s.q1]++;
+                if(s.q1 === 'സിംഗിൾ ഫേസ് (Single Phase)') sourceMap['Single Phase']++;
+                else if (s.q1 === 'ത്രീ ഫേസ് (Three Phase)') sourceMap['Three Phase']++;
+                else if (s.q1 === 'ഇലക്ട്രിസിറ്റി ഇല്ല (No Electrical Connection)') sourceMap['No Electrical Connection']++;
             });
 
             const total = stats.total || 1;
 
-            const statTotalEl = document.getElementById('stat-total');
-            if(statTotalEl) statTotalEl.innerText = stats.total;
-            
-            const statMembersEl = document.getElementById('stat-members');
-            if(statMembersEl) statMembersEl.innerText = stats.members;
-            
-            const statPledgesEl = document.getElementById('stat-pledges');
-            if(statPledgesEl) statPledgesEl.innerText = stats.pledges;
-            
-            const statSolarEl = document.getElementById('stat-solar');
-            if(statSolarEl) statSolarEl.innerText = Math.round((stats.solarCount / total) * 100) + '%';
+            document.getElementById('stat-total').innerText = stats.total;
+            document.getElementById('stat-members').innerText = stats.members;
+            document.getElementById('stat-pledges').innerText = stats.pledges;
+            document.getElementById('stat-solar').innerText = Math.round((stats.solarCount / total) * 100) + '%';
 
-            const statLedEl = document.getElementById('stat-led');
-            if(statLedEl) statLedEl.innerText = Math.round((stats.ledCount / total) * 100) + '%';
-            
-            const statBldcEl = document.getElementById('stat-bldc');
-            if(statBldcEl) statBldcEl.innerText = Math.round((stats.bldcCount / total) * 100) + '%';
+            document.getElementById('stat-led').innerText = Math.round((stats.ledCount / total) * 100) + '%';
+            document.getElementById('stat-bldc').innerText = Math.round((stats.bldcCount / total) * 100) + '%';
+            document.getElementById('stat-ev').innerText = stats.evCount; // Shows total EV count
 
             const estKwhEl = document.getElementById('stat-est-kwh');
             const estCo2El = document.getElementById('stat-est-co2');
@@ -1069,6 +997,7 @@
             if(riskContainer) {
                 const risks = [
                     { l: 'Standby Power Losses', v: stats.standbyRisk, c: 'bg-rose-500', i: 'fa-plug-circle-xmark' },
+                    { l: 'Heavy Thermal Load Usage', v: stats.thermalRisk, c: 'bg-pink-500', i: 'fa-fire' },
                     { l: 'Water Motor Overflows', v: stats.overflowRisk, c: 'bg-amber-500', i: 'fa-glass-water-droplet' },
                     { l: 'AC Temp < 24°C (High Load)', v: stats.lowACRisk, c: 'bg-orange-500', i: 'fa-temperature-arrow-down' },
                     { l: 'ELCB Safety Hazard', v: stats.safetyHazard, c: 'bg-purple-500', i: 'fa-triangle-exclamation' },
@@ -1095,7 +1024,7 @@
                             <span class="text-slate-400 font-bold">${count} Homes</span>
                         </div>
                         <div class="w-full bg-slate-50 h-2 rounded-full overflow-hidden shadow-inner border border-slate-100">
-                            <div class="bg-sky-500 h-full transition-all duration-1000 ease-out" style="width: ${(count/total)*100}%"></div>
+                            <div class="bg-indigo-500 h-full transition-all duration-1000 ease-out" style="width: ${(count/total)*100}%"></div>
                         </div>
                     </div>
                 `).join('');
@@ -1295,6 +1224,12 @@
                 }
             });
 
+            // Re-trigger Master Toggle if No Electricity was selected
+            if (survey.q1 === 'ഇലക്ട്രിസിറ്റി ഇല്ല (No Electrical Connection)') {
+                const q1Elem = Array.from(form.elements['q1']).find(el => el.value === 'ഇലക്ട്രിസിറ്റി ഇല്ല (No Electrical Connection)');
+                if(q1Elem) q1Elem.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+
             const btn = document.getElementById('submit-btn');
             if(btn) btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-lg"></i> Update Record on Cloud';
             window.showAlert("Editing record. Make changes and submit to update.", "Edit Mode", "info");
@@ -1306,13 +1241,19 @@
 
             const rawData = Object.fromEntries(new FormData(e.target).entries());
             
-            // Cleanup conditional questions
-            if(!rawData.q10 || !rawData.q10.startsWith('Yes')) {
-                delete rawData.q11;
-            }
-            if(!rawData.q15 || !rawData.q15.startsWith('Yes')) {
-                delete rawData.q15_type;
-                delete rawData.q15_capacity;
+            // Cleanup conditional questions based on master toggle (No Electricity)
+            if (rawData.q1 === 'ഇലക്ട്രിസിറ്റി ഇല്ല (No Electrical Connection)') {
+                const electricalKeys = ['q2', 'q4', 'q5', 'q6', 'q7', 'q8', 'q8b', 'q9', 'q10', 'q11', 'q12', 'q14', 'q15', 'q15_type', 'q15_capacity', 'q16', 'q17', 'q18'];
+                electricalKeys.forEach(k => delete rawData[k]);
+            } else {
+                // Regular specific cleanups
+                if(!rawData.q10 || !rawData.q10.startsWith('Yes')) {
+                    delete rawData.q11;
+                }
+                if(!rawData.q15 || !rawData.q15.startsWith('Yes')) {
+                    delete rawData.q15_type;
+                    delete rawData.q15_capacity;
+                }
             }
 
             const now = Date.now();
@@ -1394,33 +1335,35 @@
         function buildMobileForm() {
             const q = [
                 { id: 'sec1', l: 'Section 1: Electrical Connection & Load', qs: [
-                    { id: 'q1', m: 'കെ.എസ്.ഇ.ബി (KSEB) ഇലക്ട്രിക്കൽ കണക്ഷൻ ടൈപ്പ്', e: 'KSEB Electrical Grid Connection', o: ['Single Phase', 'Three Phase', 'No Electrical Connection'] },
-                    { id: 'q2', m: 'രണ്ടു മാസത്തെ ശരാശരി വൈദ്യുതി ഉപയോഗം (KSEB Bill Units)', e: 'Bi-monthly Energy Consumption (kWh/Units)', o: ['Below 100 Units', '100 – 200 Units', '200 – 400 Units', 'Above 400 Units'] },
+                    { id: 'q1', m: 'കെ.എസ്.ഇ.ബി (KSEB) ഇലക്ട്രിക്കൽ കണക്ഷൻ ടൈപ്പ്', e: 'KSEB Electrical Grid Connection', o: ['സിംഗിൾ ഫേസ് (Single Phase)', 'ത്രീ ഫേസ് (Three Phase)', 'ഇലക്ട്രിസിറ്റി ഇല്ല (No Electrical Connection)'] },
+                    { id: 'q2', m: 'രണ്ടു മാസത്തെ ശരാശരി വൈദ്യുതി ഉപയോഗം (KSEB Bill Units)', e: 'Bi-monthly Energy Consumption (kWh/Units)', o: ['Below 100 Units', '100 – 200 Units', '200 – 400 Units', 'Above 400 Units', 'ബാധകമല്ല (N/A)'], isElec: true },
                     { id: 'q3', m: 'വീടിന്റെ മേൽക്കൂരയുടെ നിർമ്മാണ രീതി (Thermal Architecture)', e: 'Building Roof Thermal Architecture', o: ['Concrete Roof (No Insulation)', 'Concrete Roof with Cool Roof Paint / Truss', 'Tiled / Sheet Roof with Ceiling Insulation', 'Tiled / Sheet Roof without Insulation', 'Eco-friendly / Green Architecture'] }
                 ]},
                 { id: 'sec2', l: 'Section 2: Optics & Lighting Efficiency', qs: [
-                    { id: 'q4', m: 'പ്രധാനമായും ഉപയോഗിക്കുന്ന പ്രകാശോപകരണങ്ങൾ', e: 'Primary Lighting Technology', o: ['100% LED Lighting (High Efficacy)', 'Mix of LED & CFL / Old Tubelights', 'Mostly Incandescent (Filament) Bulbs'] },
-                    { id: 'q5', m: 'പകൽ സമയത്തെ സ്വാഭാവിക വെളിച്ചത്തിന്റെ ഉപയോഗം', e: 'Natural Daylighting Utilization', o: ['Sufficient (No artificial lights used in daytime)', 'Artificial lights used in some interior rooms', 'Artificial lights constantly ON during daytime'] },
-                    { id: 'q6', m: 'മുറ്റത്തെ/പുറത്തെ ലൈറ്റുകൾ (Outdoor Lighting) പകൽ സമയത്ത് അണയ്ക്കാറുണ്ടോ?', e: 'Daytime Outdoor Light Management', o: ['Always switched off promptly / Auto-sensor installed', 'Sometimes left ON accidentally during daytime'] }
+                    { id: 'q4', m: 'പ്രധാനമായും ഉപയോഗിക്കുന്ന പ്രകാശോപകരണങ്ങൾ', e: 'Primary Lighting Technology', o: ['100% LED Lighting (High Efficacy)', 'Mix of LED & CFL / Old Tubelights', 'Mostly Incandescent (Filament) Bulbs', 'ലൈറ്റുകൾ ഉപയോഗിക്കുന്നില്ല (None)'], isElec: true },
+                    { id: 'q5', m: 'പകൽ സമയത്തെ സ്വാഭാവിക വെളിച്ചത്തിന്റെ ഉപയോഗം', e: 'Natural Daylighting Utilization', o: ['Sufficient (No artificial lights used in daytime)', 'Artificial lights used in some interior rooms', 'Artificial lights constantly ON during daytime', 'ബാധകമല്ല (N/A)'], isElec: true },
+                    { id: 'q6', m: 'മുറ്റത്തെ/പുറത്തെ ലൈറ്റുകൾ (Outdoor Lighting) പകൽ സമയത്ത് അണയ്ക്കാറുണ്ടോ?', e: 'Daytime Outdoor Light Management', o: ['Always switched off promptly / Auto-sensor installed', 'Sometimes left ON accidentally during daytime', 'പുറത്ത് ലൈറ്റുകൾ ഇല്ല (No Outdoor Lights)'], isElec: true }
                 ]},
-                { id: 'sec3', l: 'Section 3: Electromechanical Devices & Motors', qs: [
-                    { id: 'q7', m: 'സീലിംഗ് ഫാനുകളുടെ സാങ്കേതികവിദ്യ (Motor Technology)', e: 'Type of Ceiling Fan Motors', o: ['Energy-efficient BLDC Motor Fans (~28W)', 'Conventional Induction Motor Fans (~75W)', 'Mix of both BLDC and Conventional Fans'] },
-                    { id: 'q8', m: 'വാട്ടർ പമ്പ് മോട്ടോർ (Water Pump) എങ്ങനെയാണ് നിയന്ത്രിക്കുന്നത്?', e: 'Water Pump Motor Management', o: ['Automatic Water Level Controller / Sensor installed', 'Manual Switch — Turned off promptly when full', 'Manual Switch — Tank overflows frequently'] }
+                { id: 'sec3', l: 'Section 3: Electromechanical Devices & Thermal Loads', qs: [
+                    { id: 'q7', m: 'സീലിംഗ് ഫാനുകളുടെ സാങ്കേതികവിദ്യ (Motor Technology)', e: 'Type of Ceiling Fan Motors', o: ['Energy-efficient BLDC Motor Fans (~28W)', 'Conventional Induction Motor Fans (~75W)', 'Mix of both BLDC and Conventional Fans', 'ഫാനുകൾ ഇല്ല (No Ceiling Fans)'], isElec: true },
+                    { id: 'q8', m: 'വാട്ടർ പമ്പ് മോട്ടോർ (Water Pump) എങ്ങനെയാണ് നിയന്ത്രിക്കുന്നത്?', e: 'Water Pump Motor Management', o: ['ഓട്ടോമാറ്റിക് വാട്ടർ ലെവൽ സെൻസർ / അലാറം', 'മാനുവൽ സ്വിച്ച് — നിറയുമ്പോൾ കൃത്യമായി ഓഫ് ചെയ്യും', 'മാനുവൽ സ്വിച്ച് — പലപ്പോഴും ടാങ്ക് കവിഞ്ഞൊഴുകാറുണ്ട്', 'വാട്ടർ പമ്പ് ഇല്ല (No Water Pump)'], isElec: true },
+                    { id: 'q8b', m: 'ഉയർന്ന വാട്ടേജ് ഉള്ള ഉപകരണങ്ങളുടെ ഉപയോഗം (Iron Box, Washing Machine, Ovens)', e: 'Heating & Heavy Appliances Usage', o: ['ദിവസവും ഉപയോഗിക്കുന്നു (High Thermal Load)', 'ആഴ്ചയിൽ ചില ദിവസങ്ങളിൽ മാത്രം (Moderate Usage)', 'വളരെ കുറവ് / ഇല്ല (Rare or None)'], isElec: true }
                 ]},
-                { id: 'sec4', l: 'Section 4: Thermodynamics & Thermal Loads', qs: [
-                    { id: 'q9', m: 'റഫ്രിജറേറ്ററിന്റെ (Fridge) ഊർജ്ജക്ഷമത / സ്റ്റാർ റേറ്റിംഗ്', e: 'Refrigerator Star Rating & Compressor', o: ['4-Star / 5-Star (Inverter Compressor)', '1-Star to 3-Star (Conventional Compressor)', 'Old Model (>8 years) / Non-Star Rated', 'No Refrigerator'] },
-                    { id: 'q10', m: 'എയർ കണ്ടീഷണർ (AC) ഉപയോഗിക്കുന്നുണ്ടോ?', e: 'Air Conditioner Usage', o: ['Yes (Inverter AC)', 'Yes (Non-Inverter AC)', 'No'] },
-                    { id: 'q11', m: 'എ.സി (AC) യുടെ സാധാരണ താപനില (Temperature Setting)', e: 'AC Thermodynamic Temperature Setting', o: ['24°C or above (Optimum thermal efficiency)', 'Below 24°C (High compressor duty cycle)'], p: 'q10', t: 'Yes' },
+                { id: 'sec4', l: 'Section 4: Thermodynamics & Cooling HVAC', qs: [
+                    { id: 'q9', m: 'റഫ്രിജറേറ്ററിന്റെ (Fridge) ഊർജ്ജക്ഷമത / സ്റ്റാർ റേറ്റിംഗ്', e: 'Refrigerator Star Rating & Compressor', o: ['4-Star / 5-Star (Inverter Compressor)', '1-Star to 3-Star (Conventional Compressor)', 'Old Model (>8 years) / Non-Star Rated', 'No Refrigerator'], isElec: true },
+                    { id: 'q10', m: 'എയർ കണ്ടീഷണർ (AC) ഉപയോഗിക്കുന്നുണ്ടോ?', e: 'Air Conditioner Usage', o: ['Yes (Inverter AC)', 'Yes (Non-Inverter AC)', 'No'], isElec: true },
+                    { id: 'q11', m: 'എ.സി (AC) യുടെ സാധാരണ താപനില (Temperature Setting)', e: 'AC Thermodynamic Temperature Setting', o: ['24°C or above (Optimum thermal efficiency)', 'Below 24°C (High compressor duty cycle)'], p: 'q10', t: 'Yes', isElec: true },
                     { id: 'q12', m: 'വെള്ളം ചൂടാക്കാൻ പ്രധാനമായും ഉപയോഗിക്കുന്ന മാർഗ്ഗം', e: 'Primary Water Heating Method', o: ['Solar Thermal Water Heater', 'Electric Geyser / Immersion Heating Rod', 'LPG Gas / Induction Cooktop', 'Biomass / Firewood', 'None'] }
                 ]},
-                { id: 'sec5', l: 'Section 5: Power Electronics, Solar & Inverter Physics', qs: [
-                    { id: 'q15', m: 'റൂഫ് ടോപ്പ് സോളാർ പാനൽ (Solar PV) ഇൻസ്റ്റാൾ ചെയ്തിട്ടുണ്ടോ?', e: 'Rooftop Solar PV Installation', o: ['Yes - Solar PV Installed', 'No - Solar Not Installed'] },
-                    { id: 'q15_type', m: 'സോളാർ പ്ലാന്റിന്റെ ഗ്രിഡ് കണക്ഷൻ സ്വഭാവം', e: 'Solar PV Connection Topology', o: ['On-Grid System (Connected to KSEB Net Metering)', 'Off-Grid System (Standalone with Battery Bank)', 'Hybrid System (Grid + Battery Storage)'], p: 'q15', t: 'Yes' },
-                    { id: 'q15_capacity', m: 'സോളാർ പ്ലാന്റിന്റെ ഉൽപ്പാദന ശേഷി (kW Capacity)', e: 'Solar Installed Capacity (kW)', o: ['1 kW (~4 Units/day)', '2 kW – 3 kW (~8 - 12 Units/day)', '3 kW – 5 kW (~12 - 20 Units/day)', 'Above 5 kW (>20 Units/day)'], p: 'q15', t: 'Yes' },
-                    { id: 'q17', m: 'വൈദ്യുതി തടസ്സം നേരിടാൻ ഉപയോഗിക്കുന്ന ബാക്കപ്പ് സംവിധാനം', e: 'Power Backup / Inverter Technology', o: ['Solar Hybrid Inverter', 'Standard UPS / Inverter with Battery', 'No Backup System'] },
+                { id: 'sec5', l: 'Section 5: Power Electronics, Solar & EVs', qs: [
                     { id: 'q13', m: 'പ്രധാന പാചക ഇന്ധനം (Cooking Fuel)', e: 'Primary Cooking Energy Source', o: ['LPG Gas', 'Induction Cooktop / Electric Stove', 'Biomass / Firewood', 'Hybrid (Mix of LPG & Electric/Biomass)'] },
-                    { id: 'q14', m: 'ഉപയോഗത്തിലില്ലാത്ത ഉപകരണങ്ങളുടെ സ്റ്റാൻഡ്‌ബൈ പവർ അണയ്ക്കാറുണ്ടോ?', e: 'Standby / Phantom Power Loss Habit', o: ['Switches are turned OFF at the wall socket after use', 'Left on Standby Mode (TV, Set-top Box, Chargers plugged in)'] },
-                    { id: 'q16', m: 'ഷോക്കിൽ നിന്നും സംരക്ഷണം നൽകുന്ന ELCB/RCCB സ്വിച്ച് മെയിൻ ബോർഡിൽ ഉണ്ടോ?', e: 'Electrical Leakage Safety (ELCB/RCCB)', o: ['Installed and working correctly', 'Not installed / Faulty', "Don't Know"] }
+                    { id: 'q14', m: 'ഉപയോഗത്തിലില്ലാത്ത ഉപകരണങ്ങളുടെ സ്റ്റാൻഡ്‌ബൈ പവർ അണയ്ക്കാറുണ്ടോ?', e: 'Standby / Phantom Power Loss Habit', o: ['Switches are turned OFF at the wall socket after use', 'Left on Standby Mode (TV, Set-top Box, Chargers plugged in)', 'ബാധകമല്ല (N/A)'], isElec: true },
+                    { id: 'q15', m: 'റൂഫ് ടോപ്പ് സോളാർ പാനൽ (Solar PV) ഇൻസ്റ്റാൾ ചെയ്തിട്ടുണ്ടോ?', e: 'Rooftop Solar PV Installation', o: ['Yes - Solar PV Installed', 'No - Solar Not Installed'], isElec: true },
+                    { id: 'q15_type', m: 'സോളാർ പ്ലാന്റിന്റെ ഗ്രിഡ് കണക്ഷൻ സ്വഭാവം', e: 'Solar PV Connection Topology', o: ['On-Grid System (Connected to KSEB Net Metering)', 'Off-Grid System (Standalone with Battery Bank)', 'Hybrid System (Grid + Battery Storage)'], p: 'q15', t: 'Yes', isElec: true },
+                    { id: 'q15_capacity', m: 'സോളാർ പ്ലാന്റിന്റെ ഉൽപ്പാദന ശേഷി (kW Capacity)', e: 'Solar Installed Capacity (kW)', o: ['1 kW (~4 Units/day)', '2 kW – 3 kW (~8 - 12 Units/day)', '3 kW – 5 kW (~12 - 20 Units/day)', 'Above 5 kW (>20 Units/day)'], p: 'q15', t: 'Yes', isElec: true },
+                    { id: 'q17', m: 'വൈദ്യുതി തടസ്സം നേരിടാൻ ഉപയോഗിക്കുന്ന ബാക്കപ്പ് സംവിധാനം', e: 'Power Backup / Inverter Technology', o: ['Solar Hybrid Inverter', 'Standard UPS / Inverter with Battery', 'No Backup System'], isElec: true },
+                    { id: 'q18', m: 'ഇലക്ട്രിക് വാഹനം (EV) ചാർജ്ജ് ചെയ്യാറുണ്ടോ?', e: 'Electric Vehicle (EV) Charging at Home', o: ['അതെ (ഇരുചക്ര വാഹനം - 2 Wheeler)', 'അതെ (കാർ - 4 Wheeler)', 'ഇലക്ട്രിക് വാഹനം ഇല്ല (No EV)'], isElec: true },
+                    { id: 'q16', m: 'ഷോക്കിൽ നിന്നും സംരക്ഷണം നൽകുന്ന ELCB/RCCB സ്വിച്ച് മെയിൻ ബോർഡിൽ ഉണ്ടോ?', e: 'Electrical Leakage Safety (ELCB/RCCB)', o: ['Installed and working correctly', 'Not installed / Faulty', "Don't Know", 'ബാധകമല്ല (N/A)'], isElec: true }
                 ]}
             ];
 
@@ -1433,7 +1376,7 @@
                         </h4>
                         <div class="space-y-3">
                             ${s.qs.map(item => `
-                                <div class="bg-white p-5 rounded-[28px] border border-slate-100 shadow-sm transition-all duration-300 radio-tile-group ${item.p ? 'hidden' : ''}" id="grp-${item.id}" data-parent="${item.p||''}" data-trigger="${item.t||''}">
+                                <div class="bg-white p-5 rounded-[28px] border border-slate-100 shadow-sm transition-all duration-300 radio-tile-group ${item.p ? 'hidden' : ''} ${item.isElec ? 'electrical-q' : ''}" id="grp-${item.id}" data-parent="${item.p||''}" data-trigger="${item.t||''}">
                                     <div class="mb-4 text-center sm:text-left">
                                         <p class="text-[13px] font-extrabold text-slate-800 leading-snug">${item.m}</p>
                                         <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">${item.e}</p>
@@ -1483,7 +1426,32 @@
                 document.getElementById('auditForm').addEventListener('change', (e) => {
                     const n = e.target.name;
                     const v = e.target.value;
+
+                    // MASTER TOGGLE for No Electrical Connection
+                    if (n === 'q1') {
+                        const noElec = (v === 'ഇലക്ട്രിസിറ്റി ഇല്ല (No Electrical Connection)');
+                        document.querySelectorAll('.electrical-q').forEach(grp => {
+                            if (noElec) {
+                                grp.classList.add('hidden');
+                                grp.classList.remove('animate-view');
+                                grp.querySelectorAll('input').forEach(i => { i.required = false; i.checked = false; });
+                            } else {
+                                // If electricity is restored, only show those that aren't dependent on something else
+                                if (!grp.dataset.parent) {
+                                    grp.classList.remove('hidden');
+                                    grp.classList.add('animate-view');
+                                    grp.querySelectorAll('input').forEach(i => i.required = true);
+                                }
+                            }
+                        });
+                    }
+
+                    // Normal conditional dependent logic
                     document.querySelectorAll(`[data-parent="${n}"]`).forEach(el => {
+                        // Double check master toggle isn't overriding us
+                        const q1Val = document.querySelector('input[name="q1"]:checked')?.value;
+                        if (q1Val === 'ഇലക്ട്രിസിറ്റി ഇല്ല (No Electrical Connection)') return;
+
                         if(v && v.startsWith(el.dataset.trigger)) { 
                             el.classList.remove('hidden'); 
                             el.classList.add('animate-view');
@@ -1492,7 +1460,6 @@
                         else if (el.dataset.parent === n) { 
                             el.classList.add('hidden'); 
                             el.classList.remove('animate-view');
-                            // Clear child answers when parent condition is false
                             el.querySelectorAll('input').forEach(i => { i.required = false; i.checked = false; }); 
                         }
                     });
@@ -1503,9 +1470,14 @@
         function generateRecommendations(s) {
             const improve = []; const good = [];
 
-            if (s.q4 !== '100% LED Lighting (High Efficacy)') {
+            if (s.q1 === 'ഇലക്ട്രിസിറ്റി ഇല്ല (No Electrical Connection)') {
+                good.push({ title: "Zero Electrical Carbon Footprint", mal: "കെ.എസ്.ഇ.ബി വൈദ്യുതി ഉപയോഗിക്കാത്തതിനാൽ നിങ്ങളുടെ കാർബൺ എമിഷൻ പൂർണ്ണമായും ഇല്ല.", eng: "No KSEB grid connection means 100% reduction in grid-based carbon footprint."});
+                return { improve, good }; // Skip standard electrical recommendations
+            }
+
+            if (s.q4 === 'Mix of LED & CFL / Old Tubelights' || s.q4 === 'Mostly Incandescent (Filament) Bulbs') {
                 improve.push({ title: "Upgrade to 100% LED", mal: "പഴയ ബൾബുകൾ മാറ്റി 100% എൽ.ഇ.ഡി (LED) ആക്കുക.", eng: "Replace CFLs/Incandescent bulbs with LEDs to save up to 80% lighting energy." });
-            } else {
+            } else if (s.q4 === '100% LED Lighting (High Efficacy)') {
                 good.push({ title: "High Efficacy Lighting", mal: "100% എൽ.ഇ.ഡി ഉപയോഗിക്കുന്നത് തികച്ചും മാതൃകാപരമാണ്.", eng: "100% LED setup optimizes luminous efficacy and reduces thermal emissions." });
             }
 
@@ -1513,6 +1485,14 @@
                 improve.push({ title: "Transition to BLDC Fans", mal: "സാധാരണ ഫാനുകൾ മാറ്റി ഊർജ്ജക്ഷമതയുള്ള BLDC ഫാനുകൾ ഉപയോഗിക്കുക.", eng: "BLDC motor fans consume ~28W compared to 75W induction fans." });
             } else if (s.q7 === 'Energy-efficient BLDC Motor Fans (~28W)') {
                 good.push({ title: "Efficient Motor Technology", mal: "BLDC ഫാനുകൾ ഉപയോഗിക്കുന്നത് സ്വാഗതാർഹമാണ്.", eng: "BLDC motor adoption cuts fan power consumption by over 60%." });
+            }
+
+            if (s.q8 === 'മാനുവൽ സ്വിച്ച് — പലപ്പോഴും ടാങ്ക് കവിഞ്ഞൊഴുകാറുണ്ട്') {
+                improve.push({ title: "Install Water Level Switch", mal: "മോട്ടോർ ടാങ്ക് അലാറം/ഓട്ടോമാറ്റിക് കട്ട്-ഓഫ് സ്ഥാപിക്കുക.", eng: "Prevent water motor overflows to conserve both electric energy and water." });
+            }
+
+            if (s.q8b === 'ദിവസവും ഉപയോഗിക്കുന്നു (High Thermal Load)') {
+                improve.push({ title: "Optimize Thermal Loads", mal: "അയൺ ബോക്സ്, വാഷിംഗ് മെഷീൻ എന്നിവ ആഴ്ചയിൽ ഒന്നിച്ചാക്കി ഉപയോഗിക്കുന്നത് വൈദ്യുതി ലാഭിക്കാൻ സഹായിക്കും.", eng: "Group ironing and laundry to reduce frequent high-wattage thermal heating cycles." });
             }
 
             if (s.q14 === 'Left on Standby Mode (TV, Set-top Box, Chargers plugged in)') {
@@ -1523,12 +1503,12 @@
                 improve.push({ title: "Set AC Temp to 24°C+", mal: "എ.സി താപനില 24°C ലേക്ക് ക്രമീകരിക്കുക.", eng: "Setting AC to 24°C reduces compressor work cycle and saves up to 24% electricity." });
             }
 
-            if (s.q8 === 'Manual Switch — Tank overflows frequently') {
-                improve.push({ title: "Install Water Level Switch", mal: "മോട്ടോർ ടാങ്ക് അലാറം/ഓട്ടോമാറ്റിക് കട്ട്-ഓഫ് സ്ഥാപിക്കുക.", eng: "Prevent water motor overflows to conserve both electric energy and water." });
-            }
-
             if (s.q16 === 'Not installed / Faulty' || s.q16 === "Don't Know") {
                 improve.push({ title: "Install ELCB / RCCB Protection", mal: "ഉടൻ തന്നെ മെയിൻ ബോർഡിൽ ELCB/RCCB സേഫ്റ്റി സ്വിച്ച് ഇൻസ്റ്റാൾ ചെയ്യുക.", eng: "Crucial for shock protection and preventing ground electrical leakage." });
+            }
+
+            if (s.q18 && s.q18.includes('അതെ')) {
+                good.push({ title: "Electric Vehicle (EV) Adoption", mal: "ഇലക്ട്രിക് വാഹനം ഉപയോഗിക്കുന്നത് അന്തരീക്ഷ മലിനീകരണം കുറയ്ക്കുന്നു. രാത്രി സമയങ്ങളിൽ ചാർജ് ചെയ്യാൻ ശ്രദ്ധിക്കുക.", eng: "EV adoption reduces carbon footprint. Try charging during off-peak night hours." });
             }
 
             if (s.q15 === 'Yes - Solar PV Installed') {
@@ -1540,18 +1520,25 @@
 
         function getReportHTML(s, isBatchMode = false) {
             let bimonthlyUnits = 180;
-            if(s.q2 === 'Below 100 Units') bimonthlyUnits = 80;
-            else if(s.q2 === '100 – 200 Units') bimonthlyUnits = 160;
-            else if(s.q2 === '200 – 400 Units') bimonthlyUnits = 300;
-            else if(s.q2 === 'Above 400 Units') bimonthlyUnits = 500;
+            let estKsebBill = 0;
+            let annualCo2 = 0;
 
-            const estKsebBill = calculateKsebBimonthlyBill(bimonthlyUnits);
-            const annualCo2 = Math.round(bimonthlyUnits * 6 * 0.72);
+            if (s.q1 !== 'ഇലക്ട്രിസിറ്റി ഇല്ല (No Electrical Connection)') {
+                if(s.q2 === 'Below 100 Units') bimonthlyUnits = 80;
+                else if(s.q2 === '100 – 200 Units') bimonthlyUnits = 160;
+                else if(s.q2 === '200 – 400 Units') bimonthlyUnits = 300;
+                else if(s.q2 === 'Above 400 Units') bimonthlyUnits = 500;
+                
+                estKsebBill = calculateKsebBimonthlyBill(bimonthlyUnits);
+                annualCo2 = Math.round(bimonthlyUnits * 6 * 0.72);
+            }
+
+            const getV = (v) => v ? v : '<span class="text-slate-400 font-medium">N/A (No Electricity)</span>';
 
             const row = (l, v, isLast = false) => `
                 <div class="flex border-slate-300 print:border-slate-800 ${isLast ? '' : 'border-b'}">
                     <div class="w-[50%] p-2 print:p-[5px] text-[11px] print:text-[8px] font-bold uppercase text-slate-600 print:text-slate-800 border-r border-slate-300 print:border-slate-800 bg-slate-50 print:bg-transparent flex items-center print-exact-color">${l}</div>
-                    <div class="w-[50%] p-2 print:p-[5px] text-[12px] print:text-[9px] font-black text-slate-900 break-words flex items-center">${v||'—'}</div>
+                    <div class="w-[50%] p-2 print:p-[5px] text-[12px] print:text-[9px] font-black text-slate-900 break-words flex items-center">${getV(v)}</div>
                 </div>`;
                 
             const head = (l) => `
@@ -1627,16 +1614,17 @@
                             </div>
 
                             <div class="border border-slate-300 print:border-slate-800 rounded-b-md print:rounded-none overflow-hidden">
-                                ${head('MOTORS & PUMPS')}
+                                ${head('MOTORS & THERMAL LOADS')}
                                 ${row('CEILING FAN MOTOR', s.q7)}
-                                ${row('PUMP SENSOR SWITCH', s.q8, true)}
+                                ${row('PUMP SENSOR SWITCH', s.q8)}
+                                ${row('HEAVY THERMAL LOADS', s.q8b, true)}
                             </div>
                         </div>
                         
                         <!-- Column 2 -->
                         <div class="flex flex-col gap-4 print:gap-3">
                             <div class="border border-slate-300 print:border-slate-800 rounded-b-md print:rounded-none overflow-hidden">
-                                ${head('THERMODYNAMICS & AC')}
+                                ${head('THERMODYNAMICS & HVAC')}
                                 ${row('REFRIGERATOR TECH', s.q9)}
                                 ${row('AIR CONDITIONER', s.q10)}
                                 ${row('AC TEMP SETTING', s.q11 || 'N/A')}
@@ -1644,11 +1632,12 @@
                             </div>
                             
                             <div class="border border-slate-300 print:border-slate-800 rounded-b-md print:rounded-none overflow-hidden">
-                                ${head('SOLAR, INVERTER & SAFETY PHYSICS')}
+                                ${head('SOLAR, EVS & SAFETY PHYSICS')}
                                 ${row('ROOFTOP SOLAR PV', s.q15)}
                                 ${row('SOLAR TOPOLOGY', s.q15_type || 'N/A')}
                                 ${row('SOLAR CAPACITY', s.q15_capacity || 'N/A')}
-                                ${row('INVERTER / BACKUP TECH', s.q17)}
+                                ${row('INVERTER BACKUP TECH', s.q17)}
+                                ${row('EV CHARGING (HOME)', s.q18)}
                                 ${row('COOKING FUEL', s.q13)}
                                 ${row('STANDBY POWER HABIT', s.q14)}
                                 ${row('SAFETY SWITCH (ELCB)', s.q16, true)}
@@ -1722,43 +1711,6 @@
             }
         };
 
-        window.copyReportSummary = () => {
-            triggerHaptic();
-            if(surveys.length === 0) return window.showAlert("No audits to summarize yet.", "No Data", "info");
-
-            const members = document.getElementById('stat-members').innerText;
-            const pledges = document.getElementById('stat-pledges').innerText;
-            const solar = document.getElementById('stat-solar').innerText;
-            const led = document.getElementById('stat-led').innerText;
-            const bldc = document.getElementById('stat-bldc').innerText;
-            const kwh = document.getElementById('stat-est-kwh')?.innerText || '0';
-            const co2 = document.getElementById('stat-est-co2')?.innerText || '0';
-            const bill = document.getElementById('stat-est-kseb-bill')?.innerText || '0';
-
-            const text = `
-⚡ *MG COLLEGE PHYSICS DEPARTMENT: KERALA ENERGY AUDIT SUMMARY* ⚡
---------------------------------------------------
-📊 *Core Metrics:*
-🏡 Households Audited: *${surveys.length}*
-👥 Citizens Covered: *${members}*
-🤝 Energy Conservation Pledges: *${pledges}*
-
-⚡ *Kerala KSEB Analytics:*
-🔌 Est. Annual Grid Load: *${kwh} kWh/yr*
-💰 Est. Annual KSEB Bill Total: *₹${bill}*
-🌱 Est. Carbon Emissions: *${co2} kg CO₂/yr*
-
-💡 *Technology Transition Rates:*
-☀️ Rooftop Solar PV Adoption: *${solar}*
-💡 100% LED Lighting Transition: *${led}*
-🌀 Efficient BLDC Fan Adoption: *${bldc}*
---------------------------------------------------
-*#EnergyConservation #DepartmentOfPhysics #MGCollege #KSEB*
-_Generated via MG College Physics Energy Audit App_`.trim();
-            
-            navigator.clipboard.writeText(text).then(() => window.showAlert("Report summary copied! Ready to share.", "Summary Copied!", "success"));
-        };
-
         window.exportDocText = () => {
             triggerHaptic();
             if(!surveys.length) return window.showAlert("No data available to export.", "Empty Database", "info");
@@ -1784,15 +1736,20 @@ _Generated via MG College Physics Energy Audit App_`.trim();
                 docContent += `Head of Household: ${s.headName || 'N/A'}\n`;
                 docContent += `Ward #: ${s.wardNo || 'N/A'} | House ID: ${s.houseNo || 'N/A'}\n`;
                 docContent += `Members Count: ${s.membersCount || 'N/A'}\n`;
-                docContent += `Electrical Grid Connection: ${s.q1 || 'N/A'}\n`;
+                docContent += `Grid Connection: ${s.q1 || 'N/A'}\n`;
                 docContent += `Bi-monthly kWh Load: ${s.q2 || 'N/A'}\n`;
                 docContent += `Lighting Technology: ${s.q4 || 'N/A'}\n`;
                 docContent += `Ceiling Fan Motor: ${s.q7 || 'N/A'}\n`;
+                docContent += `Water Pump Control: ${s.q8 || 'N/A'}\n`;
+                docContent += `Heavy Thermal Loads: ${s.q8b || 'N/A'}\n`;
+                docContent += `Refrigerator Rating: ${s.q9 || 'N/A'}\n`;
+                docContent += `AC Usage: ${s.q10 || 'N/A'}\n`;
                 docContent += `AC Temperature Setting: ${s.q11 || 'N/A'}\n`;
-                docContent += `Rooftop Solar PV Status: ${s.q15 || 'N/A'}\n`;
-                docContent += `Solar Connection Topology: ${s.q15_type || 'N/A'}\n`;
-                docContent += `Solar Installed Capacity (kW): ${s.q15_capacity || 'N/A'}\n`;
-                docContent += `Inverter / Battery System: ${s.q17 || 'N/A'}\n`;
+                docContent += `Rooftop Solar PV: ${s.q15 || 'N/A'}\n`;
+                docContent += `Solar Topology: ${s.q15_type || 'N/A'}\n`;
+                docContent += `Solar Capacity: ${s.q15_capacity || 'N/A'}\n`;
+                docContent += `Inverter System: ${s.q17 || 'N/A'}\n`;
+                docContent += `Electric Vehicle (EV): ${s.q18 || 'N/A'}\n`;
                 docContent += `ELCB Safety Switch: ${s.q16 || 'N/A'}\n`;
                 docContent += `Pledge Taken: ${s.pledge || 'N/A'}\n`;
                 docContent += "--------------------------------------------------------\n\n";
@@ -1826,16 +1783,18 @@ _Generated via MG College Physics Energy Audit App_`.trim();
             q6: "Daytime Outdoor Lights Management",
             q7: "Ceiling Fan Motor Tech",
             q8: "Water Pump Motor Sensor",
+            q8b: "Heavy Thermal Loads (Iron/Washer)",
             q9: "Refrigerator Rating & Tech",
             q10: "AC Usage",
             q11: "AC Temperature Setting",
             q12: "Water Heating Method",
+            q13: "Primary Cooking Fuel",
+            q14: "Standby Loss Habit",
             q15: "Rooftop Solar PV Status",
             q15_type: "Solar Connection Topology",
             q15_capacity: "Solar Installed Capacity (kW)",
             q17: "Inverter / Battery System",
-            q13: "Primary Cooking Fuel",
-            q14: "Standby Loss Habit",
+            q18: "Electric Vehicle (EV) Charging",
             q16: "ELCB Safety Switch",
             pledge: "Pledge Status"
         };
@@ -1898,6 +1857,16 @@ _Generated via MG College Physics Energy Audit App_`.trim();
         window.resetFormInternal = () => {
             document.getElementById('auditForm').reset();
             document.querySelectorAll('.radio-tile-group input:checked').forEach(i => i.checked = false);
+            
+            // Specifically handle the master 'electrical' toggle reset
+            document.querySelectorAll('.electrical-q').forEach(grp => {
+                if (!grp.dataset.parent) {
+                    grp.classList.remove('hidden');
+                    grp.classList.add('animate-view');
+                    grp.querySelectorAll('input').forEach(i => i.required = true); 
+                }
+            });
+
             document.querySelectorAll('[data-parent]').forEach(el => el.classList.add('hidden'));
             
             const btn = document.getElementById('submit-btn');
@@ -1926,21 +1895,6 @@ _Generated via MG College Physics Energy Audit App_`.trim();
             if(modal) modal.classList.add('hidden');
         };
 
-        window.handleVideoFileSelect = (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const player = document.getElementById('guide-video-player');
-                const nameDisplay = document.getElementById('video-filename');
-                const fileURL = URL.createObjectURL(file);
-                
-                player.src = fileURL;
-                player.play();
-                if(nameDisplay) nameDisplay.innerText = "Loaded: " + file.name;
-                window.showAlert("Video loaded and playing!", "Video Guide", "success");
-            }
-        };
-
-        // Initialize application
         startApp();
         buildMobileForm();
         switchTab('dashboard');

@@ -543,23 +543,15 @@
                 <!-- Modal Scrollable Content -->
                 <div class="p-6 overflow-y-auto space-y-6 no-scrollbar">
                     
-                    <!-- Video Player Container (Pre-configured to guide_video.mp4 hosted on GitHub) -->
+                    <!-- GitHub Hosted Video Player Container -->
                     <div class="bg-slate-900 rounded-[24px] p-2 border border-slate-800 shadow-inner">
-                        <video id="guide-video-player" controls class="w-full h-52 object-contain rounded-[18px] bg-black" poster="college_logo.png">
-                            <source id="video-source" src="guide_video.mp4" type="video/mp4">
+                        <video id="guide-video-player" controls playsinline preload="auto" class="w-full h-52 object-contain rounded-[18px] bg-black" poster="college_logo.png">
+                            <source src="guide_video.mp4" type="video/mp4">
+                            <source src="RPReplay_Final1785732502.mp4" type="video/mp4">
                             Your browser does not support HTML5 video.
                         </video>
                         
-                        <!-- Local File Upload Fallback Option -->
-                        <div class="p-3 bg-slate-800/80 rounded-[18px] mt-2 flex flex-col items-center gap-2 border border-slate-700">
-                            <p class="text-[10px] font-extrabold text-slate-300 text-center">Load Your Screen Recording File (.mp4, .webm, .mov):</p>
-                            <label class="w-full bg-sky-600 hover:bg-sky-500 text-white font-black text-[11px] uppercase tracking-wider py-3 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer transition shadow-md active:scale-95">
-                                <i class="fa-solid fa-file-video text-sm"></i>
-                                <span>📁 Select Video File</span>
-                                <input type="file" id="video-file-input" accept="video/*" class="hidden" onchange="handleVideoFileSelect(event)">
-                            </label>
-                            <p id="video-filename" class="text-[9px] font-bold text-sky-400 truncate max-w-full italic"></p>
-                        </div>
+                        <p class="text-[9px] font-bold text-sky-400 text-center py-1 tracking-wider">▶️ Streaming Guide Video from GitHub Repository</p>
                     </div>
 
                     <!-- Step-by-Step Instructions -->
@@ -605,7 +597,7 @@
                                 <span class="w-6 h-6 rounded-full bg-sky-600 text-white text-[10px] font-black flex items-center justify-center shrink-0">5</span>
                                 <div>
                                     <p class="text-[11px] font-extrabold text-slate-800">Admin Mode (Supervisor Access)</p>
-                                    <p class="text-[10px] text-slate-500 font-medium mt-0.5">Enable Admin Mode in Info tab using PIN <span class="font-black text-sky-700 bg-sky-100 px-1 py-0.5 rounded">6330</span> to edit data, delete duplicates, or run batch prints.</p>
+                                    <p class="text-[10px] text-slate-500 font-medium mt-0.5">Enable Admin Mode in Info tab (Admin Authorization PIN required) to edit data, delete duplicates, or run batch prints.</p>
                                 </div>
                             </div>
                         </div>

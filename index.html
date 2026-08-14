@@ -383,7 +383,7 @@
             </form>
         </div>
 
-        <!-- REPORT VIEW (Answers + Personalized Energy Improvement Instructions) -->
+        <!-- REPORT VIEW -->
         <div id="view-report" class="hidden max-w-3xl print:max-w-none print:w-full mx-auto p-4 animate-view print:p-0 pb-10 print:pb-0 print:bg-white print:h-auto print:overflow-visible print:block">
             <div class="flex items-center justify-between mb-6 print-hidden">
                 <button onclick="switchTab('dashboard')" class="w-12 h-12 bg-white rounded-[18px] flex items-center justify-center text-slate-400 shadow-sm border border-slate-100 active:scale-90 transition">
@@ -459,8 +459,6 @@
         <!-- Video Guide Modal -->
         <div id="video-modal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[300] flex items-center justify-center p-4 sm:p-6 print-hidden">
             <div class="bg-white rounded-[32px] shadow-2xl max-w-lg w-full max-h-[90dvh] flex flex-col overflow-hidden animate-view border border-slate-100">
-                
-                <!-- Modal Top Header -->
                 <div class="p-5 bg-slate-900 text-white flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <div class="w-9 h-9 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center font-black">
@@ -475,11 +473,7 @@
                         <i class="fa-solid fa-xmark text-sm"></i>
                     </button>
                 </div>
-
-                <!-- Modal Scrollable Content -->
                 <div class="p-6 overflow-y-auto space-y-6 no-scrollbar">
-                    
-                    <!-- GitHub Hosted Video Player Container -->
                     <div class="bg-slate-900 rounded-[24px] p-2 border border-slate-800 shadow-inner">
                         <video id="guide-video-player" controls playsinline preload="auto" class="w-full h-52 object-contain rounded-[18px] bg-black" poster="college_logo.png">
                             <source src="RPReplay_Final1785732502.mp4" type="video/mp4">
@@ -488,13 +482,10 @@
                         </video>
                         <p class="text-[9px] font-bold text-sky-400 text-center py-1 tracking-wider">▶️ Streaming Guide Video from GitHub Repository</p>
                     </div>
-
-                    <!-- Step-by-Step Instructions -->
                     <div class="space-y-4">
                         <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
                             <i class="fa-solid fa-list-check text-sky-500"></i> How to Conduct Survey
                         </h4>
-
                         <div class="space-y-2.5">
                             <div class="flex gap-3 bg-slate-50 p-3.5 rounded-[18px] border border-slate-100">
                                 <span class="w-6 h-6 rounded-full bg-sky-600 text-white text-[10px] font-black flex items-center justify-center shrink-0">1</span>
@@ -520,8 +511,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Modal Bottom Button -->
                 <div class="p-4 bg-slate-50 border-t border-slate-100 text-center">
                     <button onclick="closeVideoModal()" class="w-full py-3.5 bg-slate-900 text-white rounded-[18px] text-xs font-black uppercase tracking-wider hover:bg-black active:scale-95 transition">
                         Got It, Start Survey
@@ -529,6 +518,40 @@
                 </div>
             </div>
         </div>
+
+        <!-- Custom Alert Modal (Fixes Missing Alert UI Crash) -->
+        <div id="custom-alert" class="hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-[400] flex items-center justify-center p-5 print-hidden">
+            <div class="bg-white rounded-[28px] p-6 max-w-sm w-full text-center shadow-2xl animate-view border border-slate-100">
+                <div id="custom-alert-icon" class="w-16 h-16 bg-sky-50 text-sky-500 rounded-[20px] flex items-center justify-center mx-auto mb-5">
+                    <i class="fa-solid fa-bell text-2xl"></i>
+                </div>
+                <h3 id="custom-alert-title" class="text-base font-black text-slate-800 mb-2">Notification</h3>
+                <p id="custom-alert-msg" class="text-xs text-slate-500 font-medium mb-6 leading-relaxed"></p>
+                <button onclick="closeCustomAlert()" class="w-full py-3.5 bg-slate-900 text-white rounded-2xl text-xs font-black uppercase tracking-wider hover:bg-black active:scale-95 transition shadow-md">
+                    Continue
+                </button>
+            </div>
+        </div>
+
+        <!-- Custom Confirm Modal (Fixes Missing Confirm UI Crash) -->
+        <div id="custom-confirm" class="hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-[400] flex items-center justify-center p-5 print-hidden">
+            <div class="bg-white rounded-[28px] p-6 max-w-sm w-full text-center shadow-2xl animate-view border border-slate-100">
+                <div class="w-16 h-16 bg-amber-50 text-amber-500 rounded-[20px] flex items-center justify-center mx-auto mb-5">
+                    <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+                </div>
+                <h3 id="custom-confirm-title" class="text-base font-black text-slate-800 mb-2">Are you sure?</h3>
+                <p id="custom-confirm-msg" class="text-xs text-slate-500 font-medium mb-6 leading-relaxed"></p>
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="closeCustomConfirm()" class="w-full py-3.5 bg-slate-100 text-slate-600 rounded-2xl text-xs font-bold uppercase tracking-wider hover:bg-slate-200 active:scale-95 transition">
+                        Cancel
+                    </button>
+                    <button id="custom-confirm-btn" class="w-full py-3.5 bg-rose-600 text-white rounded-2xl text-xs font-black uppercase tracking-wider hover:bg-rose-700 active:scale-95 transition shadow-md">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <!-- App Bottom Bar -->
@@ -561,7 +584,7 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Firebase project credentials (phy-energyaudit)
+        // Firebase credentials intact
         const firebaseConfig = {
             apiKey: "AIzaSyBJvgM2EXtiZyCM0jGurgYaLBMLqOp96QU",
             authDomain: "phy-energyaudit.firebaseapp.com",
@@ -572,7 +595,7 @@
             measurementId: "G-53DP4TGCNZ"
         };
 
-        const LOCAL_STORAGE_KEY = 'physics_kerala_audit_surveys_v9'; // Incremented key for clean start
+        const LOCAL_STORAGE_KEY = 'physics_kerala_audit_surveys_v10';
 
         let app = null;
         let auth = null;
@@ -625,33 +648,74 @@
         }
 
         window.showAlert = (msg, title="Notification", type="info") => {
-            document.getElementById('custom-alert-title').innerText = title;
-            document.getElementById('custom-alert-msg').innerText = msg;
+            const titleEl = document.getElementById('custom-alert-title');
+            const msgEl = document.getElementById('custom-alert-msg');
             const iconEl = document.getElementById('custom-alert-icon');
-            if(type === 'error') {
-                iconEl.className = "w-16 h-16 bg-rose-50 text-rose-500 rounded-[20px] flex items-center justify-center mx-auto mb-6";
-                iconEl.innerHTML = '<i class="fa-solid fa-circle-exclamation text-2xl"></i>';
-            } else if (type === 'success') {
-                iconEl.className = "w-16 h-16 bg-emerald-50 text-emerald-500 rounded-[20px] flex items-center justify-center mx-auto mb-6";
-                iconEl.innerHTML = '<i class="fa-solid fa-check text-2xl"></i>';
-            } else {
-                iconEl.className = "w-16 h-16 bg-sky-50 text-sky-500 rounded-[20px] flex items-center justify-center mx-auto mb-6";
-                iconEl.innerHTML = '<i class="fa-solid fa-bell text-2xl"></i>';
+            const modalEl = document.getElementById('custom-alert');
+            
+            if (titleEl) titleEl.innerText = title;
+            if (msgEl) msgEl.innerText = msg;
+            
+            if (iconEl) {
+                if(type === 'error') {
+                    iconEl.className = "w-16 h-16 bg-rose-50 text-rose-500 rounded-[20px] flex items-center justify-center mx-auto mb-5";
+                    iconEl.innerHTML = '<i class="fa-solid fa-circle-exclamation text-2xl"></i>';
+                } else if (type === 'success') {
+                    iconEl.className = "w-16 h-16 bg-emerald-50 text-emerald-500 rounded-[20px] flex items-center justify-center mx-auto mb-5";
+                    iconEl.innerHTML = '<i class="fa-solid fa-check text-2xl"></i>';
+                } else {
+                    iconEl.className = "w-16 h-16 bg-sky-50 text-sky-500 rounded-[20px] flex items-center justify-center mx-auto mb-5";
+                    iconEl.innerHTML = '<i class="fa-solid fa-bell text-2xl"></i>';
+                }
             }
-            document.getElementById('custom-alert').classList.remove('hidden');
+            if (modalEl) modalEl.classList.remove('hidden');
         };
-        window.closeCustomAlert = () => document.getElementById('custom-alert').classList.add('hidden');
+        window.closeCustomAlert = () => {
+            const modalEl = document.getElementById('custom-alert');
+            if (modalEl) modalEl.classList.add('hidden');
+        };
 
         window.showConfirm = (msg, onConfirm, title="Are you sure?") => {
-            document.getElementById('custom-confirm-title').innerText = title;
-            document.getElementById('custom-confirm-msg').innerText = msg;
-            document.getElementById('custom-confirm-btn').onclick = () => {
-                closeCustomConfirm();
-                onConfirm();
-            };
-            document.getElementById('custom-confirm').classList.remove('hidden');
+            const titleEl = document.getElementById('custom-confirm-title');
+            const msgEl = document.getElementById('custom-confirm-msg');
+            const btnEl = document.getElementById('custom-confirm-btn');
+            const modalEl = document.getElementById('custom-confirm');
+
+            if (titleEl) titleEl.innerText = title;
+            if (msgEl) msgEl.innerText = msg;
+            if (btnEl) {
+                btnEl.onclick = () => {
+                    closeCustomConfirm();
+                    onConfirm();
+                };
+            }
+            if (modalEl) modalEl.classList.remove('hidden');
         };
-        window.closeCustomConfirm = () => document.getElementById('custom-confirm').classList.add('hidden');
+        window.closeCustomConfirm = () => {
+            const modalEl = document.getElementById('custom-confirm');
+            if (modalEl) modalEl.classList.add('hidden');
+        };
+
+        window.copyReportSummary = () => {
+            triggerHaptic();
+            if(!surveys.length) {
+                return window.showAlert("No audit data available to summarize.", "Empty Database", "info");
+            }
+            const total = surveys.length;
+            const members = document.getElementById('stat-members')?.innerText || '0';
+            const pledges = document.getElementById('stat-pledges')?.innerText || '0';
+            const solar = document.getElementById('stat-solar')?.innerText || '0%';
+            const kwh = document.getElementById('stat-est-kwh')?.innerText || '0';
+            const co2 = document.getElementById('stat-est-co2')?.innerText || '0';
+
+            const text = `📊 *ENERGY AUDIT REPORT SUMMARY*\n*Dept. of Physics, MG College, Iritty*\n------------------------------------\n🏠 *Total Households:* ${total}\n👥 *Citizens Covered:* ${members}\n🌱 *Energy Pledges:* ${pledges}\n☀️ *Solar PV Adoption:* ${solar}\n⚡ *Annual Energy Demand:* ${kwh} kWh/yr\n🌍 *Estimated CO₂ Footprint:* ${co2} kg/yr\n------------------------------------\n#EnergyConservation #MGCIritty`;
+
+            navigator.clipboard.writeText(text).then(() => {
+                window.showAlert("Summary copied to clipboard! You can paste it directly into WhatsApp.", "WhatsApp Summary", "success");
+            }).catch(() => {
+                window.showAlert("Failed to copy summary.", "Error", "error");
+            });
+        };
 
         window.filterByVolunteer = (name) => {
             triggerHaptic();
@@ -664,21 +728,11 @@
         };
 
         const updateNetworkStatus = () => {
-            const badge = document.getElementById('network-badge');
-            const dot = document.getElementById('network-dot');
-            const text = document.getElementById('network-text');
             const banner = document.getElementById('offline-alert-banner');
-
             if (navigator.onLine) {
-                if(badge) badge.className = "flex items-center gap-1.5 bg-emerald-50 text-emerald-600 px-2 py-1 rounded-full text-[9px] font-black border border-emerald-100 transition-colors";
-                if(dot) dot.className = "w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse";
-                if(text) text.innerText = "ONLINE";
                 if(banner) banner.classList.add('hidden');
                 autoPushUnsynced();
             } else {
-                if(badge) badge.className = "flex items-center gap-1.5 bg-rose-50 text-rose-600 px-2 py-1 rounded-full text-[9px] font-black border border-rose-100 transition-colors";
-                if(dot) dot.className = "w-1.5 h-1.5 bg-rose-500 rounded-full";
-                if(text) text.innerText = "OFFLINE";
                 if(banner) banner.classList.remove('hidden');
                 updateSyncBadge();
             }
@@ -755,6 +809,7 @@
 
         async function startApp() {
             loadLocalSurveys();
+            buildMobileForm();
             renderDashboard();
 
             try {
@@ -785,7 +840,6 @@
                 updateNetworkStatus();
                 runPhysicsCalculator();
                 
-                // Show video modal on very first load
                 if(!localStorage.getItem('physics_app_guide_viewed')) {
                     setTimeout(() => { openVideoModal(); localStorage.setItem('physics_app_guide_viewed', 'true'); }, 1500);
                 }
@@ -806,7 +860,6 @@
                         };
                     });
 
-                    // Merge Cloud Documents with unpushed Local Documents
                     const unpushedLocal = surveys.filter(s => !s.synced);
                     const mergedMap = new Map();
 
@@ -825,10 +878,10 @@
                         renderDashboard();
                     }
                 }, (err) => {
-                    console.log('Firestore snapshot listener working offline:', err.message);
+                    console.log('Firestore snapshot offline listener active:', err.message);
                 });
             } catch(err) {
-                console.log('Sync listener active');
+                console.log('Sync listener error:', err);
             }
         }
 
@@ -907,7 +960,6 @@
             const kwhSavedBulbs = bulbs * 93;
             const kwhSavedFans = fans * 137;
             const totalKwhSaved = Math.round(kwhSavedBulbs + kwhSavedFans);
-            
             const rupeesSaved = Math.round(totalKwhSaved * 6.5);
 
             if(document.getElementById('calc-kwh-saved')) document.getElementById('calc-kwh-saved').innerText = totalKwhSaved;
@@ -950,14 +1002,13 @@
                 if(s.q15 && s.q15.startsWith('Yes')) stats.solarCount++;
                 if(s.q4 === '100% LED Lighting (High Efficacy)') stats.ledCount++;
                 if(s.q7 === 'Energy-efficient BLDC Motor Fans (~28W)') stats.bldcCount++;
-                if(s.q18 && s.q18.includes('അതെ')) stats.evCount++; // Counts EVs
+                if(s.q18 && s.q18.includes('അതെ')) stats.evCount++;
                 if(s.q14 === 'Left on Standby Mode (TV, Set-top Box, Chargers plugged in)') stats.standbyRisk++;
                 if(s.q8 === 'മാനുവൽ സ്വിച്ച് — പലപ്പോഴും ടാങ്ക് കവിഞ്ഞൊഴുകാറുണ്ട്') stats.overflowRisk++;
                 if(s.q11 === 'Below 24°C (High compressor duty cycle)') stats.lowACRisk++;
                 if(s.q8b === 'ദിവസവും ഉപയോഗിക്കുന്നു (High Thermal Load)') stats.thermalRisk++;
                 if(s.q16 === 'Not installed / Faulty' || s.q16 === "Don't Know") stats.safetyHazard++;
 
-                // If No Electrical Connection, do not add KSEB Bill/CO2
                 if (s.q1 !== 'ഇലക്ട്രിസിറ്റി ഇല്ല (No Electrical Connection)') {
                     let bimonthlyUnits = 180;
                     if(s.q2 === 'Below 100 Units') bimonthlyUnits = 80;
@@ -984,7 +1035,7 @@
 
             document.getElementById('stat-led').innerText = Math.round((stats.ledCount / total) * 100) + '%';
             document.getElementById('stat-bldc').innerText = Math.round((stats.bldcCount / total) * 100) + '%';
-            document.getElementById('stat-ev').innerText = stats.evCount; // Shows total EV count
+            document.getElementById('stat-ev').innerText = stats.evCount;
 
             const estKwhEl = document.getElementById('stat-est-kwh');
             const estCo2El = document.getElementById('stat-est-co2');
@@ -1224,7 +1275,6 @@
                 }
             });
 
-            // Re-trigger Master Toggle if No Electricity was selected
             if (survey.q1 === 'ഇലക്ട്രിസിറ്റി ഇല്ല (No Electrical Connection)') {
                 const q1Elem = Array.from(form.elements['q1']).find(el => el.value === 'ഇലക്ട്രിസിറ്റി ഇല്ല (No Electrical Connection)');
                 if(q1Elem) q1Elem.dispatchEvent(new Event('change', { bubbles: true }));
@@ -1241,12 +1291,10 @@
 
             const rawData = Object.fromEntries(new FormData(e.target).entries());
             
-            // Cleanup conditional questions based on master toggle (No Electricity)
             if (rawData.q1 === 'ഇലക്ട്രിസിറ്റി ഇല്ല (No Electrical Connection)') {
                 const electricalKeys = ['q2', 'q4', 'q5', 'q6', 'q7', 'q8', 'q8b', 'q9', 'q10', 'q11', 'q12', 'q14', 'q15', 'q15_type', 'q15_capacity', 'q16', 'q17', 'q18'];
                 electricalKeys.forEach(k => delete rawData[k]);
             } else {
-                // Regular specific cleanups
                 if(!rawData.q10 || !rawData.q10.startsWith('Yes')) {
                     delete rawData.q11;
                 }
@@ -1278,7 +1326,6 @@
             let docId = editModeId || 'local_' + now;
             let pushedToCloud = false;
 
-            // Direct Firestore Cloud Push First
             if (navigator.onLine && db) {
                 try {
                     if (editModeId) {
@@ -1299,7 +1346,6 @@
                 }
             }
 
-            // Local State Update
             const localRecord = {
                 ...cleanRecord,
                 id: docId,
@@ -1321,7 +1367,6 @@
                 window.resetFormInternal();
                 editModeId = null; 
 
-                // Direct user to view their answers and personalized energy improvement instructions immediately!
                 showAuditDetail(docId, localRecord);
 
                 if (pushedToCloud) {
@@ -1376,7 +1421,7 @@
                         </h4>
                         <div class="space-y-3">
                             ${s.qs.map(item => `
-                                <div class="bg-white p-5 rounded-[28px] border border-slate-100 shadow-sm transition-all duration-300 radio-tile-group ${item.p ? 'hidden' : ''} ${item.isElec ? 'electrical-q' : ''}" id="grp-${item.id}" data-parent="${item.p||''}" data-trigger="${item.t||''}">
+                                <div class="bg-white p-5 rounded-[28px] border border-slate-100 shadow-sm transition-all duration-300 radio-tile-group ${item.p ? 'hidden' : ''} ${item.isElec ? 'electrical-q' : ''}" id="grp-${item.id}" ${item.p ? `data-parent="${item.p}"` : ''} ${item.t ? `data-trigger="${item.t}"` : ''}>
                                     <div class="mb-4 text-center sm:text-left">
                                         <p class="text-[13px] font-extrabold text-slate-800 leading-snug">${item.m}</p>
                                         <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">${item.e}</p>
@@ -1436,7 +1481,6 @@
                                 grp.classList.remove('animate-view');
                                 grp.querySelectorAll('input').forEach(i => { i.required = false; i.checked = false; });
                             } else {
-                                // If electricity is restored, only show those that aren't dependent on something else
                                 if (!grp.dataset.parent) {
                                     grp.classList.remove('hidden');
                                     grp.classList.add('animate-view');
@@ -1446,9 +1490,8 @@
                         });
                     }
 
-                    // Normal conditional dependent logic
+                    // Dependent Child Questions Logic
                     document.querySelectorAll(`[data-parent="${n}"]`).forEach(el => {
-                        // Double check master toggle isn't overriding us
                         const q1Val = document.querySelector('input[name="q1"]:checked')?.value;
                         if (q1Val === 'ഇലക്ട്രിസിറ്റി ഇല്ല (No Electrical Connection)') return;
 
@@ -1456,8 +1499,7 @@
                             el.classList.remove('hidden'); 
                             el.classList.add('animate-view');
                             el.querySelectorAll('input').forEach(i => i.required = true); 
-                        }
-                        else if (el.dataset.parent === n) { 
+                        } else { 
                             el.classList.add('hidden'); 
                             el.classList.remove('animate-view');
                             el.querySelectorAll('input').forEach(i => { i.required = false; i.checked = false; }); 
@@ -1472,7 +1514,7 @@
 
             if (s.q1 === 'ഇലക്ട്രിസിറ്റി ഇല്ല (No Electrical Connection)') {
                 good.push({ title: "Zero Electrical Carbon Footprint", mal: "കെ.എസ്.ഇ.ബി വൈദ്യുതി ഉപയോഗിക്കാത്തതിനാൽ നിങ്ങളുടെ കാർബൺ എമിഷൻ പൂർണ്ണമായും ഇല്ല.", eng: "No KSEB grid connection means 100% reduction in grid-based carbon footprint."});
-                return { improve, good }; // Skip standard electrical recommendations
+                return { improve, good };
             }
 
             if (s.q4 === 'Mix of LED & CFL / Old Tubelights' || s.q4 === 'Mostly Incandescent (Filament) Bulbs') {
@@ -1546,7 +1588,6 @@
             
             return `
                 <div class="p-6 print:p-0 bg-white w-full box-border flex flex-col a4-print-container">
-                    
                     <!-- Header -->
                     <div class="flex justify-between items-center mb-6 print:mb-3 border-b-2 border-slate-900 pb-6 print:pb-3 flex-shrink-0">
                         <div class="flex-grow text-center px-2">
@@ -1854,25 +1895,35 @@
             }, 500);
         };
 
+        // Complete & Fixed Reset Handler
         window.resetFormInternal = () => {
-            document.getElementById('auditForm').reset();
-            document.querySelectorAll('.radio-tile-group input:checked').forEach(i => i.checked = false);
+            const form = document.getElementById('auditForm');
+            if(form) form.reset();
             
-            // Specifically handle the master 'electrical' toggle reset
-            document.querySelectorAll('.electrical-q').forEach(grp => {
+            document.querySelectorAll('#auditForm input[type="radio"]').forEach(i => {
+                i.checked = false;
+            });
+            
+            document.querySelectorAll('#dynamic-questions .radio-tile-group').forEach(grp => {
                 if (!grp.dataset.parent) {
                     grp.classList.remove('hidden');
                     grp.classList.add('animate-view');
-                    grp.querySelectorAll('input').forEach(i => i.required = true); 
+                    grp.querySelectorAll('input').forEach(i => {
+                        i.required = true;
+                    });
+                } else {
+                    grp.classList.add('hidden');
+                    grp.classList.remove('animate-view');
+                    grp.querySelectorAll('input').forEach(i => {
+                        i.required = false;
+                    });
                 }
             });
 
-            document.querySelectorAll('[data-parent]').forEach(el => el.classList.add('hidden'));
-            
             const btn = document.getElementById('submit-btn');
             if(btn) btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-lg"></i> Push to Cloud Server';
             editModeId = null;
-        }
+        };
 
         window.resetForm = () => { 
             triggerHaptic();
@@ -1896,10 +1947,9 @@
         };
 
         startApp();
-        buildMobileForm();
         switchTab('dashboard');
 
-        // Periodic background worker to flush unpushed records
+        // Background worker to flush unpushed records
         setInterval(() => {
             if (navigator.onLine && db) {
                 autoPushUnsynced();
